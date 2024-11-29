@@ -1,23 +1,20 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from schemas import promptrequest,promptresponse
 
 app = FastAPI()
 
-class Request(BaseModel):
-    user_input: str
+historico = []
 
-@app.get("/")
-async def ok_endpoint():
-    return {"message":"ok"}
+def simulador(obj : promptrequest):
+    tam = len(obj.mensagem)
+    response = "aqui esta a reposta"
+    tam1 = len(response)
+    return promptresponse(resposta=response,keys_usadas={"keys_resposta":tam1,"key_pergunta": tam})
 
-@app.get("/hello")
-async def hello_endpoint(name: str = 'World'):
-    return {"message": f"Hello, {name}!"}
-
-@app.post("/input")
-async def place_input(user_input: str):
-    return{"message": f"user input posted successfully: {user_input}"}
-
-@app.post("/input_pydantic")
-async def place_input(user: Request):
-    return{"message": f"user input posted successfully: {user.user_input}"}
+@app.post("/prompt")
+def prompt(prompt : promptrequest):
+    historico.append({"papel":"usuario","mensagem": prompt.mensagem})
+    saida = simulador(prompt)
+    #chat-bot vai receber a mensagem atual e o historico de mensagens,apos isso ele salva a nova resposta e retora ela
+    historico.append({"papel":"chatbot","conteudo": saida.resposta})
+    return saida
