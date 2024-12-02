@@ -1,11 +1,13 @@
 from pydantic import BaseModel
 
 class promptrequest(BaseModel):
-    mensagem : str
-    parametros : dict
+    model : str
+    messages : list
+    max_tokens : int
+    temperature : float
 
 class promptresponse(BaseModel):
-    resposta : str
-    #ajudar no controle de quantas keys estao sendo usadas
-    keys_usadas : dict
+    message : dict
+    #para controle de tokens usados
+    usage : dict
 
