@@ -13,7 +13,7 @@ def simulador(obj : promptrequest):
 
 @app.post("/prompt")
 def prompt(prompt : promptrequest):
-    historico.append({"papel":"usuario","mensagem": prompt.mensagem})
+    historico.append({"role":"usuario","content": prompt.mensagem})
     saida = simulador(prompt)
     #chat-bot vai receber a mensagem atual e o historico de mensagens,apos isso ele salva a nova resposta e retora ela
     historico.append({"papel":"chatbot","conteudo": saida.resposta})
