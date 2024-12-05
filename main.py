@@ -1,22 +1,27 @@
 from fastapi import FastAPI
-from schemas import promptrequest,promptresponse
+import openai
 
 app = FastAPI()
-# colocar essa mensagem como primeira interação({"role": "system", "content": "Você é um assistente útil."})
-historico = []
+# essa primeira mensagem é tipo uma instruçao para a ia
+historico = [{"role": "system", "content": "Você é um assistente útil."}]
 
-#url para chat interativo(https://api.openai.com/v1/chat/completions)
-
-def simulador(obj : promptrequest):
-    tam = len(obj.mensagem)
-    response = "aqui esta a reposta"
-    tam1 = len(response)
-    return promptresponse(resposta=response,keys_usadas={"keys_resposta":tam1,"key_pergunta": tam})
+# Sua chave de API da OpenAI
+openai.api_key = ""
 
 @app.post("/prompt")
-def prompt(prompt : promptrequest):
-    historico.append({"role":"user","content": prompt.mensagem})
-    saida = simulador(prompt)
-    #chat-bot vai receber a mensagem atual e o historico de mensagens,apos isso ele salva a nova resposta e retora ela
-    historico.append({"role":"assistant","content": saida.resposta})
-    return saida
+def prompt(prompt : str):
+    historico.append({"role":"user","content": prompt})
+    try:
+        response = openai.chat.completions.create(
+                model="gpt-4",
+                messages=historico,
+                max_tokens=20,
+                temperature=0.7
+            )
+        
+        resposta_ia = response.choices[0].message.content
+        historico.append({"role": "assistant", "content": resposta_ia})
+        #printando o historico por enquanto para visualizar no /docs
+        return historico
+    except Exception as e:
+        return {"error": str(e)}
