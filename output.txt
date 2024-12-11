@@ -1,0 +1,68 @@
+Nome: Paço do Frevo
+Categoria: Art Museum
+Endereço: Praça do Arsenal da Marinha, S/N (Rua do Apolo), Recife, PE, 50030-360
+Distância: 1346 metros
+Status: LikelyOpen
+
+
+Nome: Museu Cais do Sertão
+Categoria: Art Museum
+Endereço: Avenida Alfredo Lisboa, S/N, Recife, PE, 50030-150
+Distância: 1382 metros
+Status: LikelyOpen
+
+
+Nome: Caixa Cultural
+Categoria: Art Museum
+Endereço: Avenida Alfredo Lisboa, 505, Recife, PE, 50030-150
+Distância: 1444 metros
+Status: LikelyOpen
+
+
+Nome: Praça do Marco Zero
+Categoria: Historic and Protected Site
+Endereço: Praça do Marco Zero, Recife, PE, 50010-470
+Distância: 1521 metros
+Status: LikelyOpen
+
+
+Nome: Entre Amigos o Bode
+Categoria: Northeastern Brazilian Restaurant
+Endereço: Rua da Hora, 695 (R. Venezuela), Recife, PE, 52020-010
+Distância: 1683 metros
+Status: LikelyOpen
+
+
+Nome: Casa dos Frios
+Categoria: Bakery
+Endereço: Avenida Rui Barbosa, 412, Recife, PE, 52011-040
+Distância: 2051 metros
+Status: Unsure
+
+
+Nome: Cinema da Fundação
+Categoria: Indie Movie Theater
+Endereço: Rua Henrique Dias, 609 (R. Jener de Souza), Recife, PE, 52010-100
+Distância: 2109 metros
+Status: LikelyOpen
+
+
+Nome: Sport Club do Recife - Estádio Adelmar da Costa Carvalho SN - Ilha do Retiro
+Categoria: Stadium
+Endereço: Avenida Sport Club do Recife S/N - Ilha do Retiro, Recife, PE, 50720-705
+Distância: 2629 metros
+Status: LikelyOpen
+
+
+Nome: Reteteu Comida Honesta
+Categoria: Deli
+Endereço: Rua Professor Otavio de Freitas, 256 (R. Dr. José Higino Ribeiro Campos), Recife, PE, 52041-120
+Distância: 2601 metros
+Status: LikelyOpen
+
+
+Nome: Taberna Japonesa Quina do Futuro
+Categoria: Sushi Restaurant
+Endereço: Rua Xavier Marques, 134, Recife, PE, 52050-230
+Distância: 2729 metros
+Status: LikelyOpen
