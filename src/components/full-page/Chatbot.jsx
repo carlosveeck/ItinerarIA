@@ -18,9 +18,6 @@ const PromptScreen = () => {
                 <div className="p-10 h-0 flex justify-center items-center">
                     <ItinerarIABreadcrumb />
                 </div>
-                <div className="p-5 pt-0">
-                    <hr className="border-gray-500" />
-                </div>
             </div>
 
             {/* Main Content */}
