@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+import json
 
 app = FastAPI()
 
@@ -17,6 +18,7 @@ app.add_middleware(
 )
 
 class Request(BaseModel):
+    username: str
     user_input: str
 
 @app.get("/")
@@ -33,4 +35,5 @@ async def place_input(user_input: str):
 
 @app.post("/input_pydantic")
 async def place_input(user: Request):
-    return{"message": f"user input posted successfully: {user.user_input}"}
+    value = {"message": f"user input posted successfully: {user.user_input}. Hello, {user.username}!"}
+    return json.dumps(value)

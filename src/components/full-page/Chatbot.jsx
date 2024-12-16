@@ -1,13 +1,34 @@
 import React, { useState } from "react";
 import ItinerarIABreadcrumb from "../handmade-UI/itinerariaBreadcrumb";
 
+async function send_msg(msg){
+    const response = await fetch(`http://127.0.0.1:8000/input_pydantic`, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(msg),
+    })
+
+    const reply = await response.text()
+    console.log(response)
+    console.log(reply)
+    return reply;
+}
+
 const PromptScreen = () => {
     const [input, setInput] = useState("");
 
     const handleSubmit = () => {
         if (input.trim()) {
-            console.log("User Input:", input);
+            console.log("User Input:", input)
             setInput("");
+            send_msg({username: "Verne", user_input: input}).then(function(reply){
+                let rep2 = JSON.parse(JSON.parse(reply))
+                let resposta = document.getElementById("answer")
+                console.log(rep2)
+                resposta.innerHTML = rep2["message"]
+            })
         }
     };
 
@@ -42,6 +63,7 @@ const PromptScreen = () => {
                             &gt;
                         </button>
                     </div>
+                    <p id="answer"> teste </p>
                 </div>
             </div>
         </div>
