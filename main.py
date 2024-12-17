@@ -1,63 +1,36 @@
 from fastapi import FastAPI
 import openai
-import requests
-from urllib.parse import quote
 import json
 
 app = FastAPI()
 
 historico = [
-    {"role": "system", "content": "Você é um assistente útil."},
-    {"role": "system", "content": "Você deve fazer um itinerario personalizado usando os dasos enviados pelo sistema"},
-    {"role": "system", "content": "Você deve gerar uma resposta em string no formato json,mas sem quebra de linhas,para ser transformado em um objeto python,se os dados enviados a voce estiverem como N/A complemente eles com seus dados"},
-    {"role": "system", "content": "Você deve considerar as distâncias entre os locais e fornecer um horário ideal para a visita a cada local, garantindo que o usuário consiga visitar todos os pontos de forma eficiente."}
+    {"role": "system", "content": "Você é um assistente útil e deve fornecer todas as respostas completamente em português (pt-BR)."},
+    {"role": "system", "content": "O objetivo é sugerir os 3 pontos turísticos mais relevantes para o itinerário, considerando sua importância histórica e cultural,se o cliente mandar alguma especificação siga elas. sem caracteres invalidos ou quebras de linha na resposta"},
+    {"role": "system", "content": "Você deve gerar a resposta no formato JSON com o padrão 'itinerario:[]', sem quebras de linha, para ser transformada em um objeto Python. Se algum dado estiver ausente ou como 'N/A', preencha com informações adequadas, mantendo o formato correto."},
+    {"role": "system", "content": "Além disso, leve em consideração as distâncias entre os locais para garantir que o usuário consiga visitar todos os pontos de forma eficiente, estabelecendo horários ideais de visitação. Organize o itinerário por dia, começando sempre pelo ponto mais relevante e acessível."},
+    {
+    "role": "system", 
+    "content": "Ao reportar os dados dos locais turísticos, você deve estruturá-los da seguinte forma: cada local deve ser representado por um objeto com as seguintes chaves: 'Nome', 'descrição', 'categoria', 'endereço', 'horario', 'horario_recomendado_visita', 'instagram','site' e 'telefone'"}
 ]
 
 openai.api_key = ""
 
 @app.post("/prompt")
 def prompt(prompt : str):
-
-    cidade_codificada = quote(prompt)
-    url = f"https://api.foursquare.com/v3/places/search?near={cidade_codificada}"
-    headers = {
-    "accept": "application/json",
-    "Authorization": "fsq3yswsYdZ6FnzhCUpBqWcj9IWgCF9f5q9NTKa9B+F3y3E="
-    }
-    request = requests.get(url,headers=headers)
-    resposta_dict = request.json()
-    data = []
-    for local in resposta_dict["results"]:
-        nome = local.get("name")
-        categoria = local.get("categories",[{}])[0].get("name","N/A")
-        endereço = local.get("location",{}).get("formatted_address","N/A")
-        horario = local.get("hours",{}).get("display","N/A")
-        instagram = local.get("social_media",{}).get("instagram","N/A")
-        telefone = local.get("tel","N/A")
-        obj = {
-            "Nome": nome,
-            "descrição": "N/A", 
-            "categoria" : categoria, 
-            "endereço" : endereço, 
-            "horario": horario, 
-            "horario_recomendado_visita" : "N/A" ,
-            "instagram" : instagram, 
-            "telefone" : telefone}
-        data.append(obj)
-    historico.append({"role": "system", "content": f"Dados externos{data}"})
-
-
+    historico.append({"role": "user","content": prompt})
     try:
         response = openai.chat.completions.create(
-                model="gpt-4",
+                model="gpt-4o-mini",
                 messages=historico,
-                max_tokens=2000,
+                max_tokens=6000,
                 temperature=0.7
             )
         
         resposta_ia = response.choices[0].message.content
+        historico.pop() #para as requisicoes antigas nao ficarem no historico
         dict_resposta = json.loads(resposta_ia)
-        historico.append({"role": "assistant", "content": dict_resposta})
-        return historico
+        #historico.append({"role": "assistant", "content": dict_resposta}) (por enquanto nao precisa disso)
+        return dict_resposta
     except Exception as e:
         return {"error": str(e)}
