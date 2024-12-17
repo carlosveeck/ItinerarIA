@@ -10,7 +10,8 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport,
 } from "../ui/navigation-menu";
-import ItinerarIABreadcrumb from "../handmade-UI/itinerariaBreadcrumb";
+// import ItinerarIABreadcrumb from "../handmade-UI/itinerariaBreadcrumb";
+import NoItineraryBreadcrumb from "../handmade-UI/noItineraryBreadcrumb";
 
 function LandingPage() {
 
@@ -23,7 +24,7 @@ function LandingPage() {
 
                 <div className="w-1/4 p-10 h-0 flex justify-center items-center">
 
-                    <ItinerarIABreadcrumb />
+                    <NoItineraryBreadcrumb />
 
                 </div>
 

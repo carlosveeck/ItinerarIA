@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import ItinerarIABreadcrumb from "../handmade-UI/itinerariaBreadcrumb";
+import { ArrowUp } from "lucide-react";
+// import ItinerarIABreadcrumb from "../handmade-UI/itinerariaBreadcrumb";
+import NoItineraryBreadcrumb from "../handmade-UI/noItineraryBreadcrumb";
 
 async function send_msg(msg){
     const response = await fetch(`http://127.0.0.1:8000/input_pydantic`, {
@@ -18,10 +20,12 @@ async function send_msg(msg){
 
 const PromptScreen = () => {
     const [input, setInput] = useState("");
+    const [response, setResponse] = useState("");
 
     const handleSubmit = () => {
         if (input.trim()) {
-            console.log("User Input:", input)
+            console.log("User Input:", input);
+            setResponse("Aqui será exibido o resultado do itinerário gerado pelo backend.");
             setInput("");
             send_msg({username: "Verne", user_input: input}).then(function(reply){
                 let rep2 = JSON.parse(JSON.parse(reply))
@@ -33,38 +37,54 @@ const PromptScreen = () => {
     };
 
     return (
-        <div className="h-screen w-screen flex justify-between bg-zinc-800">
+        <div className="h-screen w-screen flex bg-zinc-800">
+
             {/* Sidebar */}
-            <div className="w-1/4 h-full">
-                <div className="p-10 h-0 flex justify-center items-center">
-                    <ItinerarIABreadcrumb />
-                </div>
+            <div className="w-1/4 p-10 h-0 flex justify-center items-center">
+
+                    <NoItineraryBreadcrumb />
+
             </div>
 
             {/* Main Content */}
-            <div className="w-3/4 h-full flex flex-col justify-center items-center">
-                <h2 className="mb-10 text-white text-xl">ItinerarIA</h2>
+            <div className="w-3/4 max-w-full h-full max-h-full flex flex-col items-center">
 
-                {/* Prompt Input */}
-                <div className="w-1/2">
-                    <div className="flex border rounded-xl bg-neutral-600 items-center">
-                        <input
-                            className="w-full p-3 bg-transparent text-white focus:outline-none"
-                            type="text"
-                            placeholder="Digite seu comando aqui..."
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            onKeyPress={(e) => e.key === "Enter" && handleSubmit()}
-                        />
-                        <button
-                            className="h-12 w-12 flex items-center justify-center text-white bg-indigo-700 rounded-r-xl"
-                            onClick={handleSubmit}
-                        >
-                            &gt;
-                        </button>
+                <h2 className="m-10 text-white text-xl">ItinerarIA</h2>
+
+                {/* Itinerary / Prompt Input */}
+                <div className="h-full max-h-full w-full max-w-full overflow-hidden flex flex-col justify-between">
+
+                    {/* Response Area */}
+                    <div className="max-h-full overflow-y-auto w-3/4 max-w-3/4 bg-neutral-700 p-6 rounded-xl shadow-lg self-center">
+                        <p className="text-white text-lg text-center">
+                            {response || "Aguardando o resultado do itinerário..."}
+                        </p>
+                    </div>
+
+                    {/* Prompt Input */}
+                    <div className="h-12 w-1/2 m-10 justify-self-end self-center">
+
+                        <div className="h-full flex rounded-xl bg-neutral-600 items-center">
+                            <input
+                                className="pl-4 w-full p-3 bg-transparent text-white focus:outline-none selection:bg-green-input-mark"
+                                type="text"
+                                placeholder="Digite seu comando aqui..."
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                onKeyPress={(e) => e.key === "Enter" && handleSubmit()}
+                            />
+                            <button
+                                className="h-full w-16 flex items-center justify-center text-white rounded-r-xl"
+                                onClick={handleSubmit}
+                            >
+                                <ArrowUp color={input ? "rgb(255 255 255)" : "rgb(156 163 175)"} size={20} />
+                            </button>
+                        </div>
+
                     </div>
                     <p id="answer"> teste </p>
                 </div>
+
             </div>
         </div>
     );

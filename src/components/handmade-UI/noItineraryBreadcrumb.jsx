@@ -8,10 +8,11 @@ import {
   } from "@/components/ui/breadcrumb"
 
 import { Slash } from "lucide-react";
+
 import { useLocation } from "react-router-dom";
 
 
-function ItinerarIABreadcrumb() {
+function NoItineraryBreadcrumb() {
 
     const location = useLocation();
 
@@ -48,21 +49,6 @@ function ItinerarIABreadcrumb() {
                         </BreadcrumbLink>
                     </BreadcrumbItem>
 
-                    <BreadcrumbSeparator>
-                    <Slash className="text-gray-500"/>
-                    </BreadcrumbSeparator>
-
-                    <BreadcrumbItem>
-                        <BreadcrumbLink
-                            className={`
-                                ${location.pathname === "/Itinerary" ? "text-white pointer-events-none" : "text-gray-500 hover:text-white"}    
-                            `}
-                            href="/Itinerary"
-                        >
-                            Itinerary
-                        </BreadcrumbLink>
-                    </BreadcrumbItem>
-
                 </BreadcrumbList>
             </Breadcrumb>
             
@@ -71,4 +57,4 @@ function ItinerarIABreadcrumb() {
     );
 }
 
-export default ItinerarIABreadcrumb;
+export default NoItineraryBreadcrumb;
