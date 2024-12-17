@@ -31,7 +31,7 @@ const PromptScreen = () => {
                 let rep2 = JSON.parse(JSON.parse(reply))
                 let resposta = document.getElementById("answer")
                 console.log(rep2)
-                resposta.innerHTML = rep2["message"]
+                setResponse(rep2["message"])
             })
         }
     };
@@ -82,7 +82,6 @@ const PromptScreen = () => {
                         </div>
 
                     </div>
-                    <p id="answer"> teste </p>
                 </div>
 
             </div>
