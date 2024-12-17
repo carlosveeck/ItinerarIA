@@ -7,19 +7,9 @@ import {
     BreadcrumbSeparator,
   } from "@/components/ui/breadcrumb"
 
-import { Home, Slash } from "lucide-react";
-
+import { Slash } from "lucide-react";
 import { useLocation } from "react-router-dom";
 
-function CurrentPath() {
-  const location = useLocation();
-
-  return (
-    <div>
-      <p>O caminho atual é: {location.pathname}</p>
-    </div>
-  );
-}
 
 function ItinerarIABreadcrumb() {
 
