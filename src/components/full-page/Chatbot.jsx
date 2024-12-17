@@ -21,7 +21,8 @@ async function send_msg(msg){
 const PromptScreen = () => {
     const [input, setInput] = useState("");
     const [response, setResponse] = useState("");
-
+    var x = ["ans1", "ans2"]
+    //const [response2, setResponse2] = useState("");
     const handleSubmit = () => {
         if (input.trim()) {
             console.log("User Input:", input);
@@ -29,9 +30,13 @@ const PromptScreen = () => {
             setInput("");
             send_msg({username: "Verne", user_input: input}).then(function(reply){
                 let rep2 = JSON.parse(JSON.parse(reply))
-                let resposta = document.getElementById("answer")
                 console.log(rep2)
-                setResponse(rep2["message"])
+                setResponse(rep2["messages"][0]["message"])
+                //setResponse2(rep2["messages"][1]["message"])
+                for(var i = 0; i < rep2["messages"].length; i++){
+                    var joba = document.getElementById(x[i]);
+                    joba.innerHTML = rep2["messages"][i]["message"]
+                }
             })
         }
     };
@@ -58,6 +63,15 @@ const PromptScreen = () => {
                     <div className="max-h-full overflow-y-auto w-3/4 max-w-3/4 bg-neutral-700 p-6 rounded-xl shadow-lg self-center">
                         <p className="text-white text-lg text-center">
                             {response || "Aguardando o resultado do itinerário..."}
+                        </p>
+                        <p id="ans1" className="text-white text-lg text-center">
+                            
+                        </p>
+                        <p id="ans2" className="text-white text-lg text-center">
+                            
+                        </p>
+                        <p id="ans3" className="text-white text-lg text-center">
+                            
                         </p>
                     </div>
 
