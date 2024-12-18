@@ -24,23 +24,23 @@ const PromptScreen = () => {
 
     const [AI_responses, setAI_responses] = useState([])
 
-    var bound = 5;
-
     const handleSubmit = () => {
 
         setAI_responses([]);
 
         if (input.trim()) {
+
             console.log("User Input:", input);
             setResponse("Gerando itinerário...");
             setInput("");
+
             send_msg({username: "Verne", user_input: input}).then(function(reply){
-                let rep2 = JSON.parse(JSON.parse(JSON.parse(reply)))
-                console.log(rep2)
-                setResponse("Itinerário:")
-                if(rep2["itinerario"].length < bound){
-                    bound = rep2["itinerario"].length
-                }
+
+                let rep2 = JSON.parse(JSON.parse(JSON.parse(reply)));
+
+                console.log(rep2);
+
+                setResponse("Itinerário:");
 
                 const newResponses = rep2["itinerario"].map((item) => ({
                     name: item["Nome"],
@@ -88,12 +88,12 @@ const PromptScreen = () => {
                         { response ? <div className="p-10"> <hr className="border-gray-500"/> </div> : <></> }
 
                         {/* div that contain the Responses */}
-                        <div className="flex justify-between">
+                        <div className="grid grid-cols-3">
 
                             {/* Rendering the AI Response */}
                             {AI_responses.map((elemento, index) => (
 
-                                <div key={index} className="m-3 rounded-xl bg-neutral-600 p-6 shadow-lg flex flex-col">
+                                <div key={index} className="m-3 rounded-xl bg-neutral-600 p-8 shadow-lg flex flex-col">
 
                                     <p className="text-white text-lg text-center font-bold drop-shadow-2xl">{elemento.name}</p>
 
