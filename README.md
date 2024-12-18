@@ -1,15 +1,35 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-=======
 # ItinerarIA
+![Logo](https://i.imgur.com/2TeXYsO.png)
 
 Projeto feito para a disciplina de Desenvolvimento de Software pela equipe 4.
+
+## Frameworks
+
+Segue a documentação dos frameworks e bibliotecas utilizados para o projeto, necessárias para utilização do MVP.
+
+- [Vite](https://vite.dev/guide/) -> Usado para visualizar e editar o site em tempo real remotamente
+```
+npm install -D vite
+```
+- [React/JSX](https://react.dev/reference/react) -> A base do nosso front-end, permitindo melhor integração entre javascript e html
+
+- [TailwindCSS](https://tailwindcss.com/docs/installation) -> Integra o CSS ao jsx, simplificando o código e a leitura
+```
+npm install -D tailwindcss
+```
+- [FastAPI](https://fastapi.tiangolo.com/reference/) -> Permite a criação de nossa API própria
+```
+pip install "fastapi[standard]"
+```
+- [Uvicorn](https://www.uvicorn.org/) -> Cria um ambiente virtual onde nossa API consegue receber requests
+```
+pip install uvicorn
+```
+OBS: Uvicorn pode já vir instalado quando baixar a FastAPI
+- [OpenAI API](https://platform.openai.com/docs/overview) -> A base da nossa api. Utilizamos o GPT 4o-Mini para selecionar lugares turísticos customizados para o usuário.
+```
+pip install openai
+```
 
 ## Como usar
 
