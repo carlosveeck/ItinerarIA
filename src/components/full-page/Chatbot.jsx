@@ -21,14 +21,18 @@ async function send_msg(msg){
 const PromptScreen = () => {
     const [input, setInput] = useState("");
     const [response, setResponse] = useState("");
-    var x = ["ans1", "ans2", "ans3", "ans4", "ans5"]
-    var y = ["desc1", "desc2", "desc3", "desc4", "desc5"]
-    var z = ["hora1", "hora2", "hora3", "hora4", "hora5"]
+
+    const [AI_responses, setAI_responses] = useState([])
+
     var bound = 5;
+
     const handleSubmit = () => {
+
+        setAI_responses([]);
+
         if (input.trim()) {
             console.log("User Input:", input);
-            setResponse("Aqui será exibido o resultado do itinerário gerado pelo backend.");
+            setResponse("Gerando itinerário...");
             setInput("");
             send_msg({username: "Verne", user_input: input}).then(function(reply){
                 let rep2 = JSON.parse(JSON.parse(JSON.parse(reply)))
@@ -37,14 +41,14 @@ const PromptScreen = () => {
                 if(rep2["itinerario"].length < bound){
                     bound = rep2["itinerario"].length
                 }
-                for(var i = 0; i < bound; i++){
-                    var nome = document.getElementById(x[i]);
-                    var desc = document.getElementById(y[i]);
-                    var horario = document.getElementById(z[i]);
-                    nome.innerHTML = rep2["itinerario"][i]["Nome"]
-                    desc.innerHTML = rep2["itinerario"][i]["descricao"]
-                    horario.innerHTML = rep2["itinerario"][i]["horario_recomendado_visita"]
-                }
+
+                const newResponses = rep2["itinerario"].map((item) => ({
+                    name: item["Nome"],
+                    desc: item["descricao"],
+                    time: item["horario_recomendado_visita"],
+                }));
+
+                setAI_responses(newResponses);
             })
         }
     };
@@ -53,9 +57,15 @@ const PromptScreen = () => {
         <div className="h-screen w-screen flex bg-zinc-800">
 
             {/* Sidebar */}
-            <div className="w-1/4 p-10 h-0 flex justify-center items-center">
+            <div className="w-1/4 h-full">
+
+                <div className="p-10 h-0 flex justify-center items-center">
 
                     <NoItineraryBreadcrumb />
+
+                </div>
+
+                <div className="p-5 pt-0"> <hr className="border-gray-500"/> </div>
 
             </div>
 
@@ -68,25 +78,38 @@ const PromptScreen = () => {
                 <div className="h-full max-h-full w-full max-w-full overflow-hidden flex flex-col justify-between">
 
                     {/* Response Area */}
-                    <div className="max-h-full overflow-y-auto w-3/4 max-w-3/4 bg-neutral-700 p-6 rounded-xl shadow-lg self-center">
-                        <p className="text-white text-lg text-center">
-                            {response || "Aguardando o resultado do itinerário..."}
+                    <div className="max-h-full overflow-y-auto w-3/4 max-w-3/4 bg-neutral-700 p-10 rounded-xl shadow-lg self-center">
+
+                        <p className="p-0 text-white text-lg text-center">
+                            {response || "Digite o nome de uma cidade para gerarmos um itinerário"}
                         </p>
-                        <p id="ans1" className="text-white text-lg text-center font-bold"> </p>
-                        <p id="desc1" className="text-white"></p>
-                        <p id="hora1" className="text-white pt-3"></p>
-                        <p id="ans2" className="text-white text-lg text-center font-bold"> </p>
-                        <p id="desc2" className="text-white"></p>
-                        <p id="hora2" className="text-white pt-3"></p>
-                        <p id="ans3" className="text-white text-lg text-center font-bold"> </p>
-                        <p id="desc3" className="text-white"></p>
-                        <p id="hora3" className="text-white pt-3"></p>
-                        <p id="ans4" className="text-white text-lg text-center font-bold"> </p>
-                        <p id="desc4" className="text-white"></p>
-                        <p id="hora4" className="text-white pt-3"></p>
-                        <p id="ans5" className="text-white text-lg text-center font-bold"> </p>
-                        <p id="desc5" className="text-white"></p>
-                        <p id="hora5" className="text-white pt-3"></p>
+
+                        { /* Draw a line in case we received an input */ }
+                        { response ? <div className="p-10"> <hr className="border-gray-500"/> </div> : <></> }
+
+                        {/* div that contain the Responses */}
+                        <div className="flex justify-between">
+
+                            {/* Rendering the AI Response */}
+                            {AI_responses.map((elemento, index) => (
+
+                                <div key={index} className="m-3 rounded-xl bg-neutral-600 p-6 shadow-lg flex flex-col">
+
+                                    <p className="text-white text-lg text-center font-bold drop-shadow-2xl">{elemento.name}</p>
+
+                                    <div className="p-6"> <hr className="border-gray-300"/> </div>
+
+                                    <p className="text-white">{elemento.desc}</p>
+
+                                    <div className="p-6"> <hr className="border-gray-300"/> </div>
+
+                                    <p className="text-white">{elemento.time}</p>
+
+                                </div>
+                            ))}
+
+                        </div>                        
+
                     </div>
 
                     {/* Prompt Input */}
