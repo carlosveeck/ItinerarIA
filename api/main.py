@@ -9,6 +9,7 @@ app = FastAPI()
 
 origins = [
     "http://localhost:5173",
+    "itinerar-ia-git-vercel-test-carlosveecks-projects.vercel.app",
 ]
 
 app.add_middleware(
