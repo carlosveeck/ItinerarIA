@@ -4,7 +4,7 @@ import { ArrowUp } from "lucide-react";
 import NoItineraryBreadcrumb from "../handmade-UI/noItineraryBreadcrumb";
 
 async function send_msg(msg){
-    const response = await fetch(`http://127.0.0.1:8000/input_pydantic`, {
+    const response = await fetch(`http://127.0.0.1:8000/prompt`, {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
@@ -21,21 +21,29 @@ async function send_msg(msg){
 const PromptScreen = () => {
     const [input, setInput] = useState("");
     const [response, setResponse] = useState("");
-    var x = ["ans1", "ans2"]
-    //const [response2, setResponse2] = useState("");
+    var x = ["ans1", "ans2", "ans3", "ans4", "ans5"]
+    var y = ["desc1", "desc2", "desc3", "desc4", "desc5"]
+    var z = ["hora1", "hora2", "hora3", "hora4", "hora5"]
+    var bound = 5;
     const handleSubmit = () => {
         if (input.trim()) {
             console.log("User Input:", input);
             setResponse("Aqui será exibido o resultado do itinerário gerado pelo backend.");
             setInput("");
             send_msg({username: "Verne", user_input: input}).then(function(reply){
-                let rep2 = JSON.parse(JSON.parse(reply))
+                let rep2 = JSON.parse(JSON.parse(JSON.parse(reply)))
                 console.log(rep2)
-                setResponse(rep2["messages"][0]["message"])
-                //setResponse2(rep2["messages"][1]["message"])
-                for(var i = 0; i < rep2["messages"].length; i++){
-                    var joba = document.getElementById(x[i]);
-                    joba.innerHTML = rep2["messages"][i]["message"]
+                setResponse("Itinerário:")
+                if(rep2["itinerario"].length < bound){
+                    bound = rep2["itinerario"].length
+                }
+                for(var i = 0; i < bound; i++){
+                    var nome = document.getElementById(x[i]);
+                    var desc = document.getElementById(y[i]);
+                    var horario = document.getElementById(z[i]);
+                    nome.innerHTML = rep2["itinerario"][i]["Nome"]
+                    desc.innerHTML = rep2["itinerario"][i]["descricao"]
+                    horario.innerHTML = rep2["itinerario"][i]["horario_recomendado_visita"]
                 }
             })
         }
@@ -64,15 +72,21 @@ const PromptScreen = () => {
                         <p className="text-white text-lg text-center">
                             {response || "Aguardando o resultado do itinerário..."}
                         </p>
-                        <p id="ans1" className="text-white text-lg text-center">
-                            
-                        </p>
-                        <p id="ans2" className="text-white text-lg text-center">
-                            
-                        </p>
-                        <p id="ans3" className="text-white text-lg text-center">
-                            
-                        </p>
+                        <p id="ans1" className="text-white text-lg text-center"> </p>
+                        <p id="desc1"></p>
+                        <p id="hora1"></p>
+                        <p id="ans2" className="text-white text-lg text-center"> </p>
+                        <p id="desc2"></p>
+                        <p id="hora2"></p>
+                        <p id="ans3" className="text-white text-lg text-center"> </p>
+                        <p id="desc3"></p>
+                        <p id="hora3"></p>
+                        <p id="ans4" className="text-white text-lg text-center"> </p>
+                        <p id="desc4"></p>
+                        <p id="hora4"></p>
+                        <p id="ans5" className="text-white text-lg text-center"> </p>
+                        <p id="desc5"></p>
+                        <p id="hora5"></p>
                     </div>
 
                     {/* Prompt Input */}
