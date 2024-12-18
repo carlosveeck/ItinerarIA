@@ -7,7 +7,8 @@ import json
 app = FastAPI()
 
 origins = [
-    "http://localhost:5173",
+    "https://itinerar-ia.vercel.app/"
+    "http://localhost:5173", 
 ]
 
 app.add_middleware(
