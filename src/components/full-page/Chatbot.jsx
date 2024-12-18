@@ -72,21 +72,21 @@ const PromptScreen = () => {
                         <p className="text-white text-lg text-center">
                             {response || "Aguardando o resultado do itinerário..."}
                         </p>
-                        <p id="ans1" className="text-white text-lg text-center"> </p>
-                        <p id="desc1"></p>
-                        <p id="hora1"></p>
-                        <p id="ans2" className="text-white text-lg text-center"> </p>
-                        <p id="desc2"></p>
-                        <p id="hora2"></p>
-                        <p id="ans3" className="text-white text-lg text-center"> </p>
-                        <p id="desc3"></p>
-                        <p id="hora3"></p>
-                        <p id="ans4" className="text-white text-lg text-center"> </p>
-                        <p id="desc4"></p>
-                        <p id="hora4"></p>
-                        <p id="ans5" className="text-white text-lg text-center"> </p>
-                        <p id="desc5"></p>
-                        <p id="hora5"></p>
+                        <p id="ans1" className="text-white text-lg text-center font-bold"> </p>
+                        <p id="desc1" className="text-white"></p>
+                        <p id="hora1" className="text-white pt-3"></p>
+                        <p id="ans2" className="text-white text-lg text-center font-bold"> </p>
+                        <p id="desc2" className="text-white"></p>
+                        <p id="hora2" className="text-white pt-3"></p>
+                        <p id="ans3" className="text-white text-lg text-center font-bold"> </p>
+                        <p id="desc3" className="text-white"></p>
+                        <p id="hora3" className="text-white pt-3"></p>
+                        <p id="ans4" className="text-white text-lg text-center font-bold"> </p>
+                        <p id="desc4" className="text-white"></p>
+                        <p id="hora4" className="text-white pt-3"></p>
+                        <p id="ans5" className="text-white text-lg text-center font-bold"> </p>
+                        <p id="desc5" className="text-white"></p>
+                        <p id="hora5" className="text-white pt-3"></p>
                     </div>
 
                     {/* Prompt Input */}
