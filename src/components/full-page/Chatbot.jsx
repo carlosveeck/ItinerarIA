@@ -65,7 +65,6 @@ const PromptScreen = () => {
 
                 </div>
 
-                <div className="p-5 pt-0"> <hr className="border-gray-500"/> </div>
 
             </div>
 
