@@ -8,7 +8,6 @@ class Usuario(Base):
     __tablename__ = "user"
     id = Column(Integer,primary_key=True,autoincrement=True,)
     nome = Column(String,nullable=False,unique=True)
-    email = Column(String,nullable=False)
     senha = Column(String,nullable=False)
     detalhes_id = Column(Integer,ForeignKey("detalhes.id"))
     Itinerarios_id = Column(Integer,ForeignKey("itinerarios.id"))
@@ -16,9 +15,8 @@ class Usuario(Base):
     relacao_detalhes = relationship("Detalhes",back_populates="relacao_usuario")
     relacao_itinerario = relationship("Itinerarios",back_populates="relacao_usuario")
 
-    def __init__(self,nome,email,it,det,senha):
+    def __init__(self,nome,it,det,senha):
         self.nome = nome
-        self.email = email
         self.Itinerarios_t = it
         self.detalhes_id = det
         self.senha = criar_hash_senha(senha)

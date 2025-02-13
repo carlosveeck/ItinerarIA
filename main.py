@@ -5,14 +5,14 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 import datetime
 
-from database import login_aux
+from database import login_aux,criar_usuario
 
 SECRET_KEY = "voce nao esta vendo isso"
 ALGORITHM = "HS256"
 
 # Criando o esquema OAuth2
 #OAuth2PasswordBearer: Uma forma de extrair tokens de uma requisição HTTP, normalmente usada para autenticação com OAuth2 e JWT.
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 app = FastAPI()
 
@@ -46,14 +46,20 @@ def verificar_jwt(token: str = Depends(oauth2_scheme)):
     except JWTError:
         raise HTTPException(status_code=401, detail="Token inválido ou expirado")
 
-@app.post("/token")
+@app.post("/register")
+def register(usuario:str,senha:str):
+    if(criar_usuario(usuario,senha)):
+        return {"validado":"valido"}
+    else:
+        raise HTTPException(status_code=400, detail="Usuario ou senha inválido")
+
+@app.post("/login")
 def login(usuario:str,senha:str):
     if(login_aux(usuario,senha)):
         token = criar_jwt(usuario)
         return {"access_token": token, "token_type": "bearer"}
     else:
         raise HTTPException(status_code=400, detail="Credenciais inválidas")
-
 
 @app.post("/prompt")
 def prompt(prompt : str):
@@ -64,8 +70,7 @@ def prompt(prompt : str):
                 messages=historico,
                 max_tokens=6000,
                 temperature=0.7
-            )
-        
+            )   
         resposta_ia = response.choices[0].message.content
         historico.pop() #para as requisicoes antigas nao ficarem no historico
         dict_resposta = json.loads(resposta_ia)
@@ -73,3 +78,4 @@ def prompt(prompt : str):
         return dict_resposta
     except Exception as e:
         return {"error": str(e)}
+
