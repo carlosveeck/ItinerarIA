@@ -1,6 +1,18 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,Depends,HTTPException
 import openai
 import json
+from fastapi.security import OAuth2PasswordBearer
+from jose import jwt, JWTError
+import datetime
+
+from database import login_aux
+
+SECRET_KEY = "voce nao esta vendo isso"
+ALGORITHM = "HS256"
+
+# Criando o esquema OAuth2
+#OAuth2PasswordBearer: Uma forma de extrair tokens de uma requisição HTTP, normalmente usada para autenticação com OAuth2 e JWT.
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 app = FastAPI()
 
@@ -15,6 +27,33 @@ historico = [
 ]
 
 openai.api_key = ""
+
+def criar_jwt(username: str):
+    payload = {
+        "sub": username,
+        "exp": datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=1)
+    }
+    token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
+    return token
+
+def verificar_jwt(token: str = Depends(oauth2_scheme)):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username = payload.get("sub")
+        if username is None:
+            raise HTTPException(status_code=401, detail="Token inválido")
+        return username
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Token inválido ou expirado")
+
+@app.post("/token")
+def login(usuario:str,senha:str):
+    if(login_aux(usuario,senha)):
+        token = criar_jwt(usuario)
+        return {"access_token": token, "token_type": "bearer"}
+    else:
+        raise HTTPException(status_code=400, detail="Credenciais inválidas")
+
 
 @app.post("/prompt")
 def prompt(prompt : str):
