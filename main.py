@@ -1,11 +1,11 @@
-from fastapi import FastAPI,Depends,HTTPException
+from fastapi import FastAPI,Depends,HTTPException,Body
 import openai
 import json
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 import datetime
 
-from database import login_aux,criar_usuario
+from database import login_aux,criar_usuario,att_preferencias,pegar_preferencias,salvar_itinerario,pegar_itinerario,pegar_ultimo_itinerario,salvar_ultimo_itinerario
 
 SECRET_KEY = "voce nao esta vendo isso"
 ALGORITHM = "HS256"
@@ -47,8 +47,9 @@ def verificar_jwt(token: str = Depends(oauth2_scheme)):
         raise HTTPException(status_code=401, detail="Token inválido ou expirado")
 
 @app.post("/register")
-def register(usuario:str,senha:str):
+def register(usuario:str,senha:str,preferencias:str):
     if(criar_usuario(usuario,senha)):
+        att_preferencias(usuario,preferencias)
         return {"validado":"valido"}
     else:
         raise HTTPException(status_code=400, detail="Usuario ou senha inválido")
@@ -62,7 +63,9 @@ def login(usuario:str,senha:str):
         raise HTTPException(status_code=400, detail="Credenciais inválidas")
 
 @app.post("/prompt")
-def prompt(prompt : str):
+def prompt(prompt : str,usuario :str = Depends(verificar_jwt)):
+    preferencias_usuario = pegar_preferencias(usuario)
+    historico.append({"role" : "user","content" : f"preferências do usuário :{preferencias_usuario}"})
     historico.append({"role": "user","content": prompt})
     try:
         response = openai.chat.completions.create(
@@ -74,8 +77,20 @@ def prompt(prompt : str):
         resposta_ia = response.choices[0].message.content
         historico.pop() #para as requisicoes antigas nao ficarem no historico
         dict_resposta = json.loads(resposta_ia)
-        #historico.append({"role": "assistant", "content": dict_resposta}) (por enquanto nao precisa disso)
+        salvar_itinerario(dict_resposta)
         return dict_resposta
     except Exception as e:
         return {"error": str(e)}
 
+@app.get("/reload")
+def recarregar_itinerario(usuario: str = Depends(verificar_jwt)):
+    return pegar_itinerario(usuario)
+
+@app.get("/last_itinerary")
+def ultimo_itinerario(usuario:str = Depends(verificar_jwt)):
+    return pegar_ultimo_itinerario(usuario)
+
+@app.post("/save")
+def salvar(itinerario:dict,usuario:str = Depends(verificar_jwt)):
+    salvar_ultimo_itinerario(usuario,itinerario)
+    return {"salvo": "salvo"}
