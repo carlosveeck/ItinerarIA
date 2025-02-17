@@ -5,13 +5,14 @@ from api import Request
 
 client = TestClient(app)
 
-"""This is an integration test class which verifies that
- the message storing and getting is working properly"""
-
-global message_counter
-
 class Tests:
     def test_init(self):
         response = client.get("/")
         assert response.status_code == 200
         assert response.json() == "OK"
+
+    def test_prompt(self):
+        send = {"username": "Joao", "user_input": "Olá!"}
+        response = client.post("/prompt", json=send)
+        assert response.status_code == 200
+        assert len(response.json()["itinerario"]) > 0
