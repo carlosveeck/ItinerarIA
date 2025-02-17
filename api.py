@@ -35,6 +35,10 @@ historico = [
 
 openai.api_key = ""
 
+@app.get("/")
+async def base():
+    return "OK"
+
 @app.post("/prompt")
 async def prompt(prompt : Request):
     historico.append({"role": "user","content": prompt.user_input})
