@@ -1,4 +1,4 @@
-.login-full-page {
+.signup-full-page {
     width: 100vw;
     height: 100vh;
 
@@ -9,7 +9,7 @@
     align-items: center;
 }
 
-.login-header {
+.signup-header {
     height: 80px;
     width: 100%;
 
@@ -31,7 +31,7 @@
 
     z-index: 10;
 }
-.login-header button {
+.signup-header button {
 
     background-color: transparent;
     color: var(--black);
@@ -41,11 +41,11 @@
     margin-left: 70px;
     transition: 0.3s;
 }
-.login-header button:hover {
+.signup-header button:hover {
     background-color: var(--light-gray);
 }
 
-.login-main-div {
+.signup-main-div {
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -60,7 +60,7 @@
     border-radius: 25px;
     box-shadow: 0 0 20px 0 var(--medium-gray);
 }
-.login-main-div h1 {
+.signup-main-div h1 {
     display: flex;
     align-items: center;
 
@@ -69,7 +69,7 @@
     font-family: poppins-semibold;
     color: var(--black);
 }
-.login-main-div hr {
+.signup-main-div hr {
 
     height: 1px;
     width: 60%;
@@ -78,7 +78,7 @@
     margin: 25px 0px 25px 0px;
 }
 
-.login-main-div-inputs {
+.signup-main-div-inputs {
     width: 60%;
 
     display: flex;
@@ -86,7 +86,7 @@
     justify-content: center;
     flex-direction: column;
 }
-.login-main-div-inputs input {
+.signup-main-div-inputs input {
     width: 100%;
 
     font-family: figtree-semibold;
@@ -94,19 +94,19 @@
     color: var(--black);
 
     padding: 15px;
-    margin: 12px;
+    margin: 6px;
 
     border: 1px solid var(--gray);
     border-radius: 10px;
 }
-.login-main-div-inputs input:focus {
+.signup-main-div-inputs input:focus {
     outline: none;
 }
-.login-main-div-inputs input::placeholder {
+.signup-main-div-inputs input::placeholder {
     color: var(--medium-dark-gray);
 }
 
-.login-password-container {
+.signup-password-container {
     position: relative;
 
     display: flex;
@@ -115,12 +115,25 @@
 
     width: 100%;
 }
-.login-password-container input {
-    padding-right: 50px;
-    margin: 0px;
+.signup-password-container input {
+    margin: 6px 0px;
 }
 
-.login-eye-button {
+.signup-password-container-wrong {
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+}
+.signup-password-container-wrong input {
+    border: 1px solid var(--red);
+    margin: 6px 0px;
+}
+
+.signup-eye-button {
     position: absolute;
 
     right: 10px;
@@ -136,11 +149,11 @@
 
     transition: 0.1s;
 }
-.login-eye-button:hover {
+.signup-eye-button:hover {
     color: var(--dark-gray);
 }
 
-.login-main-div-buttons {
+.signup-main-div-buttons {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -148,7 +161,7 @@
 
     width: 60%;
 }
-.login-main-div-buttons-normal {
+.signup-main-div-buttons-normal {
     width: 100%;
     margin-top: 30px;
     padding: 8px;
@@ -162,14 +175,14 @@
 
     transition: 0.3s;
 }
-.login-main-div-buttons-normal:hover {
+.signup-main-div-buttons-normal:hover {
 
     border: 2px solid var(--green);
     background-color: transparent;
     color: var(--green);
 }
 
-.login-main-div-buttons-special-button {
+.signup-main-div-buttons-special-button {
     margin-top: 15px;
     padding: 0px;
 
@@ -181,6 +194,6 @@
 
     transition: 0.1s;
 }
-.login-main-div-buttons-special-button:hover {
+.signup-main-div-buttons-special-button:hover {
     color: var(--medium-dark-gray);
 }

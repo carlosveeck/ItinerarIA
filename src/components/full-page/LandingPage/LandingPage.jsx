@@ -68,7 +68,7 @@ function LandingPage()
                         Entrar
                     </Button>
 
-                    <Button className="landing-page-header-getStarted-signup">
+                    <Button className="landing-page-header-getStarted-signup" onClick={() => navigate("/signup")}>
                         Cadastrar
                     </Button>
                 </div>
@@ -89,7 +89,7 @@ function LandingPage()
                     </p>
 
                     <div>
-                        <Button className="landing-page-intro-button-signup">
+                        <Button className="landing-page-intro-button-signup" onClick={() => navigate("/signup")}>
                             Começar
                         </Button>
 

@@ -15,38 +15,41 @@ function LoginPage() {
     };
 
     return (
-        <div className="full-page">
+        <div className="login-full-page">
             <header className="login-header">
                 <Button onClick={() => navigate("/")}>
-                    <ArrowLeft strokeWidth={3}/>
+                    <ArrowLeft strokeWidth={3}/> Home
                 </Button>
             </header>
 
-            <div className="main-div">
+            <div className="login-main-div">
                 <h1>Entrar em ItinerarIA</h1>
 
                 <hr />
 
-                <div className="main-div-inputs">
+                <div className="login-main-div-inputs">
                     <input type="text" placeholder="Usuário"/>
 
-                    <div className="password-container">
+                    <div className="login-password-container">
                         <input
                             type={mostrarSenha ? "text" : "password"}
                             placeholder="Senha"
                         />
-                        <button onClick={toggleSenha} className="eye-button">
+                        <button onClick={toggleSenha} className="login-eye-button">
                             {mostrarSenha ? <Eye /> : <EyeOff />}
                         </button>
                     </div>
                 </div>
 
-                <div className="main-div-buttons">
-                    <button className="main-div-buttons-normal">
+                <div className="login-main-div-buttons">
+                    <button className="login-main-div-buttons-normal">
                         Entrar
                     </button>
 
-                    <button className="main-div-buttons-special-button">
+                    <button
+                        className="login-main-div-buttons-special-button"
+                        onClick={() => navigate("/signup")}    
+                    >
                         Criar nova conta
                     </button>
                 </div>
