@@ -116,6 +116,7 @@
     width: 100%;
 }
 .signup-password-container input {
+    padding-right: 50px;
     margin: 6px 0px;
 }
 
@@ -129,6 +130,7 @@
     width: 100%;
 }
 .signup-password-container-wrong input {
+    padding-right: 50px;
     border: 1px solid var(--red);
     margin: 6px 0px;
 }
