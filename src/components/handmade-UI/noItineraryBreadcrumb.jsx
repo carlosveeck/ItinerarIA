@@ -41,9 +41,9 @@ function NoItineraryBreadcrumb() {
                     <BreadcrumbItem>
                         <BreadcrumbLink
                             className={`
-                                ${location.pathname === "/Chatbot" ? "text-white pointer-events-none" : "text-gray-500 hover:text-white"}
+                                ${location.pathname === "/chatbot" ? "text-white pointer-events-none" : "text-gray-500 hover:text-white"}
                             `}
-                            href="/Chatbot"
+                            href="/chatbot"
                         >
                             Chat-bot
                         </BreadcrumbLink>
