@@ -20,6 +20,15 @@ def aux(senha):
     # [A-Za-z\d@$!%*?&]{8,} → No mínimo 8 caracteres de qualquer tipo permitido
     return bool(re.match(padrao, senha))
 
+def aux_user(usuario):
+    padrao = r'^[a-zA-Z0-9_]{3,}$'
+    return bool(re.fullmatch(padrao,usuario))
+
+def criar_nome(usuario):
+    if(aux_user(usuario)):
+        return usuario
+    raise ValueError("usuario inváido")
+
 def verificar_senha(senha_digitada,senha_hash):
     senha_bytes = senha_digitada.encode('utf-8')
     return bcrypt.checkpw(senha_bytes,senha_hash)

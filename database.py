@@ -5,6 +5,8 @@ from entities import Base,Usuario,Detalhes,Itinerarios
 from entiity_services import verificar_senha
 import json
 
+from entiity_services import criar_hash_senha,criar_nome,aux
+
 db = create_engine("sqlite:///dados.db")
 Session = sessionmaker(bind=db)
 Base.metadata.create_all(bind=db)
@@ -12,16 +14,17 @@ Base.metadata.create_all(bind=db)
 with Session() as session:
     def criar_usuario(nome,senha):
         try:
-            it = Itinerarios()
-            session.add(it)
-            session.commit()
-            det = Detalhes()
-            session.add(det)
-            session.commit()
-            novo = Usuario(nome,it.id,det.id,senha)
-            session.add(novo)
-            session.commit()
-            return True
+            if(aux(senha) and criar_nome(nome)):
+                it = Itinerarios()
+                session.add(it)
+                session.commit()
+                det = Detalhes()
+                session.add(det)
+                session.commit()
+                novo = Usuario(nome,it.id,det.id,senha)
+                session.add(novo)
+                session.commit()
+                return True
         except ValueError:
             session.rollback()
             return False
