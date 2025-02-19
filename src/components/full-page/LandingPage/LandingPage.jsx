@@ -56,7 +56,7 @@ function LandingPageMenu()
 
                 <hr />
 
-                <button onClick={ () => navigate("/chatbot") }>
+                <button onClick={ () => navigate("/itinerary") }>
                     <Map/> Itinerários
                 </button>
 
@@ -136,7 +136,7 @@ function LandingPage()
                         Home
                     </Button>
 
-                    <Button className="landing-page-header-button" onClick={() => navigate("/chatbot")}>
+                    <Button className="landing-page-header-button" onClick={() => navigate("/itinerary")}>
                         Itinerários
                     </Button>
 

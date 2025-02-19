@@ -51,7 +51,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-left: 20px;
+    margin: 10px 30px;
 
     font-family: figtree-semibold;
     color: var(--black);
@@ -71,8 +71,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-left: 20px;
-    margin: 10px;
+    margin: 10px 15px;
 
     font-family: figtree-semibold;
     color: var(--black);
