@@ -4,6 +4,7 @@ import json
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 import datetime
+from pydantic import BaseModel
 
 from database import login_aux,criar_usuario,att_preferencias,pegar_preferencias,salvar_itinerario,pegar_itinerario,pegar_ultimo_itinerario,salvar_ultimo_itinerario
 
@@ -28,6 +29,15 @@ historico = [
 
 openai.api_key = ""
 
+class RegisterRequest(BaseModel):
+    usuario: str
+    senha: str
+    preferencias: str
+
+class LoginRequest(BaseModel):
+    usuario: str
+    senha: str
+
 def criar_jwt(username: str):
     payload = {
         "sub": username,
@@ -47,17 +57,17 @@ def verificar_jwt(token: str = Depends(oauth2_scheme)):
         raise HTTPException(status_code=401, detail="Token inválido ou expirado")
 
 @app.post("/register")
-def register(usuario:str,senha:str,preferencias:str):
-    if(criar_usuario(usuario,senha)):
-        att_preferencias(usuario,preferencias)
+def register(data : RegisterRequest):
+    if(criar_usuario(data.usuario,data.senha)):
+        att_preferencias(data.usuario,data.preferencias)
         return {"validado":"valido"}
     else:
         raise HTTPException(status_code=400, detail="Usuario ou senha inválido")
 
 @app.post("/login")
-def login(usuario:str,senha:str):
-    if(login_aux(usuario,senha)):
-        token = criar_jwt(usuario)
+def login(data : LoginRequest):
+    if(login_aux(data.usuario,data.senha)):
+        token = criar_jwt(data.usuario)
         return {"access_token": token, "token_type": "bearer"}
     else:
         raise HTTPException(status_code=400, detail="Credenciais inválidas")
