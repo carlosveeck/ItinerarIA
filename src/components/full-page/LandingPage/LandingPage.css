@@ -11,7 +11,7 @@
 
 .menu-overlay {
     position: fixed;
-    top: 0;
+    top: 80px;
     left: 0;
 
     width: 100vw;
@@ -28,7 +28,7 @@
 .menu {
     position: fixed;
 
-    top: 0px;
+    top: 80px;
     right: 0px;
 
     background-color: white;
@@ -36,7 +36,7 @@
     border-bottom-left-radius: 25px;
 
     width: 350px;
-    height: 450px;
+    height: 370px;
 
     z-index: 100;
 
@@ -56,9 +56,27 @@
     font-family: figtree-semibold;
     color: var(--black);
 }
+.menu hr {
+
+    align-self: center;
+
+    height: 0.5px;
+    width: 60%;
+
+    background-color: var(--gray);
+    margin: 0px;
+}
 .menu button {
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 20px;
     margin: 10px;
-    font-family: poppins-semibold;
+
+    font-family: figtree-semibold;
+    color: var(--black);
+
     font-size: 15px;
     color: var(--black);
 

@@ -1,11 +1,27 @@
 import { useState, useEffect } from "react";
-import { ArrowRight, CircleUserIcon, Menu } from "lucide-react";
+import { ArrowRight, CircleUserIcon, LogOut, Map, Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../ui/button";
 
 import "./LandingPage.css";
 
 import { useAuth } from "@/context/AuthContext";
+
+function LogoutButton()
+{
+    const { logout } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate("/"); // Redireciona para login após logout
+    };
+
+    return (
+        <button onClick={ handleLogout }>
+            <LogOut/> Sair
+        </button>);
+}
 
 function NoUserButtons()
 {
@@ -27,6 +43,7 @@ function NoUserButtons()
 
 function LandingPageMenu()
 {
+    const navigate = useNavigate();
     const { user } = useAuth();
 
     return (
@@ -34,8 +51,16 @@ function LandingPageMenu()
             <div className="menu-overlay"/>
             <div className="menu">
                 <h1>
-                    <CircleUserIcon/> { user.user }
+                    <CircleUserIcon/> { user.username }
                 </h1>
+
+                <hr />
+
+                <button onClick={ () => navigate("/chatbot") }>
+                    <Map/> Itinerários
+                </button>
+
+                <LogoutButton/>
             </div>
         </>
     );
@@ -45,8 +70,8 @@ function UserIcon()
 {
     const { user } = useAuth();
 
-    const [showLogoutBox, setShowLogoutBox] = useState(false);
-    const toggleLogoutBox = () => setShowLogoutBox(!showLogoutBox);
+    const [showMenuBox, setShowMenuBox] = useState(false);
+    const toggleLogoutBox = () => setShowMenuBox(!showMenuBox);
     
 
     return (
@@ -56,7 +81,7 @@ function UserIcon()
                 <Menu style={{ width: "24px", height: "24px" }}/>
             </Button>
 
-            { showLogoutBox ? <LandingPageMenu/> : null }
+            { showMenuBox ? <LandingPageMenu/> : null }
 
         </div>
     );
@@ -112,10 +137,6 @@ function LandingPage()
                     </Button>
 
                     <Button className="landing-page-header-button" onClick={() => navigate("/chatbot")}>
-                        Chatbot
-                    </Button>
-
-                    <Button className="landing-page-header-button">
                         Itinerários
                     </Button>
 

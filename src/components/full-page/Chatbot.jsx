@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ArrowUp } from "lucide-react";
 // import ItinerarIABreadcrumb from "../handmade-UI/itinerariaBreadcrumb";
 import NoItineraryBreadcrumb from "../handmade-UI/noItineraryBreadcrumb";
@@ -24,11 +24,16 @@ const PromptScreen = () => {
 
     const navigate = useNavigate();
 
-    const { user, logout } = useAuth();
-    if (!user) {
-        navigate("/login"); // Se não estiver logado, redireciona para login
-        return null;
-    }
+    const { user } = useAuth();
+
+    useEffect(() => {
+        if (!user) {
+            navigate("/login");
+        }
+    }, [user, navigate]); // Apenas após a renderização inicial
+
+    // Se o usuário não estiver autenticado, evita renderizar o restante do componente
+    if (!user) return null;
 
     const [input, setInput] = useState("");
     const [response, setResponse] = useState("");
