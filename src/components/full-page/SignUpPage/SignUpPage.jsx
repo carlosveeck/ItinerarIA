@@ -5,6 +5,21 @@ import { useState } from "react";
 
 import "./SignUpPage.css"
 
+async function new_user(msg){
+    const response = await fetch(`http://127.0.0.1:8000/register`, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(msg),
+    })
+
+    const reply = await response.text()
+    console.log(response)
+    console.log(reply)
+    return reply;
+}
+
 function SignUpPage() {
 
     const navigate = useNavigate();
@@ -36,6 +51,16 @@ function SignUpPage() {
     };
     const senhaValida = validarSenha(senha0);
     const senhasIguais = senha0 === senha1;
+
+    const userSubmit = () => {
+
+        if (senhaValida && senhasIguais && user.trim() && preferencias.trim()) {
+            new_user({usuario: user, senha: senha0, preferencias: preferencias}).then(function(reply){
+                console.log(reply);
+                navigate("/chatbot")
+            })
+        }
+    };
 
     return (
         <div className="signup-full-page">
@@ -92,6 +117,7 @@ function SignUpPage() {
                 <div className="signup-main-div-buttons">
                     <button
                         className={(!senhaValida || !senhasIguais || user.length <= 0 || preferencias.length <= 0) ? "signup-main-div-buttons-disabled" : "signup-main-div-buttons-normal"}
+                        onClick={() => userSubmit()}
                     >
                         Cadastrar
                     </button>
