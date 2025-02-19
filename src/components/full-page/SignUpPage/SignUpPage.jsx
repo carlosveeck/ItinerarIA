@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
+import { useAuth } from "../../../context/AuthContext";
 import "./SignUpPage.css"
 
 async function new_user(msg){
@@ -23,7 +24,7 @@ async function new_user(msg){
 function SignUpPage() {
 
     const navigate = useNavigate();
-
+    const { login } = useAuth();
     const [mostrarSenha0, setMostrarSenha0] = useState(false);
     const toggleSenha0 = () => {
         setMostrarSenha0(!mostrarSenha0);
@@ -57,6 +58,8 @@ function SignUpPage() {
         if (senhaValida && senhasIguais && user.trim() && preferencias.trim()) {
             new_user({usuario: user, senha: senha0, preferencias: preferencias}).then(function(reply){
                 console.log(reply);
+                const userData = { user };
+                login(userData);
                 navigate("/chatbot")
             })
         }
