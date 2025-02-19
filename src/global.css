@@ -56,3 +56,8 @@
 
     --yellow: #ffc14a;
 }
+
+::selection {
+    color: white;
+    background-color: var(--purple);
+}
