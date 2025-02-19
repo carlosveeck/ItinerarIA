@@ -23,10 +23,12 @@ function SignUpPage() {
     const [user, setUser] = useState("");
     const [senha0, setSenha0] = useState("");
     const [senha1, setSenha1] = useState("");
+    const [preferencias, setPreferencias] = useState("");
 
     const handleChangeUser = (e) => setUser(e.target.value);
     const handleChangeSenha0 = (e) => setSenha0(e.target.value);
     const handleChangeSenha1 = (e) => setSenha1(e.target.value);
+    const handleChangePreferencias = (e) => setPreferencias(e.target.value);
 
     const validarSenha = (senha) => {
         const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -72,6 +74,8 @@ function SignUpPage() {
                             {mostrarSenha1 ? <Eye /> : <EyeOff />}
                         </button>
                     </div>
+
+                    <input type="text" placeholder="Preferências" onChange={handleChangePreferencias}/>
                 </div>
 
                 {/* mensagem de erro caso a senha0 não seja válida */}
@@ -87,7 +91,7 @@ function SignUpPage() {
 
                 <div className="signup-main-div-buttons">
                     <button
-                        className={(!senhaValida || !senhasIguais || user.length <= 0) ? "signup-main-div-buttons-disabled" : "signup-main-div-buttons-normal"}
+                        className={(!senhaValida || !senhasIguais || user.length <= 0 || preferencias.length <= 0) ? "signup-main-div-buttons-disabled" : "signup-main-div-buttons-normal"}
                     >
                         Cadastrar
                     </button>

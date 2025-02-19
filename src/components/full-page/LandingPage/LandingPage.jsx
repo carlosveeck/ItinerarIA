@@ -1,13 +1,72 @@
 import { useState, useEffect } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CircleUserIcon, Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../ui/button";
 
 import "./LandingPage.css";
 
+import { useAuth } from "@/context/AuthContext";
+
+function NoUserButtons()
+{
+    const navigate = useNavigate();
+
+    return (
+        <div className="landing-page-header-getStarted">
+
+            <Button className="landing-page-header-getStarted-login" onClick={() => navigate("/login")}>
+                Entrar
+            </Button>
+
+            <Button className="landing-page-header-getStarted-signup" onClick={() => navigate("/signup")}>
+                Cadastrar
+            </Button>
+        </div>
+    );
+}
+
+function LandingPageMenu()
+{
+    const { user } = useAuth();
+
+    return (
+        <>
+            <div className="menu-overlay"/>
+            <div className="menu">
+                <h1>
+                    <CircleUserIcon/> { user.user }
+                </h1>
+            </div>
+        </>
+    );
+}
+
+function UserIcon()
+{
+    const { user } = useAuth();
+
+    const [showLogoutBox, setShowLogoutBox] = useState(false);
+    const toggleLogoutBox = () => setShowLogoutBox(!showLogoutBox);
+    
+
+    return (
+        <div className="landing-page-header-getStarted">
+
+            <Button className="landing-page-header-getStarted-menu" onClick={toggleLogoutBox}>
+                <Menu style={{ width: "24px", height: "24px" }}/>
+            </Button>
+
+            { showLogoutBox ? <LandingPageMenu/> : null }
+
+        </div>
+    );
+}
+
 function LandingPage()
 {
     const navigate = useNavigate();
+
+    const { user } = useAuth();
 
     const [showHeader, setShowHeader] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
@@ -62,16 +121,7 @@ function LandingPage()
 
                 </div>
 
-                <div className="landing-page-header-getStarted">
-
-                    <Button className="landing-page-header-getStarted-login" onClick={() => navigate("/login")}>
-                        Entrar
-                    </Button>
-
-                    <Button className="landing-page-header-getStarted-signup" onClick={() => navigate("/signup")}>
-                        Cadastrar
-                    </Button>
-                </div>
+                {(user) ? <UserIcon/> : <NoUserButtons/> }
 
             </header>
 

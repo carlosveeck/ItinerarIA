@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { ArrowUp } from "lucide-react";
 // import ItinerarIABreadcrumb from "../handmade-UI/itinerariaBreadcrumb";
 import NoItineraryBreadcrumb from "../handmade-UI/noItineraryBreadcrumb";
+import { useAuth } from "@/context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 async function send_msg(msg){
     const response = await fetch(`http://127.0.0.1:8000/prompt`, {
@@ -19,10 +21,19 @@ async function send_msg(msg){
 }
 
 const PromptScreen = () => {
+
+    const navigate = useNavigate();
+
+    const { user, logout } = useAuth();
+    if (!user) {
+        navigate("/login"); // Se não estiver logado, redireciona para login
+        return null;
+    }
+
     const [input, setInput] = useState("");
     const [response, setResponse] = useState("");
 
-    const [AI_responses, setAI_responses] = useState([])
+    const [AI_responses, setAI_responses] = useState([]);
 
     const handleSubmit = () => {
 

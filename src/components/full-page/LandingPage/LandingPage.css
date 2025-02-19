@@ -1,11 +1,76 @@
 .full-screen {
     width: 100vw;
+    max-width: 100%;
     background-color: white;
 
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    max-width: 100%;
+    height: 100vh;
+    max-height: 100%;
+
+    background-color: black;
+    opacity: 0.25;
+    z-index: 50; /* Deve ficar abaixo do menu, mas acima do conteúdo */
+
+    transition: 0.3s;
+}
+.menu {
+    position: fixed;
+
+    top: 0px;
+    right: 0px;
+
+    background-color: white;
+    border: 1px solid var(--light-gray);
+    border-bottom-left-radius: 25px;
+
+    width: 350px;
+    height: 450px;
+
+    z-index: 100;
+
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: start;
+
+    transition: 0.3s;
+}
+.menu h1 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 20px;
+
+    font-family: figtree-semibold;
+    color: var(--black);
+}
+.menu button {
+    margin: 10px;
+    font-family: poppins-semibold;
+    font-size: 15px;
+    color: var(--black);
+
+    padding: 10px 15px;
+
+    background-color: transparent;
+    border-radius: 9999px;
+
+    transition: 0.3s;
+}
+.menu button:hover {
+    background-color: var(--light-gray);
 }
 
 .landing-page-header {
@@ -98,6 +163,25 @@
     transition: 0.3s;
 }
 .landing-page-header-getStarted-login:hover {
+    background-color: var(--light-gray);
+}
+.landing-page-header-getStarted-menu {
+    position: absolute;
+    right: 10px;
+
+    margin: 10px;
+    font-family: poppins-semibold;
+    font-size: 15px;
+    color: var(--black);
+
+    background-color: transparent;
+    border-radius: 9999px;
+
+    transition: 0.3s;
+
+    z-index: 1000;
+}
+.landing-page-header-getStarted-menu:hover {
     background-color: var(--light-gray);
 }
 

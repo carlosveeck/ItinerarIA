@@ -4,8 +4,11 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
+import { useAuth } from "../../../context/AuthContext";
+
 function LoginPage() {
 
+    const { login } = useAuth();
     const navigate = useNavigate();
 
     const [mostrarSenha, setMostrarSenha] = useState(false);
@@ -17,6 +20,21 @@ function LoginPage() {
 
     const handleChangeUser = (e) => setUser(e.target.value);
     const handleChangeSenha = (e) => setSenha(e.target.value);
+
+    const handleLogin = () => {
+        if (user && senha)
+        {
+            const userData = { user };
+            login(userData); // Salva no contexto e localStorage
+
+            navigate("/chatbot"); // Redireciona após login
+        }
+        else
+        {
+            alert("Preencha todos os campos!");
+        }
+    };
+
 
     return (
         <div className="login-full-page">
@@ -47,7 +65,7 @@ function LoginPage() {
                 </div>
 
                 <div className="login-main-div-buttons">
-                    <button className="login-main-div-buttons-normal">
+                    <button className="login-main-div-buttons-normal" onClick={handleLogin}>
                         Entrar
                     </button>
 
