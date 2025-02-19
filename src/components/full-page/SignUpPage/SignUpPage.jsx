@@ -19,16 +19,21 @@ function SignUpPage() {
         setMostrarSenha1(!mostrarSenha1);
     };
 
+    // variaveis para guardar o input do usuario e das senhas
+    const [user, setUser] = useState("");
     const [senha0, setSenha0] = useState("");
     const [senha1, setSenha1] = useState("");
 
-    const handleChangeSenha0 = (e) => {
-        setSenha0(e.target.value);
-    };
+    const handleChangeUser = (e) => setUser(e.target.value);
+    const handleChangeSenha0 = (e) => setSenha0(e.target.value);
+    const handleChangeSenha1 = (e) => setSenha1(e.target.value);
 
-    const handleChangeSenha1 = (e) => {
-        setSenha1(e.target.value);
+    const validarSenha = (senha) => {
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        return regex.test(senha);
     };
+    const senhaValida = validarSenha(senha0);
+    const senhasIguais = senha0 === senha1;
 
     return (
         <div className="signup-full-page">
@@ -44,9 +49,9 @@ function SignUpPage() {
                 <hr />
 
                 <div className="signup-main-div-inputs">
-                    <input type="text" placeholder="Usuário"/>
+                    <input type="text" placeholder="Usuário" onChange={handleChangeUser}/>
 
-                    <div className="signup-password-container">
+                    <div className={(senhaValida || senha0 === "") ? "signup-password-container" : "signup-password-container-wrong"}>
                         <input
                             type={mostrarSenha0 ? "text" : "password"}
                             placeholder="Senha"
@@ -57,7 +62,7 @@ function SignUpPage() {
                         </button>
                     </div>
 
-                    <div className={senha0 === senha1 ? "signup-password-container" : "signup-password-container-wrong"}>
+                    <div className={(senhasIguais || senha1 === "") ? "signup-password-container" : "signup-password-container-wrong"}>
                         <input
                             type={mostrarSenha1 ? "text" : "password"}
                             placeholder="Confirmar senha"
@@ -69,8 +74,21 @@ function SignUpPage() {
                     </div>
                 </div>
 
+                {/* mensagem de erro caso a senha0 não seja válida */}
+                {!senhaValida && senha0.length > 0 ? (
+                    <p className="error-message">
+                        A senha deve ter no mínimo 8 caracteres, incluindo uma letra maiúscula, uma letra minúscula, um número e um caractere especial.
+                    </p>
+                ) : 
+                /* mensagem de erro caso as senhas não coincidam */
+                !senhasIguais && senha1.length > 0 ? (
+                    <p className="error-message">As senhas não coincidem.</p>
+                ) : null}
+
                 <div className="signup-main-div-buttons">
-                    <button className="signup-main-div-buttons-normal">
+                    <button
+                        className={(!senhaValida || !senhasIguais || user.length <= 0) ? "signup-main-div-buttons-disabled" : "signup-main-div-buttons-normal"}
+                    >
                         Cadastrar
                     </button>
 

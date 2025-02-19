@@ -135,6 +135,16 @@
     margin: 6px 0px;
 }
 
+.error-message {
+    display: flex;
+    justify-content: center;
+    width: 60%;
+    font-family: figtree;
+    font-size: 14px;
+    color: var(--red);
+    margin-top: 5px;
+}
+
 .signup-eye-button {
     position: absolute;
 
@@ -183,6 +193,23 @@
     background-color: transparent;
     color: var(--green);
 }
+.signup-main-div-buttons-disabled {
+    width: 100%;
+    margin-top: 30px;
+    padding: 8px;
+
+    border: 2px solid transparent;
+    border-radius: 9999px;
+
+    font-family: figtree-semibold;
+    background-color: var(--green);
+    color: white;
+
+    pointer-events: none;
+    opacity: 0.5;
+
+    transition: 0.3s;
+}
 
 .signup-main-div-buttons-special-button {
     margin-top: 15px;
@@ -190,6 +217,7 @@
 
     font-family: figtree-semibold;
     font-size: small;
+    text-decoration: underline;
 
     color: var(--dark-gray);
     background-color: transparent;

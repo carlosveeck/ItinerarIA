@@ -9,10 +9,14 @@ function LoginPage() {
     const navigate = useNavigate();
 
     const [mostrarSenha, setMostrarSenha] = useState(false);
+    const toggleSenha = () => setMostrarSenha(!mostrarSenha);
 
-    const toggleSenha = () => {
-        setMostrarSenha(!mostrarSenha);
-    };
+    // variaveis para guardar o input do usuario e da senha
+    const [user, setUser] = useState("");
+    const [senha, setSenha] = useState("");
+
+    const handleChangeUser = (e) => setUser(e.target.value);
+    const handleChangeSenha = (e) => setSenha(e.target.value);
 
     return (
         <div className="login-full-page">
@@ -28,11 +32,12 @@ function LoginPage() {
                 <hr />
 
                 <div className="login-main-div-inputs">
-                    <input type="text" placeholder="Usuário"/>
+                    <input type="text" placeholder="Usuário" onChange={handleChangeUser}/>
 
                     <div className="login-password-container">
                         <input
                             type={mostrarSenha ? "text" : "password"}
+                            onChange={handleChangeSenha}
                             placeholder="Senha"
                         />
                         <button onClick={toggleSenha} className="login-eye-button">

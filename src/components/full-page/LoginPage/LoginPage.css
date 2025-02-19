@@ -175,6 +175,7 @@
 
     font-family: figtree-semibold;
     font-size: small;
+    text-decoration: underline;
 
     color: var(--dark-gray);
     background-color: transparent;
