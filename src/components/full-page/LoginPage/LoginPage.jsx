@@ -6,6 +6,21 @@ import { useState } from "react";
 
 import { useAuth } from "../../../context/AuthContext";
 
+async function log_user(msg){
+    const response = await fetch(`http://127.0.0.1:8000/login`, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(msg),
+    })
+
+    const reply = await response.text()
+    console.log(response)
+    console.log(reply)
+    return response.status;
+}
+
 function LoginPage() {
 
     const { login } = useAuth();
@@ -24,10 +39,14 @@ function LoginPage() {
     const handleLogin = () => {
         if (user && senha)
         {
-            const userData = { user };
-            login(userData); // Salva no contexto e localStorage
-
-            navigate("/chatbot"); // Redireciona após login
+            let rep = log_user({usuario: user, senha: senha})
+            if(rep == 200){
+                const userData = { user };
+                login(userData);
+                navigate("/chatbot");
+            } else{
+                alert("Usuário não existe!")
+            }
         }
         else
         {

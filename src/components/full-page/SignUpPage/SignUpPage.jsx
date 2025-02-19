@@ -2,7 +2,6 @@ import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-
 import { useAuth } from "../../../context/AuthContext";
 import "./SignUpPage.css"
 
@@ -23,8 +22,9 @@ async function new_user(msg){
 
 function SignUpPage() {
 
-    const navigate = useNavigate();
     const { login } = useAuth();
+    const navigate = useNavigate();
+
     const [mostrarSenha0, setMostrarSenha0] = useState(false);
     const toggleSenha0 = () => {
         setMostrarSenha0(!mostrarSenha0);
