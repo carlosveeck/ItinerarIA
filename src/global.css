@@ -1,0 +1,58 @@
+@font-face {
+    font-family: "figtree";
+    src: url("./fonts/Figtree/Figtree-VariableFont_wght.ttf") format("truetype");
+    font-weight: normal;
+    font-size: normal;
+}
+@font-face {
+    font-family: "figtree-semibold";
+    src: url("./fonts/Figtree/static/Figtree-SemiBold.ttf") format("truetype");
+    font-weight: normal;
+    font-size: normal;
+}
+
+@font-face {
+    font-family: "cinzel";
+    src: url("./fonts/Cinzel/Cinzel-VariableFont_wght.ttf") format("truetype");
+    font-weight: normal;
+    font-size: normal;
+}
+
+@font-face {
+    font-family: "poppins";
+    src: url("./fonts/Poppins/Poppins-Regular.ttf") format("truetype");
+    font-weight: 600;
+    font-size: normal;
+}
+@font-face {
+    font-family: "poppins-semibold";
+    src: url("./fonts/Poppins/Poppins-SemiBold.ttf") format("truetype");
+    font-weight: bold;
+    font-size: normal;
+}
+@font-face {
+    font-family: "poppins-bold";
+    src: url("./fonts/Poppins/Poppins-Bold.ttf") format("truetype");
+    font-weight: bold;
+    font-size: normal;
+}
+
+:root {
+    
+    --gray: #dadedf;
+    --light-gray: #f3f4f5;
+    --medium-gray: #E6EAEB;
+    --medium-dark-gray: #b4c4c8;
+    --dark-gray: #8fa9af;
+
+    --green: #32c096;
+    --light-green: #2cc86e;
+
+    --black: #0f3e4a;
+
+    --purple: #9376e8;
+
+    --red: #ea5681;
+
+    --yellow: #ffc14a;
+}
