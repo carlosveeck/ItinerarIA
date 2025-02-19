@@ -5,6 +5,7 @@ from fastapi.security import OAuth2PasswordBearer
 from fastapi.middleware.cors import CORSMiddleware
 from jose import jwt, JWTError
 import datetime
+from pydantic import BaseModel
 
 from database import login_aux,criar_usuario,att_preferencias,pegar_preferencias,salvar_itinerario,pegar_itinerario,pegar_ultimo_itinerario,salvar_ultimo_itinerario
 
@@ -39,6 +40,14 @@ historico = [
     "content": "Ao reportar os dados dos locais turísticos, você deve estruturá-los da seguinte forma: cada local deve ser representado por um objeto com as seguintes chaves: 'Nome', 'descricao', 'categoria', 'endereco', 'horario', 'horario_recomendado_visita', 'instagram','site' e 'telefone'"}
 ]
 
+class RegisterRequest(BaseModel):
+    usuario: str
+    senha: str
+    preferencias: str
+
+class LoginRequest(BaseModel):
+    usuario: str
+    senha: str
 
 openai.api_key = ""
 
@@ -65,17 +74,17 @@ async def base():
     return "OK"
 
 @app.post("/register")
-def register(usuario:str,senha:str,preferencias:str):
-    if(criar_usuario(usuario,senha)):
-        att_preferencias(usuario,preferencias)
+def register(data : RegisterRequest):
+    if(criar_usuario(data.usuario,data.senha)):
+        att_preferencias(data.usuario,data.preferencias)
         return {"validado":"valido"}
     else:
         raise HTTPException(status_code=400, detail="Usuario ou senha inválido")
 
 @app.post("/login")
-def login(usuario:str,senha:str):
-    if(login_aux(usuario,senha)):
-        token = criar_jwt(usuario)
+def login(data : LoginRequest):
+    if(login_aux(data.usuario,data.senha)):
+        token = criar_jwt(data.usuario)
         return {"access_token": token, "token_type": "bearer"}
     else:
         raise HTTPException(status_code=400, detail="Credenciais inválidas")
