@@ -18,7 +18,7 @@ async function log_user(msg){
     const reply = await response.text()
     console.log(response)
     console.log(reply)
-    return response.status;
+    return [response.status, reply];
 }
 
 function LoginPage() {
@@ -39,14 +39,18 @@ function LoginPage() {
     const handleLogin = () => {
         if (user && senha)
         {
-            let rep = log_user({usuario: user, senha: senha})
-            if(rep == 200){
-                const userData = { user };
-                login(userData);
-                navigate("/chatbot");
-            } else{
-                alert("Usuário não existe!")
-            }
+            log_user({usuario: user, senha: senha0}).then(function(rep){
+                console.log(rep)
+                if(rep[0] == 200){
+                    const userData = { user };
+                    let token = (JSON.parse(rep[1]))["access_token"]
+                    console.log(token)
+                    login(userData);
+                    navigate("/chatbot");
+                } else{
+                    alert("Usuário não existe!")
+                }
+            })
         }
         else
         {

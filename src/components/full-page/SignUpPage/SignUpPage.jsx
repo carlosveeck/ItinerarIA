@@ -5,6 +5,21 @@ import { useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import "./SignUpPage.css"
 
+async function log_user(msg){
+    const response = await fetch(`http://127.0.0.1:8000/login`, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(msg),
+    })
+
+    const reply = await response.text()
+    // console.log(response)
+    // console.log(reply)
+    return [response.status, reply];
+}
+
 async function new_user(msg){
     const response = await fetch(`http://127.0.0.1:8000/register`, {
         method: 'POST',
@@ -15,8 +30,8 @@ async function new_user(msg){
     })
 
     const reply = await response.text()
-    console.log(response)
-    console.log(reply)
+    // console.log(response)
+    // console.log(reply)
     return reply;
 }
 
@@ -60,6 +75,11 @@ function SignUpPage() {
                 console.log(reply);
                 const userData = { user };
                 login(userData);
+                log_user({usuario: user, senha: senha0}).then(function(rep){
+                    console.log(rep)
+                    let token = (JSON.parse(rep[1]))["access_token"]
+                    console.log(token)
+                })
                 navigate("/chatbot")
             })
         }

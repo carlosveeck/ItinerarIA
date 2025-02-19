@@ -45,7 +45,7 @@ const PromptScreen = () => {
             setResponse("Gerando itinerário...");
             setInput("");
 
-            send_msg({username: "Verne", user_input: input}).then(function(reply){
+            send_msg({prompt: input}).then(function(reply){
 
                 let rep2 = JSON.parse(JSON.parse(JSON.parse(reply)));
 
