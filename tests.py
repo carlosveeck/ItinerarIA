@@ -29,8 +29,13 @@ class Tests:
         response = client.post("/login", json=send)
         assert response.status_code == 200
     
-    # def test_prompt(self):
-    #     send = {"username": "Joao", "user_input": "Olá!"}
-    #     response = client.post("/prompt", json=send)
-    #     assert response.status_code == 200
-    #     assert len(response.json()["itinerario"]) > 0
+    def test_prompt(self):
+        send = {"username": "Joao", "user_input": "Olá!"}
+        response = client.post("/prompt", json=send)
+        assert response.status_code == 200
+        assert len(response.json()["itinerario"]) > 0
+
+    def test_unauthorized_entry(self):
+        send = {"prompt": "Olá!"}
+        response = client.post("/prompt", json=send)
+        assert response.status_code == 401
