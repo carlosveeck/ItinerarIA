@@ -35,21 +35,29 @@ historico = [
 
 openai.api_key = ""
 
+@app.get("/")
+async def base():
+    return "OK"
+
 @app.post("/prompt")
 async def prompt(prompt : Request):
-    historico.append({"role": "user","content": prompt.user_input})
-    try:
-        response = openai.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=historico,
-                max_tokens=6000,
-                temperature=0.7
-            )
-        
-        resposta_ia = response.choices[0].message.content
-        historico.pop() #para as requisicoes antigas nao ficarem no historico
-        dict_resposta = json.dumps(resposta_ia)
-        #historico.append({"role": "assistant", "content": dict_resposta}) (por enquanto nao precisa disso)
-        return dict_resposta
-    except Exception as e:
-        return {"error": str(e)}
+    if(openai.api_key == ""):
+        resposta_ia = {"itinerario": [{"Nome": "Por favor insira uma chave OpenAI"}]}
+        return resposta_ia
+    else:
+        historico.append({"role": "user","content": prompt.user_input})
+        try:
+            response = openai.chat.completions.create(
+                    model="gpt-4o-mini",
+                    messages=historico,
+                    max_tokens=6000,
+                    temperature=0.7
+                )
+            
+            resposta_ia = response.choices[0].message.content
+            historico.pop() #para as requisicoes antigas nao ficarem no historico
+            dict_resposta = json.dumps(resposta_ia)
+            #historico.append({"role": "assistant", "content": dict_resposta}) (por enquanto nao precisa disso)
+            return dict_resposta
+        except Exception as e:
+            return {"error": str(e)}
