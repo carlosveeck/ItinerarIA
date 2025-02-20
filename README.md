@@ -30,6 +30,22 @@ OBS: Uvicorn pode já vir instalado quando baixar a FastAPI
 ```
 pip install openai
 ```
+- [SQL Alchemy](https://docs.sqlalchemy.org/en/20/) -> Utilizado para criar e gerenciar o banco de dados
+```
+pip install sqlalchemy
+```
+- [BCrypt](https://pypi.org/project/bcrypt/) -> Permite hashing de senhas
+```
+pip install bcrypt
+```
+- [Jose](https://python-jose.readthedocs.io/en/latest/) -> Utilizado para autenticação com JSON Web Token
+```
+pip install python-jose
+```
+- [Pytest](https://docs.pytest.org/en/stable/) -> Permite a verificação da API com nossos testes automizados. Não é necessário para rodar a API
+```
+pip install pytest
+```
 
 ## Como usar
 
