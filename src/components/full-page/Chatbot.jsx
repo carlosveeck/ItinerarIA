@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import { ArrowUp } from "lucide-react";
 // import ItinerarIABreadcrumb from "../handmade-UI/itinerariaBreadcrumb";
 import NoItineraryBreadcrumb from "../handmade-UI/noItineraryBreadcrumb";
-
-async function send_msg(msg){
+import { useAuth } from "@/context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { useToken } from "@/context/TokenContext";;
+async function send_msg(msg, token){
     const response = await fetch(`http://127.0.0.1:8000/prompt`, {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
         },
         body: JSON.stringify(msg),
     })
@@ -19,10 +22,20 @@ async function send_msg(msg){
 }
 
 const PromptScreen = () => {
+
+    const navigate = useNavigate();
+
+    const { user, logout } = useAuth();
+    const { token } = useToken();
+    if (!user) {
+        navigate("/login"); // Se não estiver logado, redireciona para login
+        return null;
+    }
+
     const [input, setInput] = useState("");
     const [response, setResponse] = useState("");
 
-    const [AI_responses, setAI_responses] = useState([])
+    const [AI_responses, setAI_responses] = useState([]);
 
     const handleSubmit = () => {
 
@@ -34,9 +47,9 @@ const PromptScreen = () => {
             setResponse("Gerando itinerário...");
             setInput("");
 
-            send_msg({username: "Verne", user_input: input}).then(function(reply){
+            send_msg({prompt: input}, token).then(function(reply){
 
-                let rep2 = JSON.parse(JSON.parse(JSON.parse(reply)));
+                let rep2 = JSON.parse(reply);
 
                 console.log(rep2);
 

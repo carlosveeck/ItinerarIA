@@ -1,0 +1,229 @@
+.signup-full-page {
+    width: 100vw;
+    height: 100vh;
+
+    background-color: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.signup-header {
+    height: 80px;
+    width: 100%;
+
+    font-family: figtree-semibold;
+
+    display: flex;
+    justify-content: left;
+    align-items: center;
+
+    background-color: transparent;
+    color: var(--black);
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+
+    z-index: 10;
+}
+.signup-header button {
+
+    background-color: transparent;
+    color: var(--black);
+
+    border-radius: 9999px;
+
+    margin-left: 70px;
+    transition: 0.3s;
+}
+.signup-header button:hover {
+    background-color: var(--light-gray);
+}
+
+.signup-main-div {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
+    width: 31%;
+    height: 80%;
+
+    background-color: white;
+
+    border: 1px solid var(--light-gray);
+    border-radius: 25px;
+    box-shadow: 0 0 20px 0 var(--medium-gray);
+}
+.signup-main-div h1 {
+    display: flex;
+    align-items: center;
+
+    font-size: 30px;
+
+    font-family: poppins-semibold;
+    color: var(--black);
+}
+.signup-main-div hr {
+
+    height: 1px;
+    width: 60%;
+
+    background-color: var(--gray);
+    margin: 25px 0px 25px 0px;
+}
+
+.signup-main-div-inputs {
+    width: 60%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.signup-main-div-inputs input {
+    width: 100%;
+
+    font-family: figtree-semibold;
+    font-size: large;
+    color: var(--black);
+
+    padding: 15px;
+    margin: 6px;
+
+    border: 1px solid var(--gray);
+    border-radius: 10px;
+}
+.signup-main-div-inputs input:focus {
+    outline: none;
+}
+.signup-main-div-inputs input::placeholder {
+    color: var(--medium-dark-gray);
+}
+
+.signup-password-container {
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+}
+.signup-password-container input {
+    padding-right: 50px;
+    margin: 6px 0px;
+}
+
+.signup-password-container-wrong {
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+}
+.signup-password-container-wrong input {
+    padding-right: 50px;
+    border: 1px solid var(--red);
+    margin: 6px 0px;
+}
+
+.error-message {
+    display: flex;
+    justify-content: center;
+    width: 60%;
+    font-family: figtree;
+    font-size: 14px;
+    color: var(--red);
+    margin-top: 5px;
+}
+
+.signup-eye-button {
+    position: absolute;
+
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);  /* Centraliza verticalmente */
+
+    background-color: transparent;
+    padding: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: var(--medium-dark-gray);
+
+    transition: 0.1s;
+}
+.signup-eye-button:hover {
+    color: var(--dark-gray);
+}
+
+.signup-main-div-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    width: 60%;
+}
+.signup-main-div-buttons-normal {
+    width: 100%;
+    margin-top: 30px;
+    padding: 8px;
+
+    border: 2px solid transparent;
+    border-radius: 9999px;
+
+    font-family: figtree-semibold;
+    background-color: var(--green);
+    color: white;
+
+    transition: 0.3s;
+}
+.signup-main-div-buttons-normal:hover {
+
+    border: 2px solid var(--green);
+    background-color: transparent;
+    color: var(--green);
+}
+.signup-main-div-buttons-disabled {
+    width: 100%;
+    margin-top: 30px;
+    padding: 8px;
+
+    border: 2px solid transparent;
+    border-radius: 9999px;
+
+    font-family: figtree-semibold;
+    background-color: var(--green);
+    color: white;
+
+    pointer-events: none;
+    opacity: 0.5;
+
+    transition: 0.3s;
+}
+
+.signup-main-div-buttons-special-button {
+    margin-top: 15px;
+    padding: 0px;
+
+    font-family: figtree-semibold;
+    font-size: small;
+    text-decoration: underline;
+
+    color: var(--dark-gray);
+    background-color: transparent;
+
+    transition: 0.1s;
+}
+.signup-main-div-buttons-special-button:hover {
+    color: var(--medium-dark-gray);
+}
