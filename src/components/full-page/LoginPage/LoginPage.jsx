@@ -41,7 +41,7 @@ function LoginPage() {
     const handleLogin = () => {
         if (user && senha)
         {
-            log_user({usuario: user, senha: senha0}).then(function(rep){
+            log_user({usuario: user, senha: senha}).then(function(rep){
                 console.log(rep);
                 if(rep[0] == 200){
                     const userData = { user };
