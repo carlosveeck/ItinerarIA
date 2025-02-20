@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 import { useAuth } from "../../../context/AuthContext";
+import { useToken } from "../../../context/TokenContext";
 
 async function log_user(msg){
     const response = await fetch(`http://127.0.0.1:8000/login`, {
@@ -23,6 +24,7 @@ async function log_user(msg){
 
 function LoginPage() {
 
+    const { call } = useToken();
     const { login } = useAuth();
     const navigate = useNavigate();
 
@@ -40,17 +42,18 @@ function LoginPage() {
         if (user && senha)
         {
             log_user({usuario: user, senha: senha0}).then(function(rep){
-                console.log(rep)
+                console.log(rep);
                 if(rep[0] == 200){
                     const userData = { user };
-                    let token = (JSON.parse(rep[1]))["access_token"]
-                    console.log(token)
+                    let t = (JSON.parse(rep[1]))["access_token"];
+                    console.log(t);
+                    call(t);
                     login(userData);
                     navigate("/chatbot");
                 } else{
-                    alert("Usuário não existe!")
+                    alert("Usuário não existe!");
                 }
-            })
+            });
         }
         else
         {

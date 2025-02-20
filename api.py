@@ -49,6 +49,9 @@ class LoginRequest(BaseModel):
     usuario: str
     senha: str
 
+class PromptRequest(BaseModel):
+    prompt: str
+
 openai.api_key = ""
 
 def criar_jwt(username: str):
@@ -90,14 +93,14 @@ def login(data : LoginRequest):
         raise HTTPException(status_code=400, detail="Credenciais inválidas")
 
 @app.post("/prompt")
-def prompt(prompt : str,usuario :str = Depends(verificar_jwt)):
+def prompt(prompt : PromptRequest,usuario :str = Depends(verificar_jwt)):
     if(openai.api_key == ""):
         resposta_ia = {"itinerario": [{"Nome": "Por favor insira uma chave OpenAI"}]}
         return resposta_ia
     else:
         preferencias_usuario = pegar_preferencias(usuario)
         historico.append({"role" : "user","content" : f"preferências do usuário :{preferencias_usuario}"})
-        historico.append({"role": "user","content": prompt})
+        historico.append({"role": "user","content": prompt.prompt})
         try:
             response = openai.chat.completions.create(
                     model="gpt-4o-mini",
@@ -108,7 +111,7 @@ def prompt(prompt : str,usuario :str = Depends(verificar_jwt)):
             resposta_ia = response.choices[0].message.content
             historico.pop() #para as requisicoes antigas nao ficarem no historico
             dict_resposta = json.loads(resposta_ia)
-            salvar_itinerario(dict_resposta)
+            #salvar_itinerario(dict_resposta)
             return dict_resposta
         except Exception as e:
             return {"error": str(e)}

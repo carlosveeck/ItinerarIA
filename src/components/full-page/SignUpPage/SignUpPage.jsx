@@ -1,8 +1,11 @@
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
+import { useToken } from "../../../context/TokenContext";
+
+
 import "./SignUpPage.css"
 
 async function log_user(msg){
@@ -37,6 +40,7 @@ async function new_user(msg){
 
 function SignUpPage() {
 
+    const { call } = useToken();
     const { login } = useAuth();
     const navigate = useNavigate();
 
@@ -76,11 +80,12 @@ function SignUpPage() {
                 const userData = { user };
                 login(userData);
                 log_user({usuario: user, senha: senha0}).then(function(rep){
-                    console.log(rep)
-                    let token = (JSON.parse(rep[1]))["access_token"]
-                    console.log(token)
+                    console.log(rep);
+                    let t = (JSON.parse(rep[1]))["access_token"];
+                    console.log(t);
+                    call(t);
                 })
-                navigate("/chatbot")
+                navigate("/chatbot");
             })
         }
     };
