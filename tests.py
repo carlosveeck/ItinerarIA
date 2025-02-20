@@ -29,6 +29,11 @@ class Tests:
         response = client.post("/login", json=send)
         assert response.status_code == 200
 
+    def test_missing_user(self):
+        send = {"usuario": "naoexisto", "senha": "Senha123*asdfghjk"}
+        response = client.post("/login", json=send)
+        assert response.status_code == 400
+
     def test_unauthorized_entry(self):
         send = {"prompt": "Olá!"}
         response = client.post("/prompt", json=send)
