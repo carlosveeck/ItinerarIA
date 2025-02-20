@@ -35,7 +35,7 @@ async function new_user(msg){
     const reply = await response.text()
     // console.log(response)
     // console.log(reply)
-    return reply;
+    return [response.status, reply];
 }
 
 function SignUpPage() {
@@ -77,15 +77,19 @@ function SignUpPage() {
         if (senhaValida && senhasIguais && user.trim() && preferencias.trim()) {
             new_user({usuario: user, senha: senha0, preferencias: preferencias}).then(function(reply){
                 console.log(reply);
-                const userData = { user };
-                login(userData);
-                log_user({usuario: user, senha: senha0}).then(function(rep){
-                    console.log(rep);
-                    let t = (JSON.parse(rep[1]))["access_token"];
-                    console.log(t);
-                    call(t);
-                })
-                navigate("/chatbot");
+                if(reply[0] == 200){
+                    const userData = { user };
+                    login(userData);
+                    log_user({usuario: user, senha: senha0}).then(function(rep){
+                        console.log(rep);
+                        let t = (JSON.parse(rep[1]))["access_token"];
+                        console.log(t);
+                        call(t);
+                        navigate("/chatbot");
+                    })
+                } else{
+                    alert("Usuário já existe!");
+                }
             })
         }
     };
