@@ -111,7 +111,7 @@ def prompt(prompt : PromptRequest,usuario :str = Depends(verificar_jwt)):
             resposta_ia = response.choices[0].message.content
             historico.pop() #para as requisicoes antigas nao ficarem no historico
             dict_resposta = json.loads(resposta_ia)
-            #salvar_itinerario(dict_resposta)
+            salvar_itinerario(usuario, dict_resposta)
             return dict_resposta
         except Exception as e:
             return {"error": str(e)}
