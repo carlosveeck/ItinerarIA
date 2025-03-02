@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { ArrowRight, CircleUserIcon, LogOut, Map, Menu } from "lucide-react";
+import { ArrowRight, BrainCircuit, CircleUserIcon, LogOut, Map, Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../ui/button";
 
 import "./LandingPage.css";
 
 import { useAuth } from "@/context/AuthContext";
+import Carousel from "@/components/handmade-UI/Carousel/Carousel";
 
 function LogoutButton()
 {
@@ -185,8 +186,61 @@ function LandingPage()
 
             </div>
 
-            <hr className="m-96"/>
-            <hr className="m-96"/>
+            <div className="landing-page-features-div">
+                <h1>
+                    Sua viagem com <strong>tecnologia de IA</strong>
+                </h1>
+
+                <div>
+                    <div>
+                        <p>
+                            <strong>Ideal para você</strong>
+                            <br />
+                            <br />
+                            Crie seu itinerário perfeito com ItinerarIA.
+                            Nossas abordagens de geração levam em consideração 
+                            suas preferências para criar o plano de 
+                            viagem ideal feito sob medida para você.
+                        </p>
+                    </div>
+
+                    <div>
+                        <BrainCircuit size={80} strokeWidth={0.6} color="#0f3e4a"/>
+                    </div>
+                </div>
+
+                <div>
+                    <div>
+                        <BrainCircuit size={80} strokeWidth={0.6} color="#0f3e4a"/>
+                    </div>
+
+                    <div>
+                        <p>
+                            <strong>Ideal para você</strong>
+                            <br />
+                            <br />
+                            Crie seu itinerário perfeito com ItinerarIA.
+                            Nossas abordagens de geração levam em consideração 
+                            suas preferências para criar o plano de 
+                            viagem ideal feito sob medida para você.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div className="carousel-div">
+                <h1><strong>Ferramentas</strong> utilizadas no desenvolvimento do site</h1>
+                <Carousel />
+            </div>
+
+            {/*
+                <hr className="m-96"/>
+                <hr className="m-96"/>
+            */}
+
+            <footer className="landing-page-footer">
+                
+            </footer>
 
         </div>
     );
