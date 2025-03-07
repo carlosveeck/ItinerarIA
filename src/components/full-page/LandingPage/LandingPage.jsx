@@ -88,6 +88,31 @@ function UserIcon()
     );
 }
 
+function FooterLogin()
+{
+    const navigate = useNavigate();
+
+    return (
+        <div className="footer-login">
+            <div className="footer-login-div">
+                <h1>Pronto para planejar sua viagem?</h1>
+                <p>Vamos começar!</p>
+            </div>
+
+            <div className="landing-page-header-getStarted">
+
+                <button className="footer-login-button1" onClick={() => navigate("/login")}>
+                    Entrar
+                </button>
+
+                <button className="footer-login-button2" onClick={() => navigate("/signup")}>
+                    Cadastrar
+                </button>
+            </div>
+        </div>
+    );
+}
+
 function LandingPage()
 {
     const navigate = useNavigate();
@@ -160,15 +185,21 @@ function LandingPage()
                         Organize viagens inesquecíveis com nosso auxílio
                     </p>
 
-                    <div>
-                        <Button className="landing-page-intro-button-signup" onClick={() => navigate("/signup")}>
-                            Começar
-                        </Button>
+                    { (user) ?
+                        <></>
 
-                        <Button className="landing-page-intro-button-login" onClick={() => navigate("/login")}>
-                            Entrar <ArrowRight strokeWidth={3} /> 
-                        </Button>
-                    </div>
+                        :
+
+                        <div>
+                            <Button className="landing-page-intro-button-signup" onClick={() => navigate("/signup")}>
+                                Começar
+                            </Button>
+
+                            <Button className="landing-page-intro-button-login" onClick={() => navigate("/login")}>
+                                Entrar <ArrowRight strokeWidth={3} /> 
+                            </Button>
+                        </div>
+                    }
 
                 </div>
 
@@ -239,7 +270,8 @@ function LandingPage()
             */}
 
             <footer className="landing-page-footer">
-                
+                {(user) ? <></> : <FooterLogin/> }
+
             </footer>
 
         </div>

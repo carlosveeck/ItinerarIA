@@ -3,7 +3,7 @@ import openai_logo from "../../../assets/carousel/openai-logo.png"
 import pytest_logo from "../../../assets/carousel/pytest-logo.png"
 import react_logo from "../../../assets/carousel/react-logo.png"
 import sqla_logo from "../../../assets/carousel/sqlalchemy-logo.png"
-import vite_logo from "../../../assets/carousel/vite-logo.jpg"
+import vite_logo from "../../../assets/carousel/vite-logo.png"
 
 import "./Carousel.css"
 
