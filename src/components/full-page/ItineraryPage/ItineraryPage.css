@@ -1,0 +1,143 @@
+.itinerary-full-page
+{
+    width: 100vw;
+    height: 100vh;
+    max-height: 100%;
+    max-width: 100%;
+
+    overflow: hidden;
+
+    background-color: white;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.itinerary-menu
+{
+    width: 20%;
+    height: 100%;
+    background-color: var(--blueish-light-gray);
+
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    overflow: hidden;
+
+    z-index: 0;
+}
+.itinerary-menu-breadcrumb
+{
+    width: 100%;
+    height: fit-content;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 10px;
+}
+.itinerary-menu-breadcrumb-button1
+{
+    display: flex;
+    border-radius: 9999px;
+    padding: 10px;
+}
+.itinerary-menu-breadcrumb-button1:hover
+{
+    background-color: var(--blueish-medium-gray);
+}
+.itinerary-menu-breadcrumb-button2
+{
+    display: flex;
+    align-items: center;
+    margin: 0 10px;
+
+    gap: 10px;
+    padding: 10px;
+    border-radius: 9999px;
+
+    font-family: figtree;
+    font-size: 16px;
+
+    transition: 0.25s;
+}
+.itinerary-menu-breadcrumb-button2:hover
+{
+    color: var(--purple);
+}
+
+.itinerary-menu-itineraries
+{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+
+    padding: 20px;
+    padding-bottom: 60px;
+
+    gap: 15px;
+}
+.itinerary-menu-itineraries-buttons
+{
+    display: flex;
+
+    font-family: figtree;
+    gap: 15px;
+}
+
+.itinerary-content-div
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    width: 80%;
+    height: 100vh;
+
+    background-color: white;
+
+    transition: width 0.25s linear;
+    z-index: 1;
+}
+.itinerary-content-div.fullsize
+{
+    width: 100vw;
+}
+
+.itinerary-name
+{
+    display: flex;
+    padding: 10px;
+
+    align-items: center;
+}
+.itinerary-name h1
+{
+    font-family: figtree;
+    font-size: 18px;
+
+    padding: 10px;
+}
+.itinerary-name button
+{
+    border-radius: 9999px;
+    padding: 10px;
+    margin: 0px;
+}
+.itinerary-name button:hover
+{
+    background-color: var(--blueish-medium-gray);
+}
+
+.itinerary-main-content
+{
+    width: 100%;
+    height: 80%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}

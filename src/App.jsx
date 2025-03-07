@@ -5,6 +5,7 @@ import LandingPage from "./components/full-page/LandingPage/LandingPage";
 import PromptScreen from "./components/full-page/ItineraryPage/Chatbot";
 import LoginPage from "./components/full-page/LoginPage/LoginPage";
 import SignUpPage from "./components/full-page/SignUpPage/SignUpPage";
+import ItineraryPage from "./components/full-page/ItineraryPage/ItineraryPage";
 
 function App() {
 
@@ -12,7 +13,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage/>}/>
-        <Route path="/itinerary" element={<PromptScreen/>}/>
+        <Route path="/itinerary" element={<ItineraryPage/>}/>
         <Route path="/login" element={<LoginPage/>}/>
         <Route path="/signup" element={<SignUpPage/>}/>
       </Routes>
