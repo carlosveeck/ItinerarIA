@@ -159,7 +159,7 @@ function LandingPage()
                 <div className="landing-page-header-button-div">
 
                     <Button className="landing-page-header-button" onClick={() => navigate("/")}>
-                        Home
+                        Início
                     </Button>
 
                     <Button className="landing-page-header-button" onClick={() => navigate("/itinerary")}>

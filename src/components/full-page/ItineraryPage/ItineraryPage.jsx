@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ArrowLeft, ArrowUp, House, Menu, NotepadText } from "lucide-react";
+import { ArrowLeft, ArrowUp, CircleUserIcon, House, Menu, NotepadText, Send, SendHorizonal, UserIcon } from "lucide-react";
 
 import { useAuth } from "@/context/AuthContext";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -25,16 +25,16 @@ const ItineraryPage = () => {
 
     const navigate = useNavigate();
 
-    // const { user } = useAuth();
+    const { user } = useAuth();
 
-    // useEffect(() => {
-    //     if (!user) {
-    //         navigate("/login");
-    //     }
-    // }, [user, navigate]); // Apenas após a renderização inicial
+    useEffect(() => {
+        if (!user) {
+            navigate("/login");
+        }
+    }, [user, navigate]); // Apenas após a renderização inicial
 
-    // // Se o usuário não estiver autenticado, evita renderizar o restante do componente
-    // if (!user) { return null; }
+    // Se o usuário não estiver autenticado, evita renderizar o restante do componente
+    if (!user) { return null; }
 
     // daqui pra baixo é para a pagina de itinerario
     const [input, setInput] = useState("");
@@ -74,12 +74,15 @@ const ItineraryPage = () => {
     const [currItinerary, setCurrItinerary] = useState(0);
     const itineraryMap = {
 
+        // prompt screen
         0: <>
             {/* Response Area */}
-            <div className="max-h-full overflow-y-auto w-3/4 max-w-3/4 bg-medium-gray p-10 rounded-xl shadow-lg self-center">
+            { response ? <></> : <div></div> }
 
-                <p className="p-0 text-black text-lg text-center">
-                    {response || "Digite o nome de uma cidade para gerarmos um itinerário"}
+            <div className="max-h-full overflow-y-auto w-3/4 max-w-3/4 p-10 self-center flex justify-center">
+
+                <p className="prompt-welcome-p">
+                    { response || `Olá, ${ user.username }` }
                 </p>
 
                 { /* Draw a line in case we received an input */ }
@@ -111,29 +114,30 @@ const ItineraryPage = () => {
             </div>
 
             {/* Prompt Input */}
-            <div className="h-12 w-1/2 m-10 justify-self-end self-center">
+            <div className="prompt-input-div">
 
-                <div className="h-full flex rounded-xl bg-medium-gray items-center">
-                    <input
-                        className="pl-4 w-full p-3 bg-transparent text-black focus:outline-none selection:bg-purple selection:text-white"
-                        type="text"
-                        placeholder="Digite seu comando aqui..."
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        onKeyPress={(e) => e.key === "Enter" && handleSubmit()}
-                    />
-                    <button
-                        className="h-full w-16 flex items-center justify-center text-black rounded-r-xl"
-                        onClick={handleSubmit}
-                    >
-                        <ArrowUp color={input ? "#2cc86e" : "rgb(156 163 175)"} size={20} />
-                    </button>
-                </div>
+                <input
+                    type="text"
+                    placeholder="Digite seu comando aqui..."
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyPress={(e) => e.key === "Enter" && handleSubmit()}
+                />
+                <button
+                    className={`prompt-input-div-button ${input ? "input" : ""}`}
+                    onClick={handleSubmit}
+                >
+                    <SendHorizonal color="white" size={20} strokeWidth={2.5} />
+                    {/* input ? "#2cc86e" : "rgb(156 163 175)" */}
+                </button>
 
             </div>
         </>,
+        // itinerario 1
         1: <div>Opção 1</div>,
+        // itinerario 2
         2: <div>Opção 2</div>,
+        // itinerario 3
         3: <div>Opção 3</div>,
     };
 
@@ -154,7 +158,7 @@ const ItineraryPage = () => {
                     <button 
                         className="itinerary-menu-breadcrumb-button2" 
                         onClick={() => navigate("/")}> 
-                            <House strokeWidth={1.5} size={16} /> Home 
+                            <House strokeWidth={1.5} size={16} /> Início 
                     </button>
                 </div>
 
@@ -162,19 +166,19 @@ const ItineraryPage = () => {
                     <button
                         className="itinerary-menu-itineraries-buttons"
                         onClick={() => setCurrItinerary(1)}> 
-                        <NotepadText strokeWidth={1.5}/> Itinerário 1
+                        <NotepadText strokeWidth={1.5} size={20}/> Itinerário 1
                     </button>
 
                     <button
                         className="itinerary-menu-itineraries-buttons"
                         onClick={() => setCurrItinerary(2)}> 
-                        <NotepadText strokeWidth={1.5}/> Itinerário 2
+                        <NotepadText strokeWidth={1.5} size={20}/> Itinerário 2
                     </button>
 
                     <button
                         className="itinerary-menu-itineraries-buttons"
                         onClick={() => setCurrItinerary(3)}> 
-                        <NotepadText strokeWidth={1.5}/> Itinerário 3
+                        <NotepadText strokeWidth={1.5} size={20}/> Itinerário 3
                     </button>
                 </div>
             </div>
@@ -182,15 +186,26 @@ const ItineraryPage = () => {
             {/* Main Content */}
             <div className={`itinerary-content-div ${showMenu ? "" : "fullsize"}`}>
 
-                <div className="itinerary-name">
-                    { (showMenu) ? <></> : <button onClick={() => setShowMenu(!showMenu)}> <Menu strokeWidth={1.5} /> </button> }
-                    <h1>ItinerarIA</h1>
+                <div className="itinerary-content-upper">
+                    <div className="itinerary-name">
+
+                        { (showMenu) ? <></> :
+                            <button className="itinerary-name-button"
+                                onClick={() => setShowMenu(!showMenu)}>
+                                    <Menu strokeWidth={1.5} />
+                            </button> }
+
+                        <h1 className="itinerary-name-h1">ItinerarIA</h1>
+                    </div>
+
+                    <button className="itinerary-content-upper-button"> <CircleUserIcon size={32}/> </button>
                 </div>
 
                 {/* Itinerary / Prompt Input */}
                 <div className="itinerary-main-content">
                 { /* h-full max-h-full w-full max-w-full overflow-hidden flex flex-col justify-between */ }
-
+                    
+                    {/* switch between prompt and itineraries */}
                     { itineraryMap[currItinerary] || <></> }
 
                 </div>

@@ -154,6 +154,7 @@
     font-size: 15px;
 }
 .landing-page-header-button:hover{
+    text-decoration: underline;
     background-color: transparent;
     color: var(--green);
 }

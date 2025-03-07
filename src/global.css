@@ -44,8 +44,10 @@
     --medium-gray: #E6EAEB;
     --medium-dark-gray: #b4c4c8;
     --dark-gray: #8fa9af;
+    --darker-gray: #575b5f;
 
     --blueish-light-gray: #f0f4f9;
+    --blueish-medium-light-gray: #e4e8ed;
     --blueish-medium-gray: #dee4ec;
 
     --green: #32c096;
@@ -53,6 +55,7 @@
     --grayish-green: #85C3B3;
 
     --light-black: #56707A;
+    --medium-black: #2B5A62;
     --black: #0f3e4a;
 
     --blue: #4c90e4;
