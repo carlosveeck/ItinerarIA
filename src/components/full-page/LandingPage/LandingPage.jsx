@@ -7,6 +7,7 @@ import "./LandingPage.css";
 
 import { useAuth } from "@/context/AuthContext";
 import Carousel from "@/components/handmade-UI/Carousel/Carousel";
+import laptopImg from "../../../assets/laptop-template(final).png"
 
 function LogoutButton()
 {
@@ -205,17 +206,7 @@ function LandingPage()
 
             </div>
 
-            <div className="landing-page-show">
-
-                <div className="div1">
-
-                </div>
-
-                <div className="div2">
-
-                </div>
-
-            </div>
+            <img className="landing-page-img" src={laptopImg}/>
 
             <div className="landing-page-features-div">
                 <h1>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ArrowLeft, ArrowUp, CircleUserIcon, House, Menu, NotepadText, Send, SendHorizonal, UserIcon } from "lucide-react";
+import { ArrowLeft, ArrowUp, CircleUserIcon, House, Menu, NotepadText, Send, SendHorizonal, SidebarClose, SidebarOpen, UserIcon } from "lucide-react";
 
 import { useAuth } from "@/context/AuthContext";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -25,7 +25,32 @@ const ItineraryPage = () => {
 
     const navigate = useNavigate();
 
-    const { user } = useAuth();
+    const { user, isAuthLoaded } = useAuth();
+
+    const [input, setInput] = useState("");
+    const [response, setResponse] = useState("");
+    const [AI_responses, setAI_responses] = useState([]);
+
+    const [currItinerary, setCurrItinerary] = useState(0);
+
+    const [showMenu, setShowMenu] = useState(true);
+
+    useEffect(() => {
+        console.log("ItineraryPage → Auth Loaded:", isAuthLoaded, "User:", user);
+
+        if (!isAuthLoaded) return; // Aguarda o carregamento completo antes de tomar ação
+
+        if (!user) {
+            console.log("Redirecionando para /login...");
+            navigate("/login");
+        }
+    }, [isAuthLoaded, user, navigate]);
+
+    if (!isAuthLoaded) return <div>Carregando...</div>;
+
+    if (!user) return null;
+
+    /*
 
     useEffect(() => {
         if (!user) {
@@ -36,11 +61,9 @@ const ItineraryPage = () => {
     // Se o usuário não estiver autenticado, evita renderizar o restante do componente
     if (!user) { return null; }
 
-    // daqui pra baixo é para a pagina de itinerario
-    const [input, setInput] = useState("");
-    const [response, setResponse] = useState("");
+    */
 
-    const [AI_responses, setAI_responses] = useState([]);
+    // daqui pra baixo é para a pagina de itinerario
 
     const handleSubmit = () => {
 
@@ -71,7 +94,6 @@ const ItineraryPage = () => {
         }
     };
     
-    const [currItinerary, setCurrItinerary] = useState(0);
     const itineraryMap = {
 
         // prompt screen
@@ -141,8 +163,6 @@ const ItineraryPage = () => {
         3: <div>Opção 3</div>,
     };
 
-    const [showMenu, setShowMenu] = useState(true);
-
     return (
         <div className="itinerary-full-page">
 
@@ -152,7 +172,7 @@ const ItineraryPage = () => {
                     <button 
                         className="itinerary-menu-breadcrumb-button1"
                         onClick={() => setShowMenu(!showMenu)}>
-                            <Menu strokeWidth={1.5} />
+                            <SidebarClose strokeWidth={1.5} />
                     </button>
 
                     <button 
@@ -192,7 +212,7 @@ const ItineraryPage = () => {
                         { (showMenu) ? <></> :
                             <button className="itinerary-name-button"
                                 onClick={() => setShowMenu(!showMenu)}>
-                                    <Menu strokeWidth={1.5} />
+                                    <SidebarOpen strokeWidth={1.5} />
                             </button> }
 
                         <h1 className="itinerary-name-h1">ItinerarIA</h1>
