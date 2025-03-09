@@ -20,6 +20,8 @@
     background-color: var(--blueish-light-gray);
 
     border: none;
+    border-right: 1px solid var(--blueish-medium-gray);
+
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -99,6 +101,26 @@
 } .itinerary-menu-itineraries-buttons:hover
 {
     background-color: var(--blueish-medium-light-gray);
+}
+.itinerary-menu-itineraries-buttons.current
+{
+    display: flex;
+
+    font-family: figtree;
+    font-size: 15px;
+    color: var(--darker-gray);
+    border-radius: 9999px;
+
+    align-items: center;
+
+    width: 100%;
+
+    padding: 8px 20px;
+    gap: 15px;
+
+    background-color: var(--blueish-medium-light-gray);
+
+    pointer-events: none;
 }
 
 .itinerary-content-div

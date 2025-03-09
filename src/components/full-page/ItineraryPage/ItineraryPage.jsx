@@ -184,19 +184,19 @@ const ItineraryPage = () => {
 
                 <div className="itinerary-menu-itineraries">
                     <button
-                        className="itinerary-menu-itineraries-buttons"
+                        className={`itinerary-menu-itineraries-buttons ${currItinerary == 1 ? "current" : ""}`}
                         onClick={() => setCurrItinerary(1)}> 
                         <NotepadText strokeWidth={1.5} size={20}/> Itinerário 1
                     </button>
 
                     <button
-                        className="itinerary-menu-itineraries-buttons"
+                        className={`itinerary-menu-itineraries-buttons ${currItinerary == 2 ? "current" : ""}`}
                         onClick={() => setCurrItinerary(2)}> 
                         <NotepadText strokeWidth={1.5} size={20}/> Itinerário 2
                     </button>
 
                     <button
-                        className="itinerary-menu-itineraries-buttons"
+                        className={`itinerary-menu-itineraries-buttons ${currItinerary == 3 ? "current" : ""}`}
                         onClick={() => setCurrItinerary(3)}> 
                         <NotepadText strokeWidth={1.5} size={20}/> Itinerário 3
                     </button>

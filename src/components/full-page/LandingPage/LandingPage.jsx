@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ArrowRight, BrainCircuit, CircleUserIcon, LogOut, Map, Menu } from "lucide-react";
+import { ArrowRight, BrainCircuit, CircleUserIcon, LogOut, Map, Menu, TreePalm } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../ui/button";
 
@@ -233,18 +233,16 @@ function LandingPage()
 
                 <div>
                     <div>
-                        <BrainCircuit size={80} strokeWidth={0.6} color="#0f3e4a"/>
+                        <TreePalm size={80} strokeWidth={0.6} color="#0f3e4a"/>
                     </div>
 
                     <div>
                         <p>
-                            <strong>Ideal para você</strong>
+                            <strong>Sua viagem, suas escolhas</strong>
                             <br />
                             <br />
-                            Crie seu itinerário perfeito com ItinerarIA.
-                            Nossas abordagens de geração levam em consideração 
-                            suas preferências para criar o plano de 
-                            viagem ideal feito sob medida para você.
+                            O ItinerarIA cria até três roteiros personalizados para
+                             você, oferecendo opções que se encaixam no seu estilo de viagem.
                         </p>
                     </div>
                 </div>
@@ -263,6 +261,24 @@ function LandingPage()
             <footer className="landing-page-footer">
                 {(user) ? <></> : <FooterLogin/> }
 
+                <div className="landing-page-footer-content">
+                    <p>Desenvolvido pela <strong>equipe 4</strong> / CIN0136 / CIn-UFPE</p>
+                    <p><strong>Aviso:</strong> Este projeto foi desenvolvido para fins acadêmicos.</p>
+                    <br />
+                    <a href="https://github.com/carlosveeck/ItinerarIA" target="_blank" class="github-link">
+                        <svg viewBox="0 0 16 16" aria-hidden="true">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 
+                            0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 
+                            1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 
+                            0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 
+                            1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 
+                            1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 
+                            1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 
+                            16 8c0-4.42-3.58-8-8-8z"/>
+                        </svg>
+                        GitHub
+                    </a>
+                </div>
             </footer>
 
         </div>
