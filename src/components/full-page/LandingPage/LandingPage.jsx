@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ArrowRight, BrainCircuit, CircleUserIcon, LogOut, Map, Menu, TreePalm } from "lucide-react";
+import { ArrowRight, BrainCircuit, CircleUserIcon, LogOut, Map, Menu, TreePalm, User, UserRound, X, NotepadText } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../ui/button";
 
@@ -20,8 +20,8 @@ function LogoutButton()
     };
 
     return (
-        <button onClick={ handleLogout }>
-            <LogOut/> Sair
+        <button className="menu-button" onClick={ handleLogout }>
+            <LogOut strokeWidth={1.75} color="#56707A"/> Sair
         </button>);
 }
 
@@ -43,47 +43,91 @@ function NoUserButtons()
     );
 }
 
-function LandingPageMenu()
+// function LandingPageMenu()
+// {
+//     const navigate = useNavigate();
+//     const { user } = useAuth();
+
+//     return (
+//         <>
+//             <div className="menu-overlay"/>
+//             <div className="menu">
+//                 <h1>
+//                     <CircleUserIcon/> { user.username }
+//                 </h1>
+
+//                 <hr />
+
+//                 <button onClick={ () => navigate("/itinerary") }>
+//                     <Map/> Itinerários
+//                 </button>
+
+//                 <LogoutButton/>
+//             </div>
+//         </>
+//     );
+// }
+
+function UserIcon()
 {
     const navigate = useNavigate();
     const { user } = useAuth();
 
-    return (
-        <>
-            <div className="menu-overlay"/>
-            <div className="menu">
-                <h1>
-                    <CircleUserIcon/> { user.username }
-                </h1>
-
-                <hr />
-
-                <button onClick={ () => navigate("/itinerary") }>
-                    <Map/> Itinerários
-                </button>
-
-                <LogoutButton/>
-            </div>
-        </>
-    );
-}
-
-function UserIcon()
-{
-    const { user } = useAuth();
-
     const [showMenuBox, setShowMenuBox] = useState(false);
-    const toggleLogoutBox = () => setShowMenuBox(!showMenuBox);
+    const toggleMenuBox = () => setShowMenuBox(!showMenuBox);
     
+    // Ativa/desativa o scroll quando showMenuBox muda
+    useEffect(() => {
+        if (showMenuBox) {
+            document.body.style.overflow = "hidden"; // Desativa o scroll
+        } else {
+            document.body.style.overflow = "auto"; // Reativa o scroll
+        }
+
+        // Cleanup para evitar efeitos colaterais
+        return () => {
+            document.body.style.overflow = "auto"; 
+        };
+    }, [showMenuBox]);
 
     return (
         <div className="landing-page-header-getStarted">
 
-            <Button className="landing-page-header-getStarted-menu" onClick={toggleLogoutBox}>
-                <Menu style={{ width: "24px", height: "24px" }}/>
-            </Button>
+            <button className="landing-page-header-getStarted-menu" onClick={toggleMenuBox}>
+                <CircleUserIcon style={{ width: "30px", height: "30px" }} strokeWidth={1.35}/>
+            </button>
 
-            { showMenuBox ? <LandingPageMenu/> : null }
+            { /* showMenuBox ? <LandingPageMenu/> : null */ }
+            
+            <>
+                <div className={`${showMenuBox ? "menu-overlay" : ""}`} onClick={toggleMenuBox}/>
+
+                <div className={`menu ${showMenuBox ? "show" : ""}`}>
+                    <div className="menu-header">
+                        <h1>
+                            <CircleUserIcon strokeWidth={1.35} color="#56707A" size={30}/> { user.username }
+                        </h1>
+
+                        <button className="menu-header-button" onClick={toggleMenuBox}>
+                            <X strokeWidth={2.25} color="#56707A" size={17}/>
+                        </button>
+                    </div>
+
+                    <hr />
+
+                    <button className="menu-button" onClick={ () => navigate("/profile") }>
+                        <UserRound strokeWidth={1.75} color="#56707A" size={22}/> Seu perfil
+                    </button>
+
+                    <button className="menu-button" onClick={ () => navigate("/itinerary") }>
+                        <NotepadText strokeWidth={1.75} color="#56707A" size={22}/> Itinerários
+                    </button>
+
+                    <hr />
+
+                    <LogoutButton/>
+                </div>
+            </>
 
         </div>
     );
@@ -149,7 +193,7 @@ function LandingPage()
     }, [lastScrollY]);
 
     return (
-        <div className="full-screen">
+        <div className={`full-screen`}>
             
             <header className={`landing-page-header ${showHeader ? "visible" : "hidden"}`}>
 

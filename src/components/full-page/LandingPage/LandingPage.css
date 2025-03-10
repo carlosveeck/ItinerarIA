@@ -7,6 +7,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+} .full-screen.locked {
+    overflow: hidden;
 }
 
 .menu-overlay {
@@ -20,7 +22,7 @@
     max-height: 100%;
 
     background-color: black;
-    opacity: 0.45;
+    opacity: 0.2;
     z-index: 50; /* Deve ficar abaixo do menu, mas acima do conteúdo */
 
     transition: 0.3s;
@@ -29,7 +31,7 @@
     position: fixed;
 
     top: 0px;
-    right: 0px;
+    right: -100%;
 
     background-color: white;
     border: 1px solid var(--light-gray);
@@ -45,16 +47,21 @@
     align-items: start;
 
     transition: 0.3s;
+} .menu.show
+{
+    right: 0px;
 }
 .menu h1 {
     display: flex;
     align-items: center;
+
     gap: 8px;
-    margin: 0px 30px;
+    padding: 10px 15px;
+    margin: 0 11px;
 
-    height: 80px;
+    height: fit-content;
 
-    font-family: figtree-semibold;
+    font-family: figtree;
     color: var(--black);
 }
 .menu hr {
@@ -62,20 +69,22 @@
     align-self: center;
 
     height: 0.5px;
-    width: 60%;
+    width: 80%;
 
     background-color: var(--gray);
-    margin: 0px 0px 20px 0px;
+    margin: 10px 0;
 }
-.menu button {
+.menu-button {
+
+    width: 90%;
 
     display: flex;
     align-items: center;
     gap: 8px;
-    margin: 10px 15px;
+    margin: 0px 15px;
 
-    font-family: figtree-semibold;
-    font-size: 15px;
+    font-family: figtree;
+    font-size: 14px;
     color: var(--black);
 
     padding: 10px 15px;
@@ -87,6 +96,24 @@
 }
 .menu button:hover {
     background-color: var(--light-gray);
+}
+
+.menu-header
+{
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+
+    margin-top: 15px;
+
+    align-items: center;
+}
+.menu-header-button
+{
+    padding: 10px;
+    margin: 0 20px;
+    border-radius: 9999px;
 }
 
 .landing-page-header {
@@ -186,7 +213,8 @@
     position: absolute;
     right: 10px;
 
-    margin: 10px;
+    margin: 0 15px;
+    padding: 5px;
     font-family: poppins-semibold;
     font-size: 15px;
     color: var(--black);
@@ -196,7 +224,7 @@
 
     transition: 0.3s;
 
-    z-index: 1000;
+    z-index: 20;
 }
 .landing-page-header-getStarted-menu:hover {
     background-color: var(--light-gray);
