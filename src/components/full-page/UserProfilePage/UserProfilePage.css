@@ -1,0 +1,36 @@
+.user-full-page
+{
+    width: 100vw;
+    max-width: 100%;
+    height: 100vh;
+    max-height: 100%;
+
+    background-color: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+}
+
+.user-profile-pic
+{
+    width: 260px;
+    height: 260px;
+}
+.user-main-content-div-1
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-color: gray;
+}
+
+.user-main-content-div-2
+{
+    width: 50%;
+    height: 50%;
+    background-color: blue;
+    display: flex;
+}
