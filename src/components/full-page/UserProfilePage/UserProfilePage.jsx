@@ -16,8 +16,8 @@ function LogoutButton()
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        logout();
         navigate("/"); // Redireciona para login após logout
+        setTimeout(() => logout(), 0); // Depois, faz logout
     };
 
     return (
@@ -82,6 +82,8 @@ function UserIcon()
                     </button>
 
                     <hr />
+
+                    <LogoutButton />
                 </div>
             </>
 
@@ -135,13 +137,55 @@ function UserProfilePage()
             <div className="user-main-content-div-1">
                 <img className="user-profile-pic" src={default_user_icon} />
 
-                <h1>{user.username}</h1>
-                
-                <button>Editar perfil</button>
+                <div>
+                    <h1>{user.username}</h1>
+                    
+                    <button>Editar perfil</button>
+                </div>
             </div>
 
             <div className="user-main-content-div-2">
-                
+                <div className="user-main-content-div-2-fit-content">
+                    <div className="user-main-content-div-2-div">
+                        <h1>Nome completo</h1>
+                        <h2>placeholder da Silva</h2>
+                    </div>
+
+                    <hr />
+
+                    <div className="user-main-content-div-2-div">
+                        <h1>Email</h1>
+                        <h2>placeholder@email.com</h2>
+                    </div>
+
+                    <hr />
+
+                    <div className="user-main-content-div-2-div">
+                        <h1>Celular</h1>
+                        <h2>&#40;11&#41; 9 1234-5678</h2>
+                    </div>
+
+                    <hr />
+
+                    <div className="user-main-content-div-2-div">
+                        <h1>País</h1>
+                        <h2>placeholder</h2>
+                    </div>
+
+                    <hr />
+
+                    <div className="user-main-content-div-2-div">
+                        <h1>Data de nascimento</h1>
+                        <h2>dd/mm/yyyy</h2>
+                    </div>
+
+                    <hr />
+
+                    <div className="user-main-content-div-2-div">
+                        <h1>Preferências</h1>
+                        <h2>placeholder</h2>
+                    </div>
+                </div>
             </div>
         </div>
     );
