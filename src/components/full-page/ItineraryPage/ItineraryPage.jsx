@@ -2,15 +2,17 @@ import React, { useState, useEffect } from "react";
 import { ArrowLeft, ArrowUp, CircleUserIcon, House, Menu, NotepadText, Send, SendHorizonal, SidebarClose, SidebarOpen, UserIcon } from "lucide-react";
 
 import { useAuth } from "@/context/AuthContext";
+import { useToken } from "../../../context/TokenContext";
 import { Navigate, useNavigate } from "react-router-dom";
 
 import "./ItineraryPage.css"
 
-async function send_msg(msg){
+async function send_msg(msg, token){
     const response = await fetch(`http://127.0.0.1:8000/prompt`, {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
         },
         body: JSON.stringify(msg),
     })
@@ -26,6 +28,7 @@ const ItineraryPage = () => {
     const navigate = useNavigate();
 
     const { user, isAuthLoaded } = useAuth();
+    const { token } = useToken();
 
     const [input, setInput] = useState("");
     const [response, setResponse] = useState("");
@@ -75,9 +78,9 @@ const ItineraryPage = () => {
             setResponse("Gerando itinerário...");
             setInput("");
 
-            send_msg({username: "Verne", user_input: input}).then(function(reply){
+            send_msg({prompt: input}, token).then(function(reply){
 
-                let rep2 = JSON.parse(JSON.parse(JSON.parse(reply)));
+                let rep2 = JSON.parse(reply);
 
                 console.log(rep2);
 

@@ -197,14 +197,14 @@ function UserProfilePage()
 
                     <div className="user-main-content-div-2-div">
                         <h1>Data de nascimento</h1>
-                        <h2 id="data">dd/mm/yyyy</h2>
+                        <h2 id="data"></h2>
                     </div>
 
                     <hr />
 
                     <div className="user-main-content-div-2-div">
                         <h1>Preferências</h1>
-                        <h2 id="pref">placeholder</h2>
+                        <h2 id="pref"></h2>
                     </div>
                 </div>
             </div>
