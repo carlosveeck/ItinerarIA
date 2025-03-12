@@ -18,6 +18,23 @@ export default {
 			// for marked text in the input
 			"green-input-mark": "#21646f",
 
+            "gray": "#dadedf",
+            "light-gray": "#f3f4f5",
+            "medium-gray": "#E6EAEB",
+            "medium-dark-gray": "#b4c4c8",
+            "dark-gray": "#8fa9af",
+
+            "green": "#32c096",
+            "light-green": "#2cc86e",
+
+            "black": "#0f3e4a",
+
+            "purple": "#9376e8",
+
+            "red": "#ea5681",
+
+            "yellow": "#ffc14a",
+
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

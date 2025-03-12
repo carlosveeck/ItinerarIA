@@ -21,12 +21,12 @@ function NoItineraryBreadcrumb() {
         <div className="p-10 h-0 flex justify-center items-center">
 
             <Breadcrumb>
-                <BreadcrumbList className="text-white">
+                <BreadcrumbList className="text-black">
 
                     <BreadcrumbItem>
                         <BreadcrumbLink
                             className={`
-                                ${location.pathname === "/" ? "text-white pointer-events-none" : "text-gray-500 hover:text-white"}
+                                ${location.pathname === "/" ? "text-black pointer-events-none" : "text-gray-500 hover:text-green"}
                             `}
                             href="/"
                         >
@@ -41,11 +41,11 @@ function NoItineraryBreadcrumb() {
                     <BreadcrumbItem>
                         <BreadcrumbLink
                             className={`
-                                ${location.pathname === "/chatbot" ? "text-white pointer-events-none" : "text-gray-500 hover:text-white"}
+                                ${location.pathname === "/itinerary" ? "text-green pointer-events-none" : "text-gray-500 hover:text-black"}
                             `}
                             href="/chatbot"
                         >
-                            Chat-bot
+                            Itinerário
                         </BreadcrumbLink>
                     </BreadcrumbItem>
 

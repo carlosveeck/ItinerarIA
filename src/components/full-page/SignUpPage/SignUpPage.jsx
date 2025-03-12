@@ -59,11 +59,19 @@ function SignUpPage() {
     const [senha0, setSenha0] = useState("");
     const [senha1, setSenha1] = useState("");
     const [preferencias, setPreferencias] = useState("");
+    const [email, setEmail] = useState("");
+    const [birthDate, setBirthDate] = useState("");
+    const [cellphone, setCellphone] = useState("");
+    const [country, setCountry] = useState("");
 
     const handleChangeUser = (e) => setUser(e.target.value);
     const handleChangeSenha0 = (e) => setSenha0(e.target.value);
     const handleChangeSenha1 = (e) => setSenha1(e.target.value);
     const handleChangePreferencias = (e) => setPreferencias(e.target.value);
+    const handleChangeEmail = (e) => setEmail(e.target.value);
+    const handleChangeBirthDate = (e) => setBirthDate(e.target.value);
+    const handleChangeCellphone = (e) => setCellphone(e.target.value);
+    const handleChangeCountry = (e) => setCountry(e.target.value);
 
     const validarSenha = (senha) => {
         const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -107,32 +115,49 @@ function SignUpPage() {
 
                 <hr />
 
-                <div className="signup-main-div-inputs">
-                    <input type="text" placeholder="Usuário" onChange={handleChangeUser}/>
+                <div className="signup-main-div-2">
+                    <div className="signup-main-div-inputs">
+                        <input className="signup-main-div-inputs-input" type="text" placeholder="Nome completo" onChange={handleChangeUser}/>
 
-                    <div className={(senhaValida || senha0 === "") ? "signup-password-container" : "signup-password-container-wrong"}>
-                        <input
-                            type={mostrarSenha0 ? "text" : "password"}
-                            placeholder="Senha"
-                            onChange={handleChangeSenha0}
-                        />
-                        <button onClick={toggleSenha0} className="signup-eye-button">
-                            {mostrarSenha0 ? <Eye /> : <EyeOff />}
-                        </button>
+                        <input className="signup-main-div-inputs-input" type="email" placeholder="E-mail" onChange={handleChangeEmail}/>
+
+                        <div className={(senhaValida || senha0 === "") ? "signup-password-container" : "signup-password-container-wrong"}>
+                            <input className="signup-main-div-inputs-input"
+                                type={mostrarSenha0 ? "text" : "password"}
+                                placeholder="Senha"
+                                onChange={handleChangeSenha0}
+                            />
+                            <button onClick={toggleSenha0} className="signup-eye-button">
+                                {mostrarSenha0 ? <Eye /> : <EyeOff />}
+                            </button>
+                        </div>
+
+                        <div className={(senhasIguais || senha1 === "") ? "signup-password-container" : "signup-password-container-wrong"}>
+                            <input className="signup-main-div-inputs-input"
+                                type={mostrarSenha1 ? "text" : "password"}
+                                placeholder="Confirmar senha"
+                                onChange={handleChangeSenha1}
+                            />
+                            <button onClick={toggleSenha1} className="signup-eye-button">
+                                {mostrarSenha1 ? <Eye /> : <EyeOff />}
+                            </button>
+                        </div>
                     </div>
 
-                    <div className={(senhasIguais || senha1 === "") ? "signup-password-container" : "signup-password-container-wrong"}>
-                        <input
-                            type={mostrarSenha1 ? "text" : "password"}
-                            placeholder="Confirmar senha"
-                            onChange={handleChangeSenha1}
-                        />
-                        <button onClick={toggleSenha1} className="signup-eye-button">
-                            {mostrarSenha1 ? <Eye /> : <EyeOff />}
-                        </button>
-                    </div>
+                    <div className="signup-main-div-inputs">
+                    <input
+                        className={`date-input ${birthDate === "" ? "null" : ""}`}
+                        type="date"
+                        value={ birthDate }
+                        onChange={handleChangeBirthDate}
+                    />
 
-                    <input type="text" placeholder="Preferências" onChange={handleChangePreferencias}/>
+                    <input className="signup-main-div-inputs-input" type="text" placeholder="Celular" onChange={handleChangeCellphone}/>
+
+                    <input className="signup-main-div-inputs-input" type="text" placeholder="País" onChange={handleChangeCountry}/>
+
+                    <input className="signup-main-div-inputs-input" type="text" placeholder="Preferências em viagens" onChange={handleChangePreferencias}/> 
+                    </div>
                 </div>
 
                 {/* mensagem de erro caso a senha0 não seja válida */}
@@ -148,8 +173,7 @@ function SignUpPage() {
 
                 <div className="signup-main-div-buttons">
                     <button
-                        className={(!senhaValida || !senhasIguais || user.length <= 0 || preferencias.length <= 0) ? "signup-main-div-buttons-disabled" : "signup-main-div-buttons-normal"}
-                        onClick={() => userSubmit()}
+                        className={(!senhaValida || !senhasIguais || user.length <= 0 || preferencias.length <= 0 || cellphone.length <= 0 || birthDate.length <= 0 || country.length <= 0 || email.length <= 0) ? "signup-main-div-buttons-disabled" : "signup-main-div-buttons-normal"}
                     >
                         Cadastrar
                     </button>
