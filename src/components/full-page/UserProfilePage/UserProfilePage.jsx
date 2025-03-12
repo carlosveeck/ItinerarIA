@@ -96,21 +96,59 @@ function UserProfilePage()
 {
     const navigate = useNavigate();
 
+    const [editingProfile, setEditingProfile] = useState(0);
+
+    const [newCountry, setNewCountry] = useState("");
+    const [newDate, setNewDate] = useState("");
+    const [newPreferencies, setNewPreferencies] = useState("");
+
+    const handleChangeCountry = (e) => setNewCountry(e.target.value);
+    const handleChangeDate = (e) => setNewDate(e.target.value);
+    const handleChangePreferencies = (e) => setNewPreferencies(e.target.value);
+
     const { user, isAuthLoaded } = useAuth();
     useEffect(() => {
-            console.log("ItineraryPage → Auth Loaded:", isAuthLoaded, "User:", user);
+        console.log("ItineraryPage → Auth Loaded:", isAuthLoaded, "User:", user);
+
+        if (!isAuthLoaded) return; // Aguarda o carregamento completo antes de tomar ação
+
+        if (!user) {
+            console.log("Redirecionando para /login...");
+            navigate("/login");
+        }
+    }, [isAuthLoaded, user, navigate]);
     
-            if (!isAuthLoaded) return; // Aguarda o carregamento completo antes de tomar ação
+    if (!isAuthLoaded) return <div>Carregando...</div>;
     
-            if (!user) {
-                console.log("Redirecionando para /login...");
-                navigate("/login");
-            }
-        }, [isAuthLoaded, user, navigate]);
-    
-        if (!isAuthLoaded) return <div>Carregando...</div>;
-    
-        if (!user) return null;
+    if (!user) return null;
+
+    const editingContent = {
+
+        0:  <>
+                <h1>{user.username}</h1>
+                <button 
+                    className="user-main-content-div-1-div-button"
+                    onClick={() => setEditingProfile(1)}>
+                        Editar perfil
+                </button>
+            </>,
+
+        1:  <div className="edit-div">
+                <label className="edit-div-label">País</label>
+                <input className="normal-input" onChange={handleChangeCountry} placeholder="Novo País" />
+
+                <label className="edit-div-label">Nascimento</label>
+                <input className="normal-input" onChange={handleChangeDate} type="date"/>
+
+                <label className="edit-div-label">Preferências</label>
+                <textarea className="preferencies-input" onChange={handleChangePreferencies} placeholder="Novas preferências" />
+
+                <div className="edit-div-buttons">
+                    <button className="edit-div-buttons-button1">Salvar</button>
+                    <button className="edit-div-buttons-button2" onClick={() => setEditingProfile(0)}>Cancelar</button>
+                </div>
+            </div>,
+    };
 
     return (
         <div className="user-full-page">
@@ -138,10 +176,8 @@ function UserProfilePage()
             <div className="user-main-content-div-1">
                 <img className="user-profile-pic" src={default_user_icon} />
 
-                <div>
-                    <h1>{user.username}</h1>
-                    
-                    <button>Editar perfil</button>
+                <div className="user-main-content-div-1-div">                    
+                    { editingContent[editingProfile] || <></> }
                 </div>
             </div>
 
@@ -149,7 +185,7 @@ function UserProfilePage()
                 <div className="user-main-content-div-2-fit-content">
                     <div className="user-main-content-div-2-div">
                         <h1>Nome de usuário</h1>
-                        <h2>placeholder da Silva</h2>
+                        <h2>{user.username}</h2>
                     </div>
 
                     <hr />
@@ -163,7 +199,7 @@ function UserProfilePage()
 
                     <div className="user-main-content-div-2-div">
                         <h1>Data de nascimento</h1>
-                        <h2>dd/mm/yyyy</h2>
+                        <h2>YYYY-MM-DD</h2>
                     </div>
 
                     <hr />
