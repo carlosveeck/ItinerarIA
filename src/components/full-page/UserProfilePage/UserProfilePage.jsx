@@ -10,6 +10,8 @@ import default_user_icon from "@/assets/default-user-pic.jpg"
 
 import "./UserProfilePage.css"
 import "../LandingPage/LandingPage.css"
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 async function send_msg(token){
     const response = await fetch(`http://127.0.0.1:8000/profile`, {
@@ -24,6 +26,39 @@ async function send_msg(token){
     console.log(response);
     console.log(reply);
     return reply;
+}
+
+async function send_profile(msg, token){
+    const response = await fetch(`http://127.0.0.1:8000/att_profile`, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        },
+        body: JSON.stringify(msg),
+    })
+
+    const reply = await response.text();
+    console.log(response);
+    console.log(reply);
+    return reply;
+}
+
+function profilechange(pais, data, pref, token){
+
+    send_profile({pais: pais, data_nascimento: data, preferencias: pref}, token);
+    send_msg(token).then(function(rep){
+        let rep2 = JSON.parse(rep);
+        console.log(rep2);
+        var placeuser = document.getElementById("user");
+        placeuser.innerHTML = rep2["usuario"]; 
+        var placeplace = document.getElementById("pais");
+        placeplace.innerHTML = rep2["pais"]; 
+        var placedate = document.getElementById("data");
+        placedate.innerHTML = rep2["data_nascimento"];
+        var placepref = document.getElementById("pref");
+        placepref.innerHTML = rep2["preferencias"];  
+    })
 }
 
 function LogoutButton()
@@ -119,7 +154,7 @@ function UserProfilePage()
     const [editingProfile, setEditingProfile] = useState(0);
 
     const [newCountry, setNewCountry] = useState("");
-    const [newDate, setNewDate] = useState("");
+    const [newDate, setNewDate] = useState(new Date());
     const [newPreferencies, setNewPreferencies] = useState("");
 
     const handleChangeCountry = (e) => setNewCountry(e.target.value);
@@ -178,7 +213,7 @@ function UserProfilePage()
                 <textarea className="preferencies-input" onChange={handleChangePreferencies} placeholder="Novas preferências" />
 
                 <div className="edit-div-buttons">
-                    <button className="edit-div-buttons-button1">Salvar</button>
+                    <button className="edit-div-buttons-button1" onClick={() => profilechange(newCountry, newDate, newPreferencies, token)}>Salvar</button>
                     <button className="edit-div-buttons-button2" onClick={() => setEditingProfile(0)}>Cancelar</button>
                 </div>
             </div>,
