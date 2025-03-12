@@ -1,12 +1,47 @@
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { useAuth } from "../../../context/AuthContext";
+import { useToken } from "../../../context/TokenContext";
+
 
 import "./SignUpPage.css"
 
+async function log_user(msg){
+    const response = await fetch(`http://127.0.0.1:8000/login`, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(msg),
+    })
+
+    const reply = await response.text()
+    // console.log(response)
+    // console.log(reply)
+    return [response.status, reply];
+}
+
+async function new_user(msg){
+    const response = await fetch(`http://127.0.0.1:8000/register`, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(msg),
+    })
+
+    const reply = await response.text()
+    // console.log(response)
+    // console.log(reply)
+    return [response.status, reply];
+}
+
 function SignUpPage() {
 
+    const { call } = useToken();
+    const { login } = useAuth();
     const navigate = useNavigate();
 
     const [mostrarSenha0, setMostrarSenha0] = useState(false);
@@ -44,6 +79,28 @@ function SignUpPage() {
     };
     const senhaValida = validarSenha(senha0);
     const senhasIguais = (senha0 === senha1);
+
+    const userSubmit = () => {
+
+        if (senhaValida && senhasIguais && user.trim()) {
+            new_user({usuario: user, senha: senha0}).then(function(reply){
+                console.log(reply);
+                if(reply[0] == 200){
+                    const userData = { user };
+                    login(userData);
+                    log_user({usuario: user, senha: senha0}).then(function(rep){
+                        console.log(rep);
+                        let t = (JSON.parse(rep[1]))["access_token"];
+                        console.log(t);
+                        call(t);
+                        navigate("/");
+                    })
+                } else{
+                    alert("Usuário já existe!");
+                }
+            })
+        }
+    };
 
     return (
         <div className="signup-full-page">
@@ -98,6 +155,7 @@ function SignUpPage() {
                 <div className="signup-main-div-buttons">
                     <button
                         className={(!senhaValida || !senhasIguais || user.length <= 0) ? "signup-main-div-buttons-disabled" : "signup-main-div-buttons-normal"}
+                        onClick={() => userSubmit()}
                     >
                         Cadastrar
                     </button>

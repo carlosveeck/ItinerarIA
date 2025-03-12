@@ -5,10 +5,27 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 import { useAuth } from "../../../context/AuthContext";
+import { useToken } from "../../../context/TokenContext";
+
+async function log_user(msg){
+    const response = await fetch(`http://127.0.0.1:8000/login`, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(msg),
+    })
+
+    const reply = await response.text()
+    console.log(response)
+    console.log(reply)
+    return [response.status, reply];
+}
 
 function LoginPage() {
 
-    const { login } = useAuth();
+    const { call } = useToken();
+    const { user, login } = useAuth();
     const navigate = useNavigate();
 
     const [mostrarSenha, setMostrarSenha] = useState(false);
@@ -24,10 +41,19 @@ function LoginPage() {
     const handleLogin = () => {
         if (username && senhaInput)
         {
-            const userData = { username };
-            login(userData); // Salva no contexto e localStorage
-
-            navigate("/"); // Redireciona após login
+            log_user({usuario: username, senha: senhaInput}).then(function(rep){
+                console.log(rep);
+                if(rep[0] == 200){
+                    const userData = { username };
+                    let t = (JSON.parse(rep[1]))["access_token"];
+                    console.log(t);
+                    call(t);
+                    login(userData);
+                    navigate("/");
+                } else{
+                    alert("Usuário não existe!");
+                }
+            });
         }
         else
         {

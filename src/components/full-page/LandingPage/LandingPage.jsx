@@ -6,16 +6,19 @@ import { Button } from "../../ui/button";
 import "./LandingPage.css";
 
 import { useAuth } from "@/context/AuthContext";
+import { useToken } from "@/context/TokenContext";
 import Carousel from "@/components/handmade-UI/Carousel/Carousel";
 import laptopImg from "../../../assets/laptop-template(final).png"
 
 function LogoutButton()
 {
     const { logout } = useAuth();
+    const { reset } = useToken();
     const navigate = useNavigate();
 
     const handleLogout = () => {
         logout();
+        reset();
         navigate("/"); // Redireciona para login após logout
     };
 

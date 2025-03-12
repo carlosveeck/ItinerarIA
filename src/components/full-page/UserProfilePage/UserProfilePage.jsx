@@ -4,20 +4,40 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "../../ui/button";
 
 import { useAuth } from "@/context/AuthContext";
+import { useToken } from "../../../context/TokenContext";
 
 import default_user_icon from "@/assets/default-user-pic.jpg"
 
 import "./UserProfilePage.css"
 import "../LandingPage/LandingPage.css"
 
+async function send_msg(token){
+    const response = await fetch(`http://127.0.0.1:8000/profile`, {
+        method: 'GET',
+        headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        },
+    })
+
+    const reply = await response.text();
+    console.log(response);
+    console.log(reply);
+    return reply;
+}
+
 function LogoutButton()
 {
     const { logout } = useAuth();
+    const { token, reset } = useToken();
     const navigate = useNavigate();
 
     const handleLogout = () => {
+        //logout();
+        //reset();
         navigate("/"); // Redireciona para login após logout
         setTimeout(() => logout(), 0); // Depois, faz logout
+        setTimeout(() => reset(), 0);
     };
 
     return (
@@ -107,16 +127,30 @@ function UserProfilePage()
     const handleChangePreferencies = (e) => setNewPreferencies(e.target.value);
 
     const { user, isAuthLoaded } = useAuth();
+    const { token } = useToken();
     useEffect(() => {
-        console.log("ItineraryPage → Auth Loaded:", isAuthLoaded, "User:", user);
-
-        if (!isAuthLoaded) return; // Aguarda o carregamento completo antes de tomar ação
-
-        if (!user) {
-            console.log("Redirecionando para /login...");
-            navigate("/login");
-        }
-    }, [isAuthLoaded, user, navigate]);
+            console.log("ItineraryPage → Auth Loaded:", isAuthLoaded, "User:", user);
+    
+            if (!isAuthLoaded) return; // Aguarda o carregamento completo antes de tomar ação
+    
+            if (!user) {
+                console.log("Redirecionando para /login...");
+                navigate("/login");
+            }
+            send_msg(token).then(function(rep){
+                let rep2 = JSON.parse(rep);
+                console.log(rep2);
+                //divida tecnica :^)
+                var placeuser = document.getElementById("user");
+                placeuser.innerHTML = rep2["usuario"]; 
+                var placeplace = document.getElementById("pais");
+                placeplace.innerHTML = rep2["pais"]; 
+                var placedate = document.getElementById("data");
+                placedate.innerHTML = rep2["data_nascimento"];
+                var placepref = document.getElementById("pref");
+                placepref.innerHTML = rep2["preferencias"];  
+            })
+        }, [isAuthLoaded, user, navigate]);
     
     if (!isAuthLoaded) return <div>Carregando...</div>;
     
@@ -185,28 +219,28 @@ function UserProfilePage()
                 <div className="user-main-content-div-2-fit-content">
                     <div className="user-main-content-div-2-div">
                         <h1>Nome de usuário</h1>
-                        <h2>{user.username}</h2>
+                        <h2 id="user"></h2>
                     </div>
 
                     <hr />
 
                     <div className="user-main-content-div-2-div">
                         <h1>País</h1>
-                        <h2>placeholder</h2>
+                        <h2 id="pais"></h2>
                     </div>
 
                     <hr />
 
                     <div className="user-main-content-div-2-div">
                         <h1>Data de nascimento</h1>
-                        <h2>YYYY-MM-DD</h2>
+                        <h2 id="data"></h2>
                     </div>
 
                     <hr />
 
                     <div className="user-main-content-div-2-div">
                         <h1>Preferências</h1>
-                        <h2>placeholder</h2>
+                        <h2 id="pref"></h2>
                     </div>
                 </div>
             </div>
