@@ -25,7 +25,7 @@ async function log_user(msg){
 function LoginPage() {
 
     const { call } = useToken();
-    const { login } = useAuth();
+    const { user, login } = useAuth();
     const navigate = useNavigate();
 
     const [mostrarSenha, setMostrarSenha] = useState(false);
@@ -41,15 +41,15 @@ function LoginPage() {
     const handleLogin = () => {
         if (username && senhaInput)
         {
-            log_user({usuario: user, senha: senha}).then(function(rep){
+            log_user({usuario: username, senha: senhaInput}).then(function(rep){
                 console.log(rep);
                 if(rep[0] == 200){
-                    const userData = { user };
+                    const userData = { username };
                     let t = (JSON.parse(rep[1]))["access_token"];
                     console.log(t);
                     call(t);
                     login(userData);
-                    navigate("/chatbot");
+                    navigate("/");
                 } else{
                     alert("Usuário não existe!");
                 }

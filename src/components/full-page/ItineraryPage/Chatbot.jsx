@@ -4,7 +4,7 @@ import { ArrowUp } from "lucide-react";
 import NoItineraryBreadcrumb from "../../handmade-UI/noItineraryBreadcrumb";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { useToken } from "@/context/TokenContext";;
+import { useToken } from "@/context/TokenContext";
 async function send_msg(msg, token){
     const response = await fetch(`http://127.0.0.1:8000/prompt`, {
         method: 'POST',
