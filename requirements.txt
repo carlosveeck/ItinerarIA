@@ -1,3 +1,7 @@
 fastapi
 uvicorn
 openai
+python-jose
+bcrypt
+sqlalchemy
+pytest
