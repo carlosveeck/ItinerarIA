@@ -7,8 +7,7 @@ from jose import jwt, JWTError
 import datetime
 from pydantic import BaseModel
 
-from database import login_aux,criar_usuario,att_preferencias,pegar_preferencias,salvar_itinerario,pegar_itinerario,pegar_ultimo_itinerario,salvar_ultimo_itinerario
-
+from database import login_aux,criar_usuario,atualizar_perfil,pegar_preferencias,salvar_itinerario,pegar_itinerario,pegar_ultimo_itinerario,salvar_ultimo_itinerario,pegar_perfil
 SECRET_KEY = "voce nao esta vendo isso"
 ALGORITHM = "HS256"
 
@@ -43,7 +42,6 @@ historico = [
 class RegisterRequest(BaseModel):
     usuario: str
     senha: str
-    preferencias: str
 
 class LoginRequest(BaseModel):
     usuario: str
@@ -51,6 +49,11 @@ class LoginRequest(BaseModel):
 
 class PromptRequest(BaseModel):
     prompt: str
+
+class ProfileRequest(BaseModel):
+    pais: str
+    data_nascimento : datetime.date
+    preferencias : str
 
 openai.api_key = ""
 
@@ -79,7 +82,6 @@ async def base():
 @app.post("/register")
 def register(data : RegisterRequest):
     if(criar_usuario(data.usuario,data.senha)):
-        att_preferencias(data.usuario,data.preferencias)
         return {"validado":"valido"}
     else:
         raise HTTPException(status_code=400, detail="Usuario ou senha inválido")
@@ -128,3 +130,13 @@ def ultimo_itinerario(usuario:str = Depends(verificar_jwt)):
 def salvar(itinerario:dict,usuario:str = Depends(verificar_jwt)):
     salvar_ultimo_itinerario(usuario,itinerario)
     return {"salvo": "salvo"}
+
+@app.post("/att_profile")
+def att_perfil(dados : ProfileRequest,usuario:str = Depends(verificar_jwt)):
+    atualizar_perfil(usuario,dados.pais,dados.data_nascimento,dados.preferencias)
+    return {"att":"att"}
+
+@app.get("/profile")
+def perfil(usuario:str = Depends(verificar_jwt)):
+    perf = pegar_perfil(usuario)
+    return {"usuario" : usuario,"pais" : perf[0],"preferencias" : perf[1],"data_nascimento" : perf[2]}

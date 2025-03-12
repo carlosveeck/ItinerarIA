@@ -14,7 +14,7 @@ Base.metadata.create_all(bind=db)
 with Session() as session:
     def criar_usuario(nome,senha):
         try:
-            if(aux(senha) and criar_nome(nome)):
+            if(aux(senha) and criar_nome(nome) and verificar_usuario(nome)):
                 it = Itinerarios()
                 session.add(it)
                 session.commit()
@@ -47,11 +47,6 @@ with Session() as session:
 
     def pegar_preferencias(usuario):
         return session.query(Usuario,Detalhes).join(Detalhes).filter(Usuario.nome == usuario).with_entities(Detalhes.preferencias).scalar()
-    
-    def att_preferencias(usuario,preferencias):
-            aux = session.query(Detalhes).join(Usuario).filter(Usuario.nome == usuario).first()
-            aux.preferencias = preferencias 
-            session.commit()
 
     def salvar_itinerario(usuario,itinerario):
         aux = json.dumps(itinerario)
@@ -73,3 +68,17 @@ with Session() as session:
         it = session.query(Itinerarios).join(Usuario).filter(Usuario.nome == usuario).first()
         return json.loads(it.ultimo_itinerario)
         
+    def atualizar_perfil(usuario,pais,data_nascimento,preferencias):
+        aux = session.query(Detalhes).join(Usuario).filter(Usuario.nome == usuario).first()
+        aux.pais = pais
+        aux.preferencias = preferencias
+        aux.data_nascimento = data_nascimento
+        session.commit()
+    
+    def pegar_perfil(usuario):
+        aux = session.query(Detalhes.pais,Detalhes.preferencias,Detalhes.data_nascimento).join(Usuario).filter(Usuario.nome == usuario).first()
+        return aux
+    
+    def verificar_usuario(usuario):
+        aux = session.query(Usuario).filter(Usuario.nome == usuario).first()
+        return aux
