@@ -1,4 +1,4 @@
-from sqlalchemy import Column,Integer,String,ForeignKey,JSON
+from sqlalchemy import Column,Integer,String,ForeignKey,JSON,Date
 from sqlalchemy.orm import declarative_base,relationship
 
 from entiity_services import criar_hash_senha
@@ -27,6 +27,9 @@ class Detalhes(Base):
     __tablename__ = "detalhes"
     id = Column(Integer,primary_key=True,autoincrement=True)
     preferencias = Column(String)
+    pais = Column(String)
+    data_nascimento = Column(Date)
+
 
     relacao_usuario = relationship("Usuario",back_populates="relacao_detalhes")
 
