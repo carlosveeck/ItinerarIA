@@ -81,4 +81,7 @@ with Session() as session:
     
     def verificar_usuario(usuario):
         aux = session.query(Usuario).filter(Usuario.nome == usuario).first()
-        return aux
+        if aux == None:
+            return True
+        else:
+            return False
