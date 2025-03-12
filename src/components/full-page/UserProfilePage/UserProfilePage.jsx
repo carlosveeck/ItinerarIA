@@ -91,6 +91,7 @@ function UserIcon()
     );
 }
 
+// actual page
 function UserProfilePage()
 {
     const navigate = useNavigate();
@@ -147,22 +148,8 @@ function UserProfilePage()
             <div className="user-main-content-div-2">
                 <div className="user-main-content-div-2-fit-content">
                     <div className="user-main-content-div-2-div">
-                        <h1>Nome completo</h1>
+                        <h1>Nome de usuário</h1>
                         <h2>placeholder da Silva</h2>
-                    </div>
-
-                    <hr />
-
-                    <div className="user-main-content-div-2-div">
-                        <h1>Email</h1>
-                        <h2>placeholder@email.com</h2>
-                    </div>
-
-                    <hr />
-
-                    <div className="user-main-content-div-2-div">
-                        <h1>Celular</h1>
-                        <h2>&#40;11&#41; 9 1234-5678</h2>
                     </div>
 
                     <hr />
