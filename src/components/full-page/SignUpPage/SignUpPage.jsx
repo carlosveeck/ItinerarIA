@@ -55,7 +55,7 @@ function SignUpPage() {
     };
 
     // variaveis para guardar o input do usuario e das senhas
-    const [user, setUser] = useState("");
+    const [username, setUsername] = useState("");
     const [senha0, setSenha0] = useState("");
     const [senha1, setSenha1] = useState("");
     // const [preferencias, setPreferencias] = useState("");
@@ -64,7 +64,7 @@ function SignUpPage() {
     // const [cellphone, setCellphone] = useState("");
     // const [country, setCountry] = useState("");
 
-    const handleChangeUser = (e) => setUser(e.target.value);
+    const handleChangeUsername = (e) => setUsername(e.target.value);
     const handleChangeSenha0 = (e) => setSenha0(e.target.value);
     const handleChangeSenha1 = (e) => setSenha1(e.target.value);
     // const handleChangePreferencias = (e) => setPreferencias(e.target.value);
@@ -82,13 +82,13 @@ function SignUpPage() {
 
     const userSubmit = () => {
 
-        if (senhaValida && senhasIguais && user.trim()) {
-            new_user({usuario: user, senha: senha0}).then(function(reply){
+        if (senhaValida && senhasIguais && username.trim()) {
+            new_user({usuario: username, senha: senha0}).then(function(reply){
                 console.log(reply);
                 if(reply[0] == 200){
-                    const userData = { user };
+                    const userData = { username };
                     login(userData);
-                    log_user({usuario: user, senha: senha0}).then(function(rep){
+                    log_user({usuario: username, senha: senha0}).then(function(rep){
                         console.log(rep);
                         let t = (JSON.parse(rep[1]))["access_token"];
                         console.log(t);
@@ -116,7 +116,7 @@ function SignUpPage() {
                 <hr />
 
                 <div className="signup-main-div-inputs">
-                    <input className="signup-main-div-inputs-input" type="text" placeholder="Usuário" onChange={handleChangeUser}/>
+                    <input className="signup-main-div-inputs-input" type="text" placeholder="Usuário" onChange={handleChangeUsername}/>
 
                     <div className={(senhaValida || senha0 === "") ? "signup-password-container" : "signup-password-container-wrong"}>
                         <input className="signup-main-div-inputs-input"
@@ -154,7 +154,7 @@ function SignUpPage() {
 
                 <div className="signup-main-div-buttons">
                     <button
-                        className={(!senhaValida || !senhasIguais || user.length <= 0) ? "signup-main-div-buttons-disabled" : "signup-main-div-buttons-normal"}
+                        className={(!senhaValida || !senhasIguais || username.length <= 0) ? "signup-main-div-buttons-disabled" : "signup-main-div-buttons-normal"}
                         onClick={() => userSubmit()}
                     >
                         Cadastrar
