@@ -29,6 +29,7 @@ async function send_msg(token){
 }
 
 async function send_profile(msg, token){
+    console.log(msg);
     const response = await fetch(`http://127.0.0.1:8000/att_profile`, {
         method: 'POST',
         headers: {
@@ -45,7 +46,9 @@ async function send_profile(msg, token){
 }
 
 function profilechange(pais, data, pref, token){
-
+    if(data == ""){
+        data = "0001-01-01";
+    }
     send_profile({pais: pais, data_nascimento: data, preferencias: pref}, token).then(function(rep){
         send_msg(token).then(function(rep){
             let rep2 = JSON.parse(rep);
@@ -55,9 +58,13 @@ function profilechange(pais, data, pref, token){
             var placeplace = document.getElementById("pais");
             placeplace.innerHTML = rep2["pais"]; 
             var placedate = document.getElementById("data");
-            placedate.innerHTML = rep2["data_nascimento"];
+            if(rep2["data_nascimento"] != "0001-01-01"){
+                placedate.innerHTML = rep2["data_nascimento"];
+            } else{
+                placedate.innerHTML = "";
+            }
             var placepref = document.getElementById("pref");
-            placepref.innerHTML = rep2["preferencias"];  
+            placepref.innerHTML = rep2["preferencias"];
         })
     })
 }
@@ -214,7 +221,7 @@ function UserProfilePage()
                 <textarea className="preferencies-input" onChange={handleChangePreferencies} placeholder="Novas preferências" />
 
                 <div className="edit-div-buttons">
-                    <button className="edit-div-buttons-button1" onClick={() => profilechange(newCountry, newDate, newPreferencies, token)}>Salvar</button>
+                    <button className="edit-div-buttons-button1" onClick={() => {profilechange(newCountry, newDate, newPreferencies, token); setEditingProfile(0)}}>Salvar</button>
                     <button className="edit-div-buttons-button2" onClick={() => setEditingProfile(0)}>Cancelar</button>
                 </div>
             </div>,
