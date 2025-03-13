@@ -46,18 +46,19 @@ async function send_profile(msg, token){
 
 function profilechange(pais, data, pref, token){
 
-    send_profile({pais: pais, data_nascimento: data, preferencias: pref}, token);
-    send_msg(token).then(function(rep){
-        let rep2 = JSON.parse(rep);
-        console.log(rep2);
-        var placeuser = document.getElementById("user");
-        placeuser.innerHTML = rep2["usuario"]; 
-        var placeplace = document.getElementById("pais");
-        placeplace.innerHTML = rep2["pais"]; 
-        var placedate = document.getElementById("data");
-        placedate.innerHTML = rep2["data_nascimento"];
-        var placepref = document.getElementById("pref");
-        placepref.innerHTML = rep2["preferencias"];  
+    send_profile({pais: pais, data_nascimento: data, preferencias: pref}, token).then(function(rep){
+        send_msg(token).then(function(rep){
+            let rep2 = JSON.parse(rep);
+            console.log(rep2);
+            var placeuser = document.getElementById("user");
+            placeuser.innerHTML = rep2["usuario"]; 
+            var placeplace = document.getElementById("pais");
+            placeplace.innerHTML = rep2["pais"]; 
+            var placedate = document.getElementById("data");
+            placedate.innerHTML = rep2["data_nascimento"];
+            var placepref = document.getElementById("pref");
+            placepref.innerHTML = rep2["preferencias"];  
+        })
     })
 }
 
