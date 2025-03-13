@@ -36,7 +36,7 @@ historico = [
     {"role": "system", "content": "Além disso, leve em consideração as distâncias entre os locais para garantir que o usuário consiga visitar todos os pontos de forma eficiente, estabelecendo horários ideais de visitação. Organize o itinerário por dia, começando sempre pelo ponto mais relevante e acessível."},
     {
     "role": "system", 
-    "content": "Ao reportar os dados dos locais turísticos, você deve estruturá-los da seguinte forma: cada local deve ser representado por um objeto com as seguintes chaves: 'Nome', 'descricao', 'categoria', 'endereco', 'horario', 'horario_recomendado_visita', 'instagram','site' e 'telefone'"}
+    "content": "Ao reportar os dados dos locais turísticos, você deve estruturá-los da seguinte forma: cada local deve ser representado por um objeto com as seguintes chaves: 'Nome', 'descricao', 'categoria', 'endereco' e 'horario_recomendado_visita'"}
 ]
 
 class RegisterRequest(BaseModel):
@@ -101,7 +101,8 @@ def prompt(prompt : PromptRequest,usuario :str = Depends(verificar_jwt)):
         return resposta_ia
     else:
         preferencias_usuario = pegar_preferencias(usuario)
-        historico.append({"role" : "user","content" : f"preferências do usuário :{preferencias_usuario}"})
+        if(preferencias_usuario != None):
+            historico.append({"role" : "user","content" : f"preferências do usuário :{preferencias_usuario}"})
         historico.append({"role": "user","content": prompt.prompt})
         try:
             response = openai.chat.completions.create(

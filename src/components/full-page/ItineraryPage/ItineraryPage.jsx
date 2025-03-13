@@ -23,6 +23,21 @@ async function send_msg(msg, token){
     return reply;
 }
 
+async function get_last(token){
+    const response = await fetch(`http://127.0.0.1:8000/reload`, {
+        method: 'GET',
+        headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        },
+    })
+
+    const reply = await response.text();
+    console.log(response);
+    console.log(reply);
+    return reply;
+}
+
 const ItineraryPage = () => {
 
     const navigate = useNavigate();
@@ -37,6 +52,17 @@ const ItineraryPage = () => {
     const [currItinerary, setCurrItinerary] = useState(0);
 
     const [showMenu, setShowMenu] = useState(true);
+
+    function lasthandle(){
+        setCurrItinerary(1)
+        get_last(token).then(function(rep){
+            let rep2 = JSON.parse(rep);
+            console.log(rep2);
+            var idop = document.getElementById("op1");
+            let texto = JSON.stringify(rep2[0]);
+            idop.innerHTML = rep; 
+        })
+    }
 
     useEffect(() => {
         console.log("ItineraryPage → Auth Loaded:", isAuthLoaded, "User:", user);
@@ -159,7 +185,7 @@ const ItineraryPage = () => {
             </div>
         </>,
         // itinerario 1
-        1: <div>Opção 1</div>,
+        1: <p id="op1">Opção 1</p>,
         // itinerario 2
         2: <div>Opção 2</div>,
         // itinerario 3
@@ -188,7 +214,7 @@ const ItineraryPage = () => {
                 <div className="itinerary-menu-itineraries">
                     <button
                         className={`itinerary-menu-itineraries-buttons ${currItinerary == 1 ? "current" : ""}`}
-                        onClick={() => setCurrItinerary(1)}> 
+                        onClick={() => lasthandle()}> 
                         <NotepadText strokeWidth={1.5} size={20}/> Itinerário 1
                     </button>
 
