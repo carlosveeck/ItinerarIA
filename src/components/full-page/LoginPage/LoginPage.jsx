@@ -25,31 +25,31 @@ async function log_user(msg){
 function LoginPage() {
 
     const { call } = useToken();
-    const { login } = useAuth();
+    const { user, login } = useAuth();
     const navigate = useNavigate();
 
     const [mostrarSenha, setMostrarSenha] = useState(false);
     const toggleSenha = () => setMostrarSenha(!mostrarSenha);
 
     // variaveis para guardar o input do usuario e da senha
-    const [user, setUser] = useState("");
-    const [senha, setSenha] = useState("");
+    const [username, setUsername] = useState("");
+    const [senhaInput, setSenhaInput] = useState("");
 
-    const handleChangeUser = (e) => setUser(e.target.value);
-    const handleChangeSenha = (e) => setSenha(e.target.value);
+    const handleChangeusername = (e) => setUsername(e.target.value);
+    const handleChangeSenhaInput = (e) => setSenhaInput(e.target.value);
 
     const handleLogin = () => {
-        if (user && senha)
+        if (username && senhaInput)
         {
-            log_user({usuario: user, senha: senha}).then(function(rep){
+            log_user({usuario: username, senha: senhaInput}).then(function(rep){
                 console.log(rep);
                 if(rep[0] == 200){
-                    const userData = { user };
+                    const userData = { username };
                     let t = (JSON.parse(rep[1]))["access_token"];
                     console.log(t);
                     call(t);
                     login(userData);
-                    navigate("/chatbot");
+                    navigate("/");
                 } else{
                     alert("Usuário não existe!");
                 }
@@ -76,12 +76,12 @@ function LoginPage() {
                 <hr />
 
                 <div className="login-main-div-inputs">
-                    <input type="text" placeholder="Usuário" onChange={handleChangeUser}/>
+                    <input type="text" placeholder="Usuário" onChange={handleChangeusername}/>
 
                     <div className="login-password-container">
                         <input
                             type={mostrarSenha ? "text" : "password"}
-                            onChange={handleChangeSenha}
+                            onChange={handleChangeSenhaInput}
                             placeholder="Senha"
                         />
                         <button onClick={toggleSenha} className="login-eye-button">
