@@ -46,25 +46,40 @@ async function send_profile(msg, token){
 }
 
 function profilechange(pais, data, pref, token){
-    if(data == ""){
+    // console.log("data", data);
+    if (data == "" || data == "----/--/--") {
         data = "0001-01-01";
     }
+
     send_profile({pais: pais, data_nascimento: data, preferencias: pref}, token).then(function(rep){
-        send_msg(token).then(function(rep){
+        send_msg(token).then(function(rep) {
+
             let rep2 = JSON.parse(rep);
-            console.log(rep2);
+            console.log("rep2: ", rep2);
             var placeuser = document.getElementById("user");
             placeuser.innerHTML = rep2["usuario"]; 
+
             var placeplace = document.getElementById("pais");
-            placeplace.innerHTML = rep2["pais"]; 
-            var placedate = document.getElementById("data");
-            if(rep2["data_nascimento"] != "0001-01-01"){
-                placedate.innerHTML = rep2["data_nascimento"];
-            } else{
-                placedate.innerHTML = "";
+            if (rep2["pais"] != "" && rep2["pais"] != null) {
+                placeplace.innerHTML = rep2["pais"]; 
+            } else {
+                placeplace.innerHTML = "---";
             }
+
+            var placedate = document.getElementById("data");
+            if (rep2["data_nascimento"] != "0001-01-01" && rep2["data_nascimento"] != null) {
+                placedate.innerHTML = rep2["data_nascimento"];
+            } else {
+                placedate.innerHTML = "----/--/--";
+            }
+
             var placepref = document.getElementById("pref");
-            placepref.innerHTML = rep2["preferencias"];
+            // placepref.innerHTML = rep2["preferencias"];
+            if (rep2["preferencias"] != "" && rep2["preferencias"] != null) {
+                placepref.innerHTML = rep2["preferencias"]; 
+            } else {
+                placepref.innerHTML = "---";
+            }
         })
     })
 }
@@ -157,6 +172,9 @@ function UserIcon()
 // actual page
 function UserProfilePage()
 {
+    const { user, isAuthLoaded } = useAuth();
+    const { token } = useToken();
+
     const navigate = useNavigate();
 
     const [editingProfile, setEditingProfile] = useState(0);
@@ -169,8 +187,26 @@ function UserProfilePage()
     const handleChangeDate = (e) => setNewDate(e.target.value);
     const handleChangePreferencies = (e) => setNewPreferencies(e.target.value);
 
-    const { user, isAuthLoaded } = useAuth();
-    const { token } = useToken();
+    const setAllInput = () => {
+        if (!isAuthLoaded) return; // Aguarda o carregamento completo antes de tomar ação
+        if (!user) {
+            console.log("Redirecionando para /login...");
+            navigate("/login");
+        }
+
+        const countryElement = document.getElementById("pais");
+        const dateElement = document.getElementById("data");
+        const preferencesElement = document.getElementById("pref");
+
+        setNewCountry(countryElement != null && countryElement.innerHTML != "---" ? countryElement.innerHTML : "");
+        // console.log("aoba: ", countryElement.innerHTML);
+        // console.log(countryElement.innerHTML == "---");
+        setNewDate(dateElement != null && dateElement != "----/--/--" ? dateElement.innerHTML : "");
+        // console.log("aoba: ", dateElement.innerHTML);
+        setNewPreferencies(preferencesElement != null && preferencesElement.innerHTML != "---" ? preferencesElement.innerHTML : "");
+        // console.log("aoba: ", preferencesElement.innerHTML);
+    };
+
     useEffect(() => {
             console.log("ItineraryPage → Auth Loaded:", isAuthLoaded, "User:", user);
     
@@ -181,17 +217,44 @@ function UserProfilePage()
                 navigate("/login");
             }
             send_msg(token).then(function(rep){
+                // let rep2 = JSON.parse(rep);
+                // console.log(rep2);
+                // //divida tecnica :^)
+                // var placeuser = document.getElementById("user");
+                // placeuser.innerHTML = rep2["usuario"]; 
+                // var placeplace = document.getElementById("pais");
+                // placeplace.innerHTML = rep2["pais"]; 
+                // var placedate = document.getElementById("data");
+                // placedate.innerHTML = rep2["data_nascimento"];
+                // var placepref = document.getElementById("pref");
+                // placepref.innerHTML = rep2["preferencias"];  
+
                 let rep2 = JSON.parse(rep);
-                console.log(rep2);
-                //divida tecnica :^)
+                console.log("rep2: ", rep2);
                 var placeuser = document.getElementById("user");
                 placeuser.innerHTML = rep2["usuario"]; 
+
                 var placeplace = document.getElementById("pais");
-                placeplace.innerHTML = rep2["pais"]; 
+                if (rep2["pais"] != "" && rep2["pais"] != null) {
+                    placeplace.innerHTML = rep2["pais"]; 
+                } else {
+                    placeplace.innerHTML = "---";
+                }
+
                 var placedate = document.getElementById("data");
-                placedate.innerHTML = rep2["data_nascimento"];
+                if (rep2["data_nascimento"] != "0001-01-01" && rep2["data_nascimento"] != null) {
+                    placedate.innerHTML = rep2["data_nascimento"];
+                } else {
+                    placedate.innerHTML = "----/--/--";
+                }
+
                 var placepref = document.getElementById("pref");
-                placepref.innerHTML = rep2["preferencias"];  
+                // placepref.innerHTML = rep2["preferencias"];
+                if (rep2["preferencias"] != "" && rep2["preferencias"] != null) {
+                    placepref.innerHTML = rep2["preferencias"]; 
+                } else {
+                    placepref.innerHTML = "---";
+                }
             })
         }, [isAuthLoaded, user, navigate]);
     
@@ -205,24 +268,24 @@ function UserProfilePage()
                 <h1>{user.username}</h1>
                 <button 
                     className="user-main-content-div-1-div-button"
-                    onClick={() => setEditingProfile(1)}>
+                    onClick={() => {setAllInput(); setEditingProfile(1)}}>
                         Editar perfil
                 </button>
             </>,
 
         1:  <div className="edit-div">
                 <label className="edit-div-label">País</label>
-                <input className="normal-input" onChange={handleChangeCountry} placeholder="Novo País" />
+                <input className="normal-input" value={newCountry} onChange={handleChangeCountry} placeholder="Novo País" />
 
                 <label className="edit-div-label">Nascimento</label>
-                <input className="normal-input" onChange={handleChangeDate} type="date"/>
+                <input className="normal-input" value={newDate} onChange={handleChangeDate} type="date"/>
 
                 <label className="edit-div-label">Preferências</label>
-                <textarea className="preferencies-input" onChange={handleChangePreferencies} placeholder="Novas preferências" />
+                <textarea className="preferencies-input" value={newPreferencies} onChange={handleChangePreferencies} placeholder="Novas preferências" />
 
                 <div className="edit-div-buttons">
                     <button className="edit-div-buttons-button1" onClick={() => {profilechange(newCountry, newDate, newPreferencies, token); setEditingProfile(0)}}>Salvar</button>
-                    <button className="edit-div-buttons-button2" onClick={() => setEditingProfile(0)}>Cancelar</button>
+                    <button className="edit-div-buttons-button2" onClick={() => {setAllInput(); setEditingProfile(0)}}>Cancelar</button>
                 </div>
             </div>,
     };

@@ -63,6 +63,11 @@
 
     background-color: var(--light-gray);
     font-family: figtree;
+
+    transition: 0.3s;
+} .user-main-content-div-1-div-button:hover {
+    background-color: #d8dfe3;
+    /* background-color: #e3e8e9; */
 }
 .user-main-content-div-1 img
 {
@@ -141,12 +146,22 @@
 .edit-div-buttons-button1
 {
     background-color: var(--green);
+    border: 1px solid var(--green);
     color: white;
+    transition: 0.3s;
+} .edit-div-buttons-button1:hover {
+    background-color: white;
+    color: var(--green);
 }
 .edit-div-buttons-button2
 {
     border: 1px solid var(--medium-dark-gray);
     background-color: var(--light-gray);
+    transition: 0.3s;
+} .edit-div-buttons-button2:hover {
+    background-color: #d8dfe3;
+    /* background-color: #e3e8e9; */
+    /* background-color: #d3d9db; */
 }
 
 .user-main-content-div-2
