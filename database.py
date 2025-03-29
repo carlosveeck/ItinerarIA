@@ -62,6 +62,10 @@ with Session() as session:
 
     def pegar_itinerario(usuario):
         it = session.query(Itinerarios).join(Usuario).filter(Usuario.nome == usuario).first()
+
+        if not it or it.itinerario_atual is None: # retorna json vazio caso não haja itinerario
+            return []
+
         return json.loads(it.itinerario_atual)
     
     def pegar_ultimo_itinerario(usuario):

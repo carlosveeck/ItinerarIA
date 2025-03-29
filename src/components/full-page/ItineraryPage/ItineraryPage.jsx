@@ -39,8 +39,9 @@ async function get_last(token){
     })
 
     const reply = await response.text();
-    console.log(response);
-    console.log(reply);
+    console.log("reponse: ", response);
+    console.log("reply: ", reply);
+
     return reply;
 }
 
@@ -155,7 +156,16 @@ const ItineraryPage = () => {
         get_last(token).then(function(rep) {
 
             let rep2 = JSON.parse(rep);
+
+            if (!rep2 || rep2.length === 0) {
+                console.log("Nenhum itinerário encontrado.");
+                console.log("it1: ", itinerario1, " / length: ", itinerario1.length);
+                
+                return;
+            }
+
             console.log("rep2: ", rep2);
+
             var idop = document.getElementById("op1");
             let texto = JSON.stringify(rep2[0]);
             if (idop != null) { idop.innerHTML = rep; }
@@ -169,6 +179,8 @@ const ItineraryPage = () => {
             }));
 
             setItinerario1(formattedItinerario);
+            
+            console.log("formatted it: ", formattedItinerario);
             console.log("it1: ", itinerario1);
         })
     };
@@ -182,6 +194,11 @@ const ItineraryPage = () => {
             console.log("Redirecionando para /login...");
             navigate("/login");
         }
+
+        // para renderizar o itinerario
+        // console.log (itinerario1.length)
+        lasthandle();
+        
     }, [isAuthLoaded, user, navigate]);
 
     if (!isAuthLoaded) return <div>Carregando...</div>;
@@ -273,13 +290,13 @@ const ItineraryPage = () => {
 
         // itinerario 1
         1: <>
-            { (itinerario1 == []) ? 
+            { (itinerario1.length == 0) ? 
                 PromptScreen[0]
             : 
                 <div className="show-itinerary-div"> { /* grid grid-cols-3 */ }
                     { itinerario1.map((elemento, index) => (
 
-                        <> 
+                        <React.Fragment key={index}> 
                             <div key={index} className="itinerary-grid-div">
                                 <p className="itinerary-grid-div-h1">{elemento.name}</p>
 
@@ -295,8 +312,8 @@ const ItineraryPage = () => {
                                 <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong3">Horario:</strong> {elemento.time}</p>
                             </div>
 
-                            {index != 2 && <div className="vertical-line" />}
-                        </>
+                            { index != 2 && <div className="vertical-line" /> }
+                        </React.Fragment>
                     ))}
                 </div>
             }
