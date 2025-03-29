@@ -1,13 +1,24 @@
 from pydantic import BaseModel
+from datetime import datetime,date
 
-class promptrequest(BaseModel):
-    model : str
-    messages : list
-    max_tokens : int
-    temperature : float
+class RegisterRequest(BaseModel):
+    usuario: str
+    senha: str
 
-class promptresponse(BaseModel):
-    message : dict
-    #para controle de tokens usados
-    usage : dict
+class LoginRequest(BaseModel):
+    usuario: str
+    senha: str
 
+class PromptRequest(BaseModel):
+    prompt: str
+
+class ProfileRequest(BaseModel):
+    pais: str
+    data_nascimento : date
+    preferencias : str
+
+class SaveItinerary(BaseModel):
+    itinerario : dict
+
+class LastItinerary(BaseModel):
+    num : int
