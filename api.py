@@ -18,7 +18,8 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 app = FastAPI()
 
 origins = [
-    "http://localhost:5173", 
+    "http://localhost:5173",
+    "https://itineraria-front.onrender.com"
 ]
 
 app.add_middleware(
