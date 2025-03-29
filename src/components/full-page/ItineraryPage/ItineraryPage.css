@@ -198,11 +198,15 @@
 /* Prompt screen */
 .prompt-welcome-p
 {
+    align-self: center;
     width: fit-content;
+    height: 75%;
 
     font-family: figtree-semibold;
     font-size: 32px;
     text-align: center;
+    justify-content: center;
+    align-content: center;
 
     background: linear-gradient(to right, var(--green), var(--blue), var(--purple));
     background-clip: text;
@@ -213,6 +217,29 @@
     color: white;
     background-color: var(--purple);
     -webkit-text-fill-color: white;
+}
+
+.prompt-pop-up
+{
+    height: fit-content;
+    width: fit-content;
+
+    align-self: center;
+    background-color: rgba(240, 244, 249, 0.5);
+
+    border: 1px solid var(--blueish-medium-gray);
+    border-radius: 10px;
+
+    padding: 15px 30px;
+
+    display: flex;
+    flex-direction: column;
+}
+.prompt-pop-up-h1 {
+    font-family: figtree;
+    color: var(--darker-gray);
+} .prompt-pop-up-h1 strong {
+    color: var(--red);
 }
 
 /* prompt input */
@@ -259,5 +286,72 @@
 }
 .prompt-input-div-button.input
 {
+    background-color: var(--greenish-blue);
+}
+
+.show-itinerary-div
+{
+    margin-top: 80px;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+}
+
+.itinerary-grid-div
+{
+    width: 30%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+    padding: 30px;
+    margin: 15px;
+
+    background-color: transparent;
+
+    font-family: figtree;
+} .itinerary-grid-div-h1 {
+
+    align-self: center;
+    width: fit-content;
+    height: fit-content;
+
+    font-family: figtree-semibold;
+    font-size: 28px;
+    text-align: center;
+    justify-content: center;
+    align-content: center;
+
+    background: linear-gradient(to right, var(--green), var(--blue), var(--purple));
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+} .itinerary-grid-div-h1::selection
+{
+    color: white;
+    background-color: var(--purple);
+    -webkit-text-fill-color: white;
+} .itinerary-grid-div-p {
+    font-family: figtree;
+    color: var(--black);
+} .itinerary-grid-div-p-strong1 {
+    color: var(--green);
+} .itinerary-grid-div-p-strong2 {
+    color: var(--blue);
+} .itinerary-grid-div-p-strong3 {
+    color: var(--purple);
+}
+
+.gap-div
+{
+    padding: 24px;
+}
+
+.vertical-line
+{
+    height: 80%;
+    width: 1px;
+    align-self: center;
     background-color: var(--greenish-blue);
 }
