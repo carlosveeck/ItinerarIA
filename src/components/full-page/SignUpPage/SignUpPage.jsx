@@ -8,7 +8,7 @@ import { useToken } from "../../../context/TokenContext";
 
 import "./SignUpPage.css"
 
-const API_URL: "https://itineraria-no5t.onrender.com"
+const API_URL = "https://itineraria-no5t.onrender.com"
 
 async function log_user(msg){
     const response = await fetch(`${API_URL}/login`, {
