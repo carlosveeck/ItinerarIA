@@ -340,7 +340,29 @@
 .landing-page-img
 {
     height: 550px;
-    margin: 150px;
+    margin-top: 150px;
+    margin-bottom: 75px;
+
+    filter: drop-shadow(0 0 50px rgba(62, 170, 197, 0.3));
+}
+.landing-page-img-div
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    font-family: poppins;
+    font-size: 20px;
+    color: var(--black);
+
+    margin-bottom: 75px;
+    gap: 20px;
+} .landing-page-img-div-fingerprint {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 .landing-page-features-div {
