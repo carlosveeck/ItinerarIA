@@ -4,8 +4,9 @@ from sqlalchemy.exc import IntegrityError
 from entities import Base,Usuario,Detalhes,Itinerarios
 from entiity_services import verificar_senha
 import json
+from collections import deque
 
-from entiity_services import criar_hash_senha,criar_nome,aux
+from entiity_services import criar_nome,aux
 
 db = create_engine("sqlite:///dados.db")
 Session = sessionmaker(bind=db)
@@ -54,20 +55,10 @@ with Session() as session:
         it.itinerario_atual = aux
         session.commit()
     
-    def salvar_ultimo_itinerario(usuario,itinerario):
-        aux = json.dumps(itinerario)
-        it = session.query(Itinerarios).join(Usuario).filter(Usuario.nome == usuario).first()
-        it.ultimo_itinerario = aux
-        session.commit()
-
     def pegar_itinerario(usuario):
         it = session.query(Itinerarios).join(Usuario).filter(Usuario.nome == usuario).first()
         return json.loads(it.itinerario_atual)
-    
-    def pegar_ultimo_itinerario(usuario):
-        it = session.query(Itinerarios).join(Usuario).filter(Usuario.nome == usuario).first()
-        return json.loads(it.ultimo_itinerario)
-        
+          
     def atualizar_perfil(usuario,pais,data_nascimento,preferencias):
         aux = session.query(Detalhes).join(Usuario).filter(Usuario.nome == usuario).first()
         aux.pais = pais
@@ -85,3 +76,18 @@ with Session() as session:
             return True
         else:
             return False
+        
+def salvar_ultimo_itinerario(usuario,itinerario):
+        aux = json.dumps(itinerario)
+        it = session.query(Itinerarios).join(Usuario).filter(Usuario.nome == usuario).first()
+        lista = deque([it._1itinerario,it._2itinerario,it._3itinerario],maxlen=3)
+        lista.appendleft(aux)
+        it._1itinerario,it._2itinerario,it._3itinerario = lista[0],lista[1],lista[2]
+        session.commit()    
+
+def pegar_ultimo_itinerario(usuario,num):
+    it = session.query(Itinerarios._1itinerario,Itinerarios._2itinerario,Itinerarios._3itinerario).join(Usuario).filter(Usuario.nome == usuario).first()
+    if it[num] != None:
+        return json.loads(it[num])
+    else:
+        return None

@@ -40,7 +40,9 @@ class Itinerarios(Base):
     __tablename__ = "itinerarios"
     id = Column(Integer,primary_key=True,autoincrement=True)
     itinerario_atual = Column(JSON)
-    ultimo_itinerario = Column(JSON)
+    _1itinerario = Column(JSON)
+    _2itinerario = Column(JSON)
+    _3itinerario = Column(JSON)
 
     relacao_usuario_2 = relationship("Usuario",back_populates="relacao_itinerario")
 

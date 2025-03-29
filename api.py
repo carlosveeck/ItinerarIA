@@ -4,8 +4,8 @@ import json
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.middleware.cors import CORSMiddleware
 from jose import jwt, JWTError
-import datetime
-from pydantic import BaseModel
+from datetime import datetime, timezone, timedelta
+from schemas import *
 
 from database import login_aux,criar_usuario,atualizar_perfil,pegar_preferencias,salvar_itinerario,pegar_itinerario,pegar_ultimo_itinerario,salvar_ultimo_itinerario,pegar_perfil
 SECRET_KEY = "voce nao esta vendo isso"
@@ -39,28 +39,12 @@ historico = [
     "content": "Ao reportar os dados dos locais turísticos, você deve estruturá-los da seguinte forma: cada local deve ser representado por um objeto com as seguintes chaves: 'Nome', 'descricao', 'categoria', 'endereco' e 'horario_recomendado_visita'"}
 ]
 
-class RegisterRequest(BaseModel):
-    usuario: str
-    senha: str
-
-class LoginRequest(BaseModel):
-    usuario: str
-    senha: str
-
-class PromptRequest(BaseModel):
-    prompt: str
-
-class ProfileRequest(BaseModel):
-    pais: str
-    data_nascimento : datetime.date
-    preferencias : str
-
 openai.api_key = ""
 
 def criar_jwt(username: str):
     payload = {
         "sub": username,
-        "exp": datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=1)
+        "exp": datetime.now(timezone.utc) + timedelta(hours=1)
     }
     token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
     return token
@@ -100,9 +84,9 @@ def prompt(prompt : PromptRequest,usuario :str = Depends(verificar_jwt)):
         resposta_ia = {"itinerario": [{"Nome": "Por favor insira uma chave OpenAI"}]}
         return resposta_ia
     else:
-        preferencias_usuario = pegar_preferencias(usuario)
-        if(preferencias_usuario != None):
-            historico.append({"role" : "user","content" : f"preferências do usuário :{preferencias_usuario}"})
+        perfil_usuario = list(pegar_perfil(usuario))
+        if(perfil_usuario != None):
+            historico.append({"role" : "system","content" : f"Na resposta leve em consideração o perfil do usuário(se houver): {perfil_usuario}"})
         historico.append({"role": "user","content": prompt.prompt})
         try:
             response = openai.chat.completions.create(
@@ -123,13 +107,13 @@ def prompt(prompt : PromptRequest,usuario :str = Depends(verificar_jwt)):
 def recarregar_itinerario(usuario: str = Depends(verificar_jwt)):
     return pegar_itinerario(usuario)
 
-@app.get("/last_itinerary")
-def ultimo_itinerario(usuario:str = Depends(verificar_jwt)):
-    return pegar_ultimo_itinerario(usuario)
+@app.post("/last_itinerary")
+def ultimo_itinerario(entrada : LastItinerary,usuario:str = Depends(verificar_jwt)):
+    return pegar_ultimo_itinerario(usuario,entrada.num)
 
-@app.post("/save")
-def salvar(itinerario:dict,usuario:str = Depends(verificar_jwt)):
-    salvar_ultimo_itinerario(usuario,itinerario)
+@app.post("/save_itinerary")
+def salvar(it : SaveItinerary,usuario:str = Depends(verificar_jwt)):
+    salvar_ultimo_itinerario(usuario,it.itinerario)
     return {"salvo": "salvo"}
 
 @app.post("/att_profile")
