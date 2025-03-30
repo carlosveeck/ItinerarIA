@@ -233,11 +233,69 @@ const ItineraryPage = () => {
         }
         else if (currItinerary == 2)
         {
-
+            if (currEdit == 1)
+                {
+                    setInputName(itinerario2[0].Nome);
+                    setInputDesc(itinerario2[0].descricao);
+                    setInputCateg(itinerario2[0].categoria);
+                    setInputAddress(itinerario2[0].endereco);
+                    setInputHora(itinerario2[0].horario_recomendado_visita);
+    
+                    // console.log(itinerario1[0].name);
+                }
+                else if (currEdit == 2)
+                {
+                    setInputName(itinerario2[1].Nome);
+                    setInputDesc(itinerario2[1].descricao);
+                    setInputCateg(itinerario2[1].categoria);
+                    setInputAddress(itinerario2[1].endereco);
+                    setInputHora(itinerario2[1].horario_recomendado_visita);
+    
+                    // console.log(itinerario1[1].name);
+                }
+                else if (currEdit == 3)
+                {
+                    setInputName(itinerario2[2].Nome);
+                    setInputDesc(itinerario2[2].descricao);
+                    setInputCateg(itinerario2[2].categoria);
+                    setInputAddress(itinerario2[2].endereco);
+                    setInputHora(itinerario2[2].horario_recomendado_visita);
+    
+                    // console.log(itinerario1[2].name);
+                }
         }
         else if (currItinerary == 3)
         {
+            if (currEdit == 1)
+            {
+                setInputName(itinerario3[0].Nome);
+                setInputDesc(itinerario3[0].descricao);
+                setInputCateg(itinerario3[0].categoria);
+                setInputAddress(itinerario3[0].endereco);
+                setInputHora(itinerario3[0].horario_recomendado_visita);
 
+                // console.log(itinerario1[0].name);
+            }
+            else if (currEdit == 2)
+            {
+                setInputName(itinerario3[1].Nome);
+                setInputDesc(itinerario3[1].descricao);
+                setInputCateg(itinerario3[1].categoria);
+                setInputAddress(itinerario3[1].endereco);
+                setInputHora(itinerario3[1].horario_recomendado_visita);
+
+                // console.log(itinerario1[1].name);
+            }
+            else if (currEdit == 3)
+            {
+                setInputName(itinerario3[2].Nome);
+                setInputDesc(itinerario3[2].descricao);
+                setInputCateg(itinerario3[2].categoria);
+                setInputAddress(itinerario3[2].endereco);
+                setInputHora(itinerario3[2].horario_recomendado_visita);
+
+                // console.log(itinerario1[2].name);
+            }
         }
 
         
@@ -262,9 +320,9 @@ const ItineraryPage = () => {
 
             console.log("rep2: ", rep2);
 
-            var idop = document.getElementById("op1");
-            let texto = JSON.stringify(rep2[0]);
-            if (idop != null) { idop.innerHTML = rep; }
+            //var idop = document.getElementById("op1");
+            //let texto = JSON.stringify(rep2[0]);
+            //if (idop != null) { idop.innerHTML = rep; }
 
             const formattedItinerario = rep2["itinerario"].map((item) => ({
                 Nome: item["Nome"],
@@ -281,14 +339,112 @@ const ItineraryPage = () => {
         })
     };
 
+    function lasthandle2(index) {
+
+        setCurrItinerary(2);
+        setItinerario2([]);
+
+        get_last({"num": index}, token).then(function(rep) {
+
+            let rep2 = JSON.parse(rep);
+
+            if (!rep2 || rep2.length === 0) {
+                console.log("Nenhum itinerário encontrado.");
+                console.log("it2: ", itinerario2, " / length: ", itinerario2.length);
+                
+                return;
+            }
+
+            console.log("rep2: ", rep2);
+
+            //var idop = document.getElementById("op1");
+            //let texto = JSON.stringify(rep2[0]);
+            //if (idop != null) { idop.innerHTML = rep; }
+
+            const formattedItinerario = rep2["itinerario"].map((item) => ({
+                Nome: item["Nome"],
+                descricao: item["descricao"],
+                categoria: item["categoria"],
+                endereco: item["endereco"],
+                horario_recomendado_visita: item["horario_recomendado_visita"],
+            }));
+            
+            setItinerario2(formattedItinerario);
+            
+            console.log("formatted it: ", formattedItinerario);
+            console.log("it2: ", itinerario1);
+        })
+    };
+
+    function lasthandle3(index) {
+
+        setCurrItinerary(3);
+        setItinerario3([]);
+
+        get_last({"num": index}, token).then(function(rep) {
+
+            let rep2 = JSON.parse(rep);
+
+            if (!rep2 || rep2.length === 0) {
+                console.log("Nenhum itinerário encontrado.");
+                console.log("it3: ", itinerario3, " / length: ", itinerario3.length);
+                
+                return;
+            }
+
+            console.log("rep2: ", rep2);
+
+            //var idop = document.getElementById("op1");
+            //let texto = JSON.stringify(rep2[0]);
+            //if (idop != null) { idop.innerHTML = rep; }
+
+            const formattedItinerario = rep2["itinerario"].map((item) => ({
+                Nome: item["Nome"],
+                descricao: item["descricao"],
+                categoria: item["categoria"],
+                endereco: item["endereco"],
+                horario_recomendado_visita: item["horario_recomendado_visita"],
+            }));
+            
+            setItinerario3(formattedItinerario);
+            
+            console.log("formatted it: ", formattedItinerario);
+            console.log("it3: ", itinerario3);
+        })
+    };
+
     function savechanges(index){
         itinerario1[index].Nome = inputName;
         itinerario1[index].horario_recomendado_visita = inputHora;
         itinerario1[index].descricao = inputDesc;
         itinerario1[index].categoria = inputCateg;
         itinerario1[index].endereco = inputAddress;
-        save({"itinerario": {"itinerario": itinerario1}, "index": index}, token).then(function(rep){
-            lasthandle(index);
+        save({"itinerario": {"itinerario": itinerario1}, "index": currItinerary - 1}, token).then(function(rep){
+            lasthandle(currItinerary - 1);
+            setCurrEditing(0);
+        });
+    };
+
+    function savechanges2(index){
+        itinerario2[index].Nome = inputName;
+        itinerario2[index].horario_recomendado_visita = inputHora;
+        itinerario2[index].descricao = inputDesc;
+        itinerario2[index].categoria = inputCateg;
+        itinerario2[index].endereco = inputAddress;
+        save({"itinerario": {"itinerario": itinerario2}, "index": currItinerary - 1}, token).then(function(rep){
+            lasthandle2(currItinerary - 1);
+            setCurrEditing(0);
+        });
+    };
+
+    function savechanges3(index){
+        itinerario3[index].Nome = inputName;
+        itinerario3[index].horario_recomendado_visita = inputHora;
+        itinerario3[index].descricao = inputDesc;
+        itinerario3[index].categoria = inputCateg;
+        itinerario3[index].endereco = inputAddress;
+        save({"itinerario": {"itinerario": itinerario3}, "index": currItinerary - 1}, token).then(function(rep){
+            lasthandle3(currItinerary - 1);
             setCurrEditing(0);
         });
     };
@@ -353,7 +509,13 @@ const ItineraryPage = () => {
                 }));
 
                 // setAI_responses(newResponses);
-                lasthandle(0);
+                if(currItinerary - 1 == 0){
+                    lasthandle(currItinerary - 1);
+                } else if(currItinerary - 1 == 1){
+                    lasthandle2(currItinerary - 1);
+                } else{
+                    lasthandle3(currItinerary - 1);
+                }
             })
         }
     };
@@ -463,12 +625,130 @@ const ItineraryPage = () => {
 
         // itinerario 2
         2: <>
-            { PromptScreen[0] }
+            { (itinerario2.length == 0) ? 
+                PromptScreen[0]
+            : 
+                <div className="show-itinerary-div"> { /* grid grid-cols-3 */ }
+                    { itinerario2.map((elemento, index) => (
+
+                        <React.Fragment key={index}> 
+                            <div key={index} className="itinerary-grid-div">
+                                { currEditing == (index + 1) ? 
+
+                                    <>
+                                        <div className="itinerary-name-div">
+                                            <input className="normal-input" value={inputName} onChange={handleChangeInputName} placeholder="Nome" />
+                                        </div>
+
+                                        <div className="gap-div" />
+
+                                        <textarea className="preferencies-input" value={inputDesc} onChange={handleChangeInputDesc} placeholder="Descrição" />
+
+                                        <div className="gap-div"></div>
+                                        <div className="gap-div"></div>
+
+                                        <input className="normal-input" value={inputCateg} onChange={handleChangeInputCateg} placeholder="Categoria" />
+                                        <input className="normal-input" value={inputAddress} onChange={handleChangeInputAddress} placeholder="Endereço" />
+                                        <input className="normal-input" value={inputHora} onChange={handleChangeInputHora} placeholder="Horario" />
+
+                                        <button onClick={() => savechanges2(index)}>salvar</button>
+                                        <button onClick={() => setCurrEditing(0)}>cancelar</button>
+                                    </>
+
+                                    :
+                                    
+                                    <>
+                                        <div className="itinerary-name-div">
+                                            <p className="itinerary-grid-div-h1">{elemento.Nome}</p>
+
+                                            <button className="edit-button" onClick={() => { setCurrEditing(index + 1); setItineraryInput(index + 1)}}>
+                                                <SquarePenIcon color="#8fa9af"/>
+                                            </button>
+                                        </div>
+
+                                        <div className="gap-div" />
+
+                                        <p className="itinerary-grid-div-p">{elemento.descricao}</p>
+
+                                        <div className="gap-div"></div>
+                                        <div className="gap-div"></div>
+
+                                        <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong1">Categoria:</strong> {elemento.categoria}</p>
+                                        <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong2">Endereço:</strong> {elemento.endereco}</p>
+                                        <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong3">Horario:</strong> {elemento.horario_recomendado_visita}</p>
+                                    </>
+                                }
+                            </div>
+
+                            { index != 2 && <div className="vertical-line" /> }
+                        </React.Fragment>
+                    ))}
+                </div>
+            }
         </>,
 
         // itinerario 3
         3: <>
-            { PromptScreen[0] }
+            { (itinerario3.length == 0) ? 
+                PromptScreen[0]
+            : 
+                <div className="show-itinerary-div"> { /* grid grid-cols-3 */ }
+                    { itinerario3.map((elemento, index) => (
+
+                        <React.Fragment key={index}> 
+                            <div key={index} className="itinerary-grid-div">
+                                { currEditing == (index + 1) ? 
+
+                                    <>
+                                        <div className="itinerary-name-div">
+                                            <input className="normal-input" value={inputName} onChange={handleChangeInputName} placeholder="Nome" />
+                                        </div>
+
+                                        <div className="gap-div" />
+
+                                        <textarea className="preferencies-input" value={inputDesc} onChange={handleChangeInputDesc} placeholder="Descrição" />
+
+                                        <div className="gap-div"></div>
+                                        <div className="gap-div"></div>
+
+                                        <input className="normal-input" value={inputCateg} onChange={handleChangeInputCateg} placeholder="Categoria" />
+                                        <input className="normal-input" value={inputAddress} onChange={handleChangeInputAddress} placeholder="Endereço" />
+                                        <input className="normal-input" value={inputHora} onChange={handleChangeInputHora} placeholder="Horario" />
+
+                                        <button onClick={() => savechanges3(index)}>salvar</button>
+                                        <button onClick={() => setCurrEditing(0)}>cancelar</button>
+                                    </>
+
+                                    :
+                                    
+                                    <>
+                                        <div className="itinerary-name-div">
+                                            <p className="itinerary-grid-div-h1">{elemento.Nome}</p>
+
+                                            <button className="edit-button" onClick={() => { setCurrEditing(index + 1); setItineraryInput(index + 1)}}>
+                                                <SquarePenIcon color="#8fa9af"/>
+                                            </button>
+                                        </div>
+
+                                        <div className="gap-div" />
+
+                                        <p className="itinerary-grid-div-p">{elemento.descricao}</p>
+
+                                        <div className="gap-div"></div>
+                                        <div className="gap-div"></div>
+
+                                        <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong1">Categoria:</strong> {elemento.categoria}</p>
+                                        <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong2">Endereço:</strong> {elemento.endereco}</p>
+                                        <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong3">Horario:</strong> {elemento.horario_recomendado_visita}</p>
+                                    </>
+                                }
+                            </div>
+
+                            { index != 2 && <div className="vertical-line" /> }
+                        </React.Fragment>
+                    ))}
+                </div>
+            }
         </>,
     };
 
@@ -494,19 +774,19 @@ const ItineraryPage = () => {
                 <div className="itinerary-menu-itineraries">
                     <button
                         className={`itinerary-menu-itineraries-buttons ${currItinerary == 1 ? "current" : ""}`}
-                        onClick={() => lasthandle(0)}> 
+                        onClick={() => {setCurrItinerary(1), lasthandle(0)}}> 
                         <NotepadText strokeWidth={1.5} size={20}/> Itinerário 1
                     </button>
 
                     <button
                         className={`itinerary-menu-itineraries-buttons ${currItinerary == 2 ? "current" : ""}`}
-                        onClick={() => setCurrItinerary(2)}> 
+                        onClick={() => {setCurrItinerary(2), lasthandle2(1)}}> 
                         <NotepadText strokeWidth={1.5} size={20}/> Itinerário 2
                     </button>
 
                     <button
                         className={`itinerary-menu-itineraries-buttons ${currItinerary == 3 ? "current" : ""}`}
-                        onClick={() => setCurrItinerary(3)}> 
+                        onClick={() => {setCurrItinerary(3), lasthandle3(2)}}> 
                         <NotepadText strokeWidth={1.5} size={20}/> Itinerário 3
                     </button>
                 </div>
