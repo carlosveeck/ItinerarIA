@@ -13,8 +13,10 @@ import { LogOut, UserRound, X, User } from "lucide-react";
 import "../UserProfilePage/UserProfilePage.css"
 import "../LandingPage/LandingPage.css"
 
+const API_URL = "https://itineraria-no5t.onrender.com"
+
 async function send_msg(msg, token){
-    const response = await fetch(`http://127.0.0.1:8000/prompt`, {
+    const response = await fetch(`${API_URL}/prompt`, {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
@@ -30,7 +32,7 @@ async function send_msg(msg, token){
 }
 
 async function get_last(token){
-    const response = await fetch(`http://127.0.0.1:8000/reload`, {
+    const response = await fetch(`${API_URL}/reload`, {
         method: 'GET',
         headers: {
         'Content-Type': 'application/json',
