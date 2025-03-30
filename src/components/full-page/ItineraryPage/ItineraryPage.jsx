@@ -287,7 +287,10 @@ const ItineraryPage = () => {
         itinerario1[index].descricao = inputDesc;
         itinerario1[index].categoria = inputCateg;
         itinerario1[index].endereco = inputAddress;
-        save({"itinerario": {"itinerario": itinerario1}, "index": index}, token);
+        save({"itinerario": {"itinerario": itinerario1}, "index": index}, token).then(function(rep){
+            lasthandle(index);
+            setCurrEditing(0);
+        });
     };
 
     useEffect(() => {
