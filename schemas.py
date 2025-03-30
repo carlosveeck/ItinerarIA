@@ -19,6 +19,7 @@ class ProfileRequest(BaseModel):
 
 class SaveItinerary(BaseModel):
     itinerario : dict
+    index : int
 
 class LastItinerary(BaseModel):
     num : int

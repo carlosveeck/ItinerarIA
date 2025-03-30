@@ -31,14 +31,33 @@ async function send_msg(msg, token) {
     return reply;
 }
 
-async function get_last(token) {
-
-    const response = await fetch(`http://127.0.0.1:8000/reload`, {
-        method: 'GET',
+async function save(msg, token) {
+    console.log("ABC", msg);
+    const response = await fetch(`http://127.0.0.1:8000/save_itinerary`, {
+        method: 'POST',
         headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + token,
         },
+        body: JSON.stringify(msg),
+    })
+
+    const reply = await response.text()
+    console.log(response)
+    console.log(reply)
+
+    return reply;
+}
+
+async function get_last(index, token) {
+    console.log(index);
+    const response = await fetch(`http://127.0.0.1:8000/last_itinerary`, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        },
+        body: JSON.stringify(index),
     })
 
     const reply = await response.text();
@@ -183,31 +202,31 @@ const ItineraryPage = () => {
         {
             if (currEdit == 1)
             {
-                setInputName(itinerario1[0].name);
-                setInputDesc(itinerario1[0].desc);
-                setInputCateg(itinerario1[0].categ);
-                setInputAddress(itinerario1[0].ender);
-                setInputHora(itinerario1[0].time);
+                setInputName(itinerario1[0].Nome);
+                setInputDesc(itinerario1[0].descricao);
+                setInputCateg(itinerario1[0].categoria);
+                setInputAddress(itinerario1[0].endereco);
+                setInputHora(itinerario1[0].horario_recomendado_visita);
 
                 // console.log(itinerario1[0].name);
             }
             else if (currEdit == 2)
             {
-                setInputName(itinerario1[1].name);
-                setInputDesc(itinerario1[1].desc);
-                setInputCateg(itinerario1[1].categ);
-                setInputAddress(itinerario1[1].ender);
-                setInputHora(itinerario1[1].time);
+                setInputName(itinerario1[1].Nome);
+                setInputDesc(itinerario1[1].descricao);
+                setInputCateg(itinerario1[1].categoria);
+                setInputAddress(itinerario1[1].endereco);
+                setInputHora(itinerario1[1].horario_recomendado_visita);
 
                 // console.log(itinerario1[1].name);
             }
             else if (currEdit == 3)
             {
-                setInputName(itinerario1[2].name);
-                setInputDesc(itinerario1[2].desc);
-                setInputCateg(itinerario1[2].categ);
-                setInputAddress(itinerario1[2].ender);
-                setInputHora(itinerario1[2].time);
+                setInputName(itinerario1[2].Nome);
+                setInputDesc(itinerario1[2].descricao);
+                setInputCateg(itinerario1[2].categoria);
+                setInputAddress(itinerario1[2].endereco);
+                setInputHora(itinerario1[2].horario_recomendado_visita);
 
                 // console.log(itinerario1[2].name);
             }
@@ -225,12 +244,12 @@ const ItineraryPage = () => {
     }
 
     // função que atualiza o itinerario1
-    function lasthandle() {
+    function lasthandle(index) {
 
         setCurrItinerary(1);
         setItinerario1([]);
 
-        get_last(token).then(function(rep) {
+        get_last({"num": index}, token).then(function(rep) {
 
             let rep2 = JSON.parse(rep);
 
@@ -248,11 +267,11 @@ const ItineraryPage = () => {
             if (idop != null) { idop.innerHTML = rep; }
 
             const formattedItinerario = rep2["itinerario"].map((item) => ({
-                name: item["Nome"],
-                desc: item["descricao"],
-                categ: item["categoria"],
-                ender: item["endereco"],
-                time: item["horario_recomendado_visita"],
+                Nome: item["Nome"],
+                descricao: item["descricao"],
+                categoria: item["categoria"],
+                endereco: item["endereco"],
+                horario_recomendado_visita: item["horario_recomendado_visita"],
             }));
 
             setItinerario1(formattedItinerario);
@@ -260,6 +279,15 @@ const ItineraryPage = () => {
             console.log("formatted it: ", formattedItinerario);
             console.log("it1: ", itinerario1);
         })
+    };
+
+    function savechanges(index){
+        itinerario1[index].Nome = inputName;
+        itinerario1[index].horario_recomendado_visita = inputHora;
+        itinerario1[index].descricao = inputDesc;
+        itinerario1[index].categoria = inputCateg;
+        itinerario1[index].endereco = inputAddress;
+        save({"itinerario": {"itinerario": itinerario1}, "index": index}, token);
     };
 
     useEffect(() => {
@@ -274,7 +302,7 @@ const ItineraryPage = () => {
 
         // para renderizar o itinerario
         // console.log (itinerario1.length)
-        lasthandle();
+        lasthandle(0);
         
     }, [isAuthLoaded, user, navigate]);
 
@@ -316,13 +344,13 @@ const ItineraryPage = () => {
                 setResponse("Itinerário:");
 
                 const newResponses = rep2["itinerario"].map((item) => ({
-                    name: item["Nome"],
-                    desc: item["descricao"],
-                    time: item["horario_recomendado_visita"],
+                    Nome: item["Nome"],
+                    descricao: item["descricao"],
+                    horario_recomendado_visita: item["horario_recomendado_visita"],
                 }));
 
                 // setAI_responses(newResponses);
-                lasthandle();
+                lasthandle(0);
             })
         }
     };
@@ -394,7 +422,7 @@ const ItineraryPage = () => {
                                         <input className="normal-input" value={inputAddress} onChange={handleChangeInputAddress} placeholder="Endereço" />
                                         <input className="normal-input" value={inputHora} onChange={handleChangeInputHora} placeholder="Horario" />
 
-                                        <button>salvar</button>
+                                        <button onClick={() => savechanges(index)}>salvar</button>
                                         <button onClick={() => setCurrEditing(0)}>cancelar</button>
                                     </>
 
@@ -402,7 +430,7 @@ const ItineraryPage = () => {
                                     
                                     <>
                                         <div className="itinerary-name-div">
-                                            <p className="itinerary-grid-div-h1">{elemento.name}</p>
+                                            <p className="itinerary-grid-div-h1">{elemento.Nome}</p>
 
                                             <button className="edit-button" onClick={() => { setCurrEditing(index + 1); setItineraryInput(index + 1)}}>
                                                 <SquarePenIcon color="#8fa9af"/>
@@ -411,14 +439,14 @@ const ItineraryPage = () => {
 
                                         <div className="gap-div" />
 
-                                        <p className="itinerary-grid-div-p">{elemento.desc}</p>
+                                        <p className="itinerary-grid-div-p">{elemento.descricao}</p>
 
                                         <div className="gap-div"></div>
                                         <div className="gap-div"></div>
 
-                                        <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong1">Categoria:</strong> {elemento.categ}</p>
-                                        <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong2">Endereço:</strong> {elemento.ender}</p>
-                                        <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong3">Horario:</strong> {elemento.time}</p>
+                                        <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong1">Categoria:</strong> {elemento.categoria}</p>
+                                        <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong2">Endereço:</strong> {elemento.endereco}</p>
+                                        <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong3">Horario:</strong> {elemento.horario_recomendado_visita}</p>
                                     </>
                                 }
                             </div>
@@ -463,7 +491,7 @@ const ItineraryPage = () => {
                 <div className="itinerary-menu-itineraries">
                     <button
                         className={`itinerary-menu-itineraries-buttons ${currItinerary == 1 ? "current" : ""}`}
-                        onClick={() => lasthandle()}> 
+                        onClick={() => lasthandle(0)}> 
                         <NotepadText strokeWidth={1.5} size={20}/> Itinerário 1
                     </button>
 

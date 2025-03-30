@@ -99,6 +99,7 @@ def prompt(prompt : PromptRequest,usuario :str = Depends(verificar_jwt)):
             historico.pop() #para as requisicoes antigas nao ficarem no historico
             dict_resposta = json.loads(resposta_ia)
             salvar_itinerario(usuario, dict_resposta)
+            salvar_ultimo_itinerario(usuario, dict_resposta, 0)
             return dict_resposta
         except Exception as e:
             return {"error": str(e)}
@@ -113,7 +114,7 @@ def ultimo_itinerario(entrada : LastItinerary,usuario:str = Depends(verificar_jw
 
 @app.post("/save_itinerary")
 def salvar(it : SaveItinerary,usuario:str = Depends(verificar_jwt)):
-    salvar_ultimo_itinerario(usuario,it.itinerario)
+    salvar_ultimo_itinerario(usuario,it.itinerario, it.index)
     return {"salvo": "salvo"}
 
 @app.post("/att_profile")
