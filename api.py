@@ -9,7 +9,7 @@ from schemas import *
 import os
 
 from database import login_aux,criar_usuario,atualizar_perfil,pegar_preferencias,salvar_itinerario,pegar_itinerario,pegar_ultimo_itinerario,salvar_ultimo_itinerario,pegar_perfil
-SECRET_KEY = "voce nao esta vendo isso"
+SECRET_KEY = os.getenv("SECRET_KEY", "")
 ALGORITHM = "HS256"
 
 # Criando o esquema OAuth2
