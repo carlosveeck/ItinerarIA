@@ -7,6 +7,12 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 import "./ItineraryPage.css"
 
+// for UserIcon
+import { LogOut, UserRound, X, User } from "lucide-react";
+
+import "../UserProfilePage/UserProfilePage.css"
+import "../LandingPage/LandingPage.css"
+
 async function send_msg(msg, token){
     const response = await fetch(`http://127.0.0.1:8000/prompt`, {
         method: 'POST',
@@ -33,9 +39,96 @@ async function get_last(token){
     })
 
     const reply = await response.text();
-    console.log(response);
-    console.log(reply);
+    console.log("reponse: ", response);
+    console.log("reply: ", reply);
+
     return reply;
+}
+
+// for UserIcon
+function LogoutButton()
+{
+    const { logout } = useAuth();
+    const { token, reset } = useToken();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        //logout();
+        //reset();
+        navigate("/"); // Redireciona para login após logout
+        setTimeout(() => logout(), 0); // Depois, faz logout
+        setTimeout(() => reset(), 0);
+    };
+
+    return (
+        <button className="menu-button" onClick={ handleLogout }>
+            <LogOut strokeWidth={1.75} color="#56707A"/> Sair
+        </button>);
+}
+
+function UserIconUI()
+{
+    const navigate = useNavigate();
+    const { user } = useAuth();
+
+    const [showMenuBox, setShowMenuBox] = useState(false);
+    const toggleMenuBox = () => setShowMenuBox(!showMenuBox);
+    
+    // Ativa/desativa o scroll quando showMenuBox muda
+    useEffect(() => {
+        if (showMenuBox) {
+            document.body.style.overflow = "hidden"; // Desativa o scroll
+        } else {
+            document.body.style.overflow = "auto"; // Reativa o scroll
+        }
+
+        // Cleanup para evitar efeitos colaterais
+        return () => {
+            document.body.style.overflow = "auto"; 
+        };
+    }, [showMenuBox]);
+
+    return (
+        <div className="landing-page-header-getStarted">
+
+            <button className="landing-page-header-getStarted-menu" onClick={toggleMenuBox}>
+                <CircleUserIcon style={{ width: "30px", height: "30px" }} strokeWidth={1.35}/>
+            </button>
+
+            { /* showMenuBox ? <LandingPageMenu/> : null */ }
+            
+            <>
+                <div className={`${showMenuBox ? "menu-overlay" : ""}`} onClick={toggleMenuBox}/>
+
+                <div className={`menu ${showMenuBox ? "show" : ""}`}>
+                    <div className="menu-header">
+                        <h1>
+                            <CircleUserIcon strokeWidth={1.35} color="#56707A" size={30}/> { user.username }
+                        </h1>
+
+                        <button className="menu-header-button" onClick={toggleMenuBox}>
+                            <X strokeWidth={2.25} color="#56707A" size={17}/>
+                        </button>
+                    </div>
+
+                    <hr />
+
+                    <button className="menu-button" onClick={ () => navigate("/profile") }>
+                        <UserRound strokeWidth={1.75} color="#56707A" size={22}/> Seu perfil
+                    </button>
+
+                    <button className="menu-button" onClick={ () => navigate("/itinerary") }>
+                        <NotepadText strokeWidth={1.75} color="#56707A" size={22}/> Itinerários
+                    </button>
+
+                    <hr />
+
+                    <LogoutButton />
+                </div>
+            </>
+
+        </div>
+    );
 }
 
 const ItineraryPage = () => {
@@ -49,20 +142,48 @@ const ItineraryPage = () => {
     const [response, setResponse] = useState("");
     const [AI_responses, setAI_responses] = useState([]);
 
-    const [currItinerary, setCurrItinerary] = useState(0);
+    const [currItinerary, setCurrItinerary] = useState(1);
 
     const [showMenu, setShowMenu] = useState(true);
 
-    function lasthandle(){
-        setCurrItinerary(1)
-        get_last(token).then(function(rep){
+    const [itinerario1, setItinerario1] = useState([]);
+
+    function lasthandle() {
+
+        setCurrItinerary(1);
+        setItinerario1([]);
+
+        get_last(token).then(function(rep) {
+
             let rep2 = JSON.parse(rep);
-            console.log(rep2);
+
+            if (!rep2 || rep2.length === 0) {
+                console.log("Nenhum itinerário encontrado.");
+                console.log("it1: ", itinerario1, " / length: ", itinerario1.length);
+                
+                return;
+            }
+
+            console.log("rep2: ", rep2);
+
             var idop = document.getElementById("op1");
             let texto = JSON.stringify(rep2[0]);
-            idop.innerHTML = rep; 
+            if (idop != null) { idop.innerHTML = rep; }
+
+            const formattedItinerario = rep2["itinerario"].map((item) => ({
+                name: item["Nome"],
+                desc: item["descricao"],
+                categ: item["categoria"],
+                ender: item["endereco"],
+                time: item["horario_recomendado_visita"],
+            }));
+
+            setItinerario1(formattedItinerario);
+            
+            console.log("formatted it: ", formattedItinerario);
+            console.log("it1: ", itinerario1);
         })
-    }
+    };
 
     useEffect(() => {
         console.log("ItineraryPage → Auth Loaded:", isAuthLoaded, "User:", user);
@@ -73,6 +194,11 @@ const ItineraryPage = () => {
             console.log("Redirecionando para /login...");
             navigate("/login");
         }
+
+        // para renderizar o itinerario
+        // console.log (itinerario1.length)
+        lasthandle();
+        
     }, [isAuthLoaded, user, navigate]);
 
     if (!isAuthLoaded) return <div>Carregando...</div>;
@@ -108,7 +234,7 @@ const ItineraryPage = () => {
 
                 let rep2 = JSON.parse(reply);
 
-                console.log(rep2);
+                // console.log(rep2);
 
                 setResponse("Itinerário:");
 
@@ -122,46 +248,17 @@ const ItineraryPage = () => {
             })
         }
     };
-    
-    const itineraryMap = {
+
+    const PromptScreen = {
 
         // prompt screen
         0: <>
-            {/* Response Area */}
-            { response ? <></> : <div></div> }
+            <p className="prompt-welcome-p">
+                { response || `Olá, ${ user.username }` }
+            </p>
 
-            <div className="max-h-full overflow-y-auto w-3/4 max-w-3/4 p-10 self-center flex justify-center">
-
-                <p className="prompt-welcome-p">
-                    { response || `Olá, ${ user.username }` }
-                </p>
-
-                { /* Draw a line in case we received an input */ }
-                { response ? <div className="p-10"> <hr className="border-gray-500"/> </div> : <></> }
-
-                {/* div that contain the Responses */}
-                <div className="grid grid-cols-3">
-
-                    {/* Rendering the AI Response */}
-                    {AI_responses.map((elemento, index) => (
-
-                        <div key={index} className="m-3 rounded-xl bg-medium-gray p-8 shadow-lg flex flex-col">
-
-                            <p className="text-black text-lg text-center font-bold drop-shadow-2xl">{elemento.name}</p>
-
-                            <div className="p-6"> <hr className="border-gray-300"/> </div>
-
-                            <p className="text-black">{elemento.desc}</p>
-
-                            <div className="p-6"> <hr className="border-gray-300"/> </div>
-
-                            <p className="text-black">{elemento.time}</p>
-
-                        </div>
-                    ))}
-
-                </div>                        
-
+            <div className="prompt-pop-up">
+                <h1 className="prompt-pop-up-h1"><strong>Atenção: </strong> as alterações feitas serão salvas no seu itinerário {currItinerary}</h1>
             </div>
 
             {/* Prompt Input */}
@@ -184,12 +281,53 @@ const ItineraryPage = () => {
 
             </div>
         </>,
+    }
+    
+    const itineraryMap = {
+
+        // null
+        0: <></>,
+
         // itinerario 1
-        1: <p id="op1">Opção 1</p>,
+        1: <>
+            { (itinerario1.length == 0) ? 
+                PromptScreen[0]
+            : 
+                <div className="show-itinerary-div"> { /* grid grid-cols-3 */ }
+                    { itinerario1.map((elemento, index) => (
+
+                        <React.Fragment key={index}> 
+                            <div key={index} className="itinerary-grid-div">
+                                <p className="itinerary-grid-div-h1">{elemento.name}</p>
+
+                                <div className="gap-div" />
+
+                                <p className="itinerary-grid-div-p">{elemento.desc}</p>
+
+                                <div className="gap-div"></div>
+                                <div className="gap-div"></div>
+
+                                <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong1">Categoria:</strong> {elemento.categ}</p>
+                                <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong2">Endereço:</strong> {elemento.ender}</p>
+                                <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong3">Horario:</strong> {elemento.time}</p>
+                            </div>
+
+                            { index != 2 && <div className="vertical-line" /> }
+                        </React.Fragment>
+                    ))}
+                </div>
+            }
+        </>,
+
         // itinerario 2
-        2: <div>Opção 2</div>,
+        2: <>
+            { PromptScreen[0] }
+        </>,
+
         // itinerario 3
-        3: <div>Opção 3</div>,
+        3: <>
+            { PromptScreen[0] }
+        </>,
     };
 
     return (
@@ -247,7 +385,8 @@ const ItineraryPage = () => {
                         <h1 className="itinerary-name-h1">ItinerarIA</h1>
                     </div>
 
-                    <button className="itinerary-content-upper-button"> <CircleUserIcon size={32}/> </button>
+                    <UserIconUI />
+                    { /* <button className="itinerary-content-upper-button"> <CircleUserIcon size={32}/> </button> */ }
                 </div>
 
                 {/* Itinerary / Prompt Input */}

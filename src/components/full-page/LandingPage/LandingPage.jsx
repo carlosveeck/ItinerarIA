@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ArrowRight, BrainCircuit, CircleUserIcon, LogOut, Map, Menu, TreePalm, User, UserRound, X, NotepadText } from "lucide-react";
+import { ArrowRight, BrainCircuit, CircleUserIcon, LogOut, Map, Menu, TreePalm, User, UserRound, X, NotepadText, Fingerprint } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../ui/button";
 
@@ -252,8 +252,13 @@ function LandingPage()
                 </div>
 
             </div>
-
+                
             <img className="landing-page-img" src={laptopImg}/>
+            
+            <div className="landing-page-img-div">
+                <h2>Envie um prompt informando o local de sua viagem e receba um itinerário personalizado</h2>
+                <h2 className="landing-page-img-div-fingerprint">-&nbsp;<Fingerprint strokeWidth={1}/>&nbsp;-</h2>
+            </div>
 
             <div className="landing-page-features-div">
                 <h1>
