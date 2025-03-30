@@ -193,6 +193,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    align-items: center;
 }
 
 /* Prompt screen */
@@ -291,6 +293,8 @@
 
 .show-itinerary-div
 {
+    max-width: 82vw;
+    
     margin-top: 80px;
     display: flex;
     align-items: start;
@@ -341,6 +345,27 @@
     color: var(--blue);
 } .itinerary-grid-div-p-strong3 {
     color: var(--purple);
+}
+
+.itinerary-name-div
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.edit-button
+{
+    position: absolute;
+    right: -6%;
+
+    padding: 10px;
+    border-radius: 9999px;
+
+    transition: 0.3s;
+} .edit-button:hover {
+    background-color: rgba(240, 244, 249, 0.6);
 }
 
 .gap-div
