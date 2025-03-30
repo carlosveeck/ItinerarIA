@@ -11,6 +11,7 @@ class LoginRequest(BaseModel):
 
 class PromptRequest(BaseModel):
     prompt: str
+    index: int
 
 class ProfileRequest(BaseModel):
     pais: str

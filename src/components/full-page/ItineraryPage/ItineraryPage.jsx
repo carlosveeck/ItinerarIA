@@ -335,7 +335,7 @@ const ItineraryPage = () => {
             // setResponse("Gerando itinerário...");
             setInput("");
 
-            send_msg({prompt: input}, token).then(function(reply) {
+            send_msg({prompt: input, index: (currItinerary - 1)}, token).then(function(reply) {
 
                 let rep2 = JSON.parse(reply);
 
