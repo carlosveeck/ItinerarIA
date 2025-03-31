@@ -32,8 +32,24 @@ async function send_msg(msg, token) {
 }
 
 async function save(msg, token) {
-    console.log("ABC", msg);
     const response = await fetch(`http://127.0.0.1:8000/save_itinerary`, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        },
+        body: JSON.stringify(msg),
+    })
+
+    const reply = await response.text()
+    console.log(response)
+    console.log(reply)
+
+    return reply;
+}
+
+async function del(msg, token) {
+    const response = await fetch(`http://127.0.0.1:8000/delete`, {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
@@ -235,10 +251,6 @@ const ItineraryPage = () => {
 
             console.log("rep2: ", rep2);
 
-            //var idop = document.getElementById("op1");
-            //let texto = JSON.stringify(rep2[0]);
-            //if (idop != null) { idop.innerHTML = rep; }
-
             const formattedItinerario = rep2["itinerario"].map((item) => ({
                 Nome: item["Nome"],
                 descricao: item["descricao"],
@@ -271,10 +283,6 @@ const ItineraryPage = () => {
             }
 
             console.log("rep2: ", rep2);
-
-            //var idop = document.getElementById("op1");
-            //let texto = JSON.stringify(rep2[0]);
-            //if (idop != null) { idop.innerHTML = rep; }
 
             const formattedItinerario = rep2["itinerario"].map((item) => ({
                 Nome: item["Nome"],
@@ -309,10 +317,6 @@ const ItineraryPage = () => {
 
             console.log("rep2: ", rep2);
 
-            //var idop = document.getElementById("op1");
-            //let texto = JSON.stringify(rep2[0]);
-            //if (idop != null) { idop.innerHTML = rep; }
-
             const formattedItinerario = rep2["itinerario"].map((item) => ({
                 Nome: item["Nome"],
                 descricao: item["descricao"],
@@ -344,6 +348,21 @@ const ItineraryPage = () => {
             setCurrEditing(0);
         });
     };
+
+    function exclusao(){
+        del({num: (currItinerary-1)}, token).then(function(rep){
+            if(currItinerary == 1){
+                setItinerario1([]);
+                lasthandle(0);
+            } else if(currItinerary == 2){
+                setItinerario2([]);
+                lasthandle(1);
+            } else{
+                setItinerario3([]);
+                lasthandle3(2);
+            }
+        })
+    }
 
     useEffect(() => {
         console.log("ItineraryPage → Auth Loaded:", isAuthLoaded, "User:", user);
@@ -460,7 +479,7 @@ const ItineraryPage = () => {
                 </div>
 
                 <div className="popup-buttons-div">
-                    <button className="popup-button1">Deletar</button>
+                    <button className="popup-button1" onClick={() => {exclusao(), setShowDeletePopUp(false)}}>Deletar</button>
                     <button className="popup-button2" onClick={() => setShowDeletePopUp(false)}>Cancelar</button>
                 </div>
             </div>
