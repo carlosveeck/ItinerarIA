@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ArrowLeft, ArrowUp, CircleUserIcon, House, Menu, NotepadText, Send, SendHorizonal, SidebarClose, SidebarOpen, SquarePenIcon, UserIcon } from "lucide-react";
+import { ArrowLeft, ArrowUp, CircleUserIcon, House, Menu, NotepadText, Send, SendHorizonal, SidebarClose, SidebarOpen, SquarePenIcon, Trash2, UserIcon } from "lucide-react";
 
 import { useAuth } from "@/context/AuthContext";
 import { useToken } from "../../../context/TokenContext";
@@ -175,6 +175,9 @@ const ItineraryPage = () => {
     const [itinerario2, setItinerario2] = useState([]);
     const [itinerario3, setItinerario3] = useState([]);
 
+    // para otimizar
+    const itinerariosLista = { 1: itinerario1, 2: itinerario2, 3: itinerario3 };
+
     // para edição dos itinerários
     const [inputName, setInputName] = useState("");
     const [inputDesc, setInputDesc] = useState("");
@@ -198,107 +201,16 @@ const ItineraryPage = () => {
 
         console.log(currEdit);
 
-        if (currItinerary == 1)
+        if (currEdit > 0 && currEdit < 4)
         {
-            if (currEdit == 1)
-            {
-                setInputName(itinerario1[0].Nome);
-                setInputDesc(itinerario1[0].descricao);
-                setInputCateg(itinerario1[0].categoria);
-                setInputAddress(itinerario1[0].endereco);
-                setInputHora(itinerario1[0].horario_recomendado_visita);
+            const index = currEdit - 1;
 
-                // console.log(itinerario1[0].name);
-            }
-            else if (currEdit == 2)
-            {
-                setInputName(itinerario1[1].Nome);
-                setInputDesc(itinerario1[1].descricao);
-                setInputCateg(itinerario1[1].categoria);
-                setInputAddress(itinerario1[1].endereco);
-                setInputHora(itinerario1[1].horario_recomendado_visita);
-
-                // console.log(itinerario1[1].name);
-            }
-            else if (currEdit == 3)
-            {
-                setInputName(itinerario1[2].Nome);
-                setInputDesc(itinerario1[2].descricao);
-                setInputCateg(itinerario1[2].categoria);
-                setInputAddress(itinerario1[2].endereco);
-                setInputHora(itinerario1[2].horario_recomendado_visita);
-
-                // console.log(itinerario1[2].name);
-            }
+            setInputName(itinerariosLista[currItinerary][index].Nome);
+            setInputDesc(itinerariosLista[currItinerary][index].descricao);
+            setInputCateg(itinerariosLista[currItinerary][index].categoria);
+            setInputAddress(itinerariosLista[currItinerary][index].endereco);
+            setInputHora(itinerariosLista[currItinerary][index].horario_recomendado_visita);
         }
-        else if (currItinerary == 2)
-        {
-            if (currEdit == 1)
-                {
-                    setInputName(itinerario2[0].Nome);
-                    setInputDesc(itinerario2[0].descricao);
-                    setInputCateg(itinerario2[0].categoria);
-                    setInputAddress(itinerario2[0].endereco);
-                    setInputHora(itinerario2[0].horario_recomendado_visita);
-    
-                    // console.log(itinerario1[0].name);
-                }
-                else if (currEdit == 2)
-                {
-                    setInputName(itinerario2[1].Nome);
-                    setInputDesc(itinerario2[1].descricao);
-                    setInputCateg(itinerario2[1].categoria);
-                    setInputAddress(itinerario2[1].endereco);
-                    setInputHora(itinerario2[1].horario_recomendado_visita);
-    
-                    // console.log(itinerario1[1].name);
-                }
-                else if (currEdit == 3)
-                {
-                    setInputName(itinerario2[2].Nome);
-                    setInputDesc(itinerario2[2].descricao);
-                    setInputCateg(itinerario2[2].categoria);
-                    setInputAddress(itinerario2[2].endereco);
-                    setInputHora(itinerario2[2].horario_recomendado_visita);
-    
-                    // console.log(itinerario1[2].name);
-                }
-        }
-        else if (currItinerary == 3)
-        {
-            if (currEdit == 1)
-            {
-                setInputName(itinerario3[0].Nome);
-                setInputDesc(itinerario3[0].descricao);
-                setInputCateg(itinerario3[0].categoria);
-                setInputAddress(itinerario3[0].endereco);
-                setInputHora(itinerario3[0].horario_recomendado_visita);
-
-                // console.log(itinerario1[0].name);
-            }
-            else if (currEdit == 2)
-            {
-                setInputName(itinerario3[1].Nome);
-                setInputDesc(itinerario3[1].descricao);
-                setInputCateg(itinerario3[1].categoria);
-                setInputAddress(itinerario3[1].endereco);
-                setInputHora(itinerario3[1].horario_recomendado_visita);
-
-                // console.log(itinerario1[1].name);
-            }
-            else if (currEdit == 3)
-            {
-                setInputName(itinerario3[2].Nome);
-                setInputDesc(itinerario3[2].descricao);
-                setInputCateg(itinerario3[2].categoria);
-                setInputAddress(itinerario3[2].endereco);
-                setInputHora(itinerario3[2].horario_recomendado_visita);
-
-                // console.log(itinerario1[2].name);
-            }
-        }
-
-        
     }
 
     // função que atualiza o itinerario1
@@ -413,38 +325,19 @@ const ItineraryPage = () => {
         })
     };
 
-    function savechanges(index){
-        itinerario1[index].Nome = inputName;
-        itinerario1[index].horario_recomendado_visita = inputHora;
-        itinerario1[index].descricao = inputDesc;
-        itinerario1[index].categoria = inputCateg;
-        itinerario1[index].endereco = inputAddress;
-        save({"itinerario": {"itinerario": itinerario1}, "index": currItinerary - 1}, token).then(function(rep){
-            lasthandle(currItinerary - 1);
-            setCurrEditing(0);
-        });
-    };
+    function savechanges(index) {
 
-    function savechanges2(index){
-        itinerario2[index].Nome = inputName;
-        itinerario2[index].horario_recomendado_visita = inputHora;
-        itinerario2[index].descricao = inputDesc;
-        itinerario2[index].categoria = inputCateg;
-        itinerario2[index].endereco = inputAddress;
-        save({"itinerario": {"itinerario": itinerario2}, "index": currItinerary - 1}, token).then(function(rep){
-            lasthandle2(currItinerary - 1);
-            setCurrEditing(0);
-        });
-    };
+        itinerariosLista[currItinerary][index].Nome = inputName;
+        itinerariosLista[currItinerary][index].horario_recomendado_visita = inputHora;
+        itinerariosLista[currItinerary][index].descricao = inputDesc;
+        itinerariosLista[currItinerary][index].categoria = inputCateg;
+        itinerariosLista[currItinerary][index].endereco = inputAddress;
 
-    function savechanges3(index){
-        itinerario3[index].Nome = inputName;
-        itinerario3[index].horario_recomendado_visita = inputHora;
-        itinerario3[index].descricao = inputDesc;
-        itinerario3[index].categoria = inputCateg;
-        itinerario3[index].endereco = inputAddress;
-        save({"itinerario": {"itinerario": itinerario3}, "index": currItinerary - 1}, token).then(function(rep){
-            lasthandle3(currItinerary - 1);
+        save({"itinerario": {"itinerario": itinerariosLista[currItinerary]}, "index": currItinerary - 1}, token).then(function(rep) {
+
+            if (currItinerary == 1) { lasthandle(currItinerary - 1); }
+            else if (currItinerary == 2) { lasthandle2(currItinerary - 1); }
+            else if (currItinerary == 3) { lasthandle3(currItinerary - 1); }
             setCurrEditing(0);
         });
     };
@@ -553,6 +446,75 @@ const ItineraryPage = () => {
             </div>
         </>,
     }
+
+    const itineraryScreen = {
+
+        0: <div className="show-itinerary-div"> { /* grid grid-cols-3 */ }
+            { itinerariosLista[currItinerary].map((elemento, index) => (
+
+                <React.Fragment key={index}> 
+                    <div key={index} className="itinerary-grid-div">
+                        { currEditing == (index + 1) ? 
+
+                            <>
+                                <div className="edit-div">
+                                    <label className="itinerary-edit-div-label1">Nome</label>
+                                    <input className="itinerary-input" value={inputName} onChange={handleChangeInputName} placeholder="Nome" />
+
+                                    <label className="itinerary-edit-div-label2">Descrição</label>
+                                    <textarea className="desc-input" value={inputDesc} onChange={handleChangeInputDesc} placeholder="Descrição" />
+
+                                    <label className="itinerary-edit-div-label3">Categoria</label>
+                                    <input className="itinerary-input" value={inputCateg} onChange={handleChangeInputCateg} placeholder="Categoria" />
+
+                                    <label className="itinerary-edit-div-label4">Endereço</label>
+                                    <input className="itinerary-input" value={inputAddress} onChange={handleChangeInputAddress} placeholder="Endereço" />
+
+                                    <label className="itinerary-edit-div-label5">Horario</label>
+                                    <input className="itinerary-input" value={inputHora} onChange={handleChangeInputHora} placeholder="Horario" />
+
+                                    <div className="itinerary-edit-div-buttons">
+                                        <button className="itinerary-edit-div-buttons-button1" onClick={() => savechanges(index)}>Salvar</button>
+                                        <button className="itinerary-edit-div-buttons-button2" onClick={() => setCurrEditing(0)}>Cancelar</button>
+                                    </div>
+                                </div>
+                            </>
+
+                            :
+                            
+                            <>
+                                <div className="itinerary-name-div">
+                                    <p className="itinerary-grid-div-h1">{elemento.Nome}</p>
+
+                                    <button className="edit-button" onClick={() => { setCurrEditing(index + 1); setItineraryInput(index + 1)}}>
+                                        <SquarePenIcon color="#8fa9af"/>
+                                    </button>
+                                </div>
+
+                                <div className="gap-div" />
+
+                                <p className="itinerary-grid-div-p">{elemento.descricao}</p>
+
+                                <div className="gap-div"></div>
+                                <div className="gap-div"></div>
+
+                                <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong1">Categoria:</strong> {elemento.categoria}</p>
+                                <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong2">Endereço:</strong> {elemento.endereco}</p>
+                                <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong3">Horario:</strong> {elemento.horario_recomendado_visita}</p>
+                            </>
+                        }
+                    </div>
+
+                    { index != 2 && <div className="vertical-line" /> }
+                </React.Fragment>
+            ))}
+
+            <button className="delete-button">
+                <Trash2 color="#ea5681" />
+            </button>
+                    
+        </div>,
+    }
     
     const itineraryMap = {
 
@@ -564,62 +526,7 @@ const ItineraryPage = () => {
             { (itinerario1.length == 0) ? 
                 PromptScreen[0]
             : 
-                <div className="show-itinerary-div"> { /* grid grid-cols-3 */ }
-                    { itinerario1.map((elemento, index) => (
-
-                        <React.Fragment key={index}> 
-                            <div key={index} className="itinerary-grid-div">
-                                { currEditing == (index + 1) ? 
-
-                                    <>
-                                        <div className="itinerary-name-div">
-                                            <input className="normal-input" value={inputName} onChange={handleChangeInputName} placeholder="Nome" />
-                                        </div>
-
-                                        <div className="gap-div" />
-
-                                        <textarea className="preferencies-input" value={inputDesc} onChange={handleChangeInputDesc} placeholder="Descrição" />
-
-                                        <div className="gap-div"></div>
-                                        <div className="gap-div"></div>
-
-                                        <input className="normal-input" value={inputCateg} onChange={handleChangeInputCateg} placeholder="Categoria" />
-                                        <input className="normal-input" value={inputAddress} onChange={handleChangeInputAddress} placeholder="Endereço" />
-                                        <input className="normal-input" value={inputHora} onChange={handleChangeInputHora} placeholder="Horario" />
-
-                                        <button onClick={() => savechanges(index)}>salvar</button>
-                                        <button onClick={() => setCurrEditing(0)}>cancelar</button>
-                                    </>
-
-                                    :
-                                    
-                                    <>
-                                        <div className="itinerary-name-div">
-                                            <p className="itinerary-grid-div-h1">{elemento.Nome}</p>
-
-                                            <button className="edit-button" onClick={() => { setCurrEditing(index + 1); setItineraryInput(index + 1)}}>
-                                                <SquarePenIcon color="#8fa9af"/>
-                                            </button>
-                                        </div>
-
-                                        <div className="gap-div" />
-
-                                        <p className="itinerary-grid-div-p">{elemento.descricao}</p>
-
-                                        <div className="gap-div"></div>
-                                        <div className="gap-div"></div>
-
-                                        <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong1">Categoria:</strong> {elemento.categoria}</p>
-                                        <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong2">Endereço:</strong> {elemento.endereco}</p>
-                                        <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong3">Horario:</strong> {elemento.horario_recomendado_visita}</p>
-                                    </>
-                                }
-                            </div>
-
-                            { index != 2 && <div className="vertical-line" /> }
-                        </React.Fragment>
-                    ))}
-                </div>
+                itineraryScreen[0]
             }
         </>,
 
@@ -628,62 +535,7 @@ const ItineraryPage = () => {
             { (itinerario2.length == 0) ? 
                 PromptScreen[0]
             : 
-                <div className="show-itinerary-div"> { /* grid grid-cols-3 */ }
-                    { itinerario2.map((elemento, index) => (
-
-                        <React.Fragment key={index}> 
-                            <div key={index} className="itinerary-grid-div">
-                                { currEditing == (index + 1) ? 
-
-                                    <>
-                                        <div className="itinerary-name-div">
-                                            <input className="normal-input" value={inputName} onChange={handleChangeInputName} placeholder="Nome" />
-                                        </div>
-
-                                        <div className="gap-div" />
-
-                                        <textarea className="preferencies-input" value={inputDesc} onChange={handleChangeInputDesc} placeholder="Descrição" />
-
-                                        <div className="gap-div"></div>
-                                        <div className="gap-div"></div>
-
-                                        <input className="normal-input" value={inputCateg} onChange={handleChangeInputCateg} placeholder="Categoria" />
-                                        <input className="normal-input" value={inputAddress} onChange={handleChangeInputAddress} placeholder="Endereço" />
-                                        <input className="normal-input" value={inputHora} onChange={handleChangeInputHora} placeholder="Horario" />
-
-                                        <button onClick={() => savechanges2(index)}>salvar</button>
-                                        <button onClick={() => setCurrEditing(0)}>cancelar</button>
-                                    </>
-
-                                    :
-                                    
-                                    <>
-                                        <div className="itinerary-name-div">
-                                            <p className="itinerary-grid-div-h1">{elemento.Nome}</p>
-
-                                            <button className="edit-button" onClick={() => { setCurrEditing(index + 1); setItineraryInput(index + 1)}}>
-                                                <SquarePenIcon color="#8fa9af"/>
-                                            </button>
-                                        </div>
-
-                                        <div className="gap-div" />
-
-                                        <p className="itinerary-grid-div-p">{elemento.descricao}</p>
-
-                                        <div className="gap-div"></div>
-                                        <div className="gap-div"></div>
-
-                                        <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong1">Categoria:</strong> {elemento.categoria}</p>
-                                        <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong2">Endereço:</strong> {elemento.endereco}</p>
-                                        <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong3">Horario:</strong> {elemento.horario_recomendado_visita}</p>
-                                    </>
-                                }
-                            </div>
-
-                            { index != 2 && <div className="vertical-line" /> }
-                        </React.Fragment>
-                    ))}
-                </div>
+                itineraryScreen[0]
             }
         </>,
 
@@ -692,62 +544,7 @@ const ItineraryPage = () => {
             { (itinerario3.length == 0) ? 
                 PromptScreen[0]
             : 
-                <div className="show-itinerary-div"> { /* grid grid-cols-3 */ }
-                    { itinerario3.map((elemento, index) => (
-
-                        <React.Fragment key={index}> 
-                            <div key={index} className="itinerary-grid-div">
-                                { currEditing == (index + 1) ? 
-
-                                    <>
-                                        <div className="itinerary-name-div">
-                                            <input className="normal-input" value={inputName} onChange={handleChangeInputName} placeholder="Nome" />
-                                        </div>
-
-                                        <div className="gap-div" />
-
-                                        <textarea className="preferencies-input" value={inputDesc} onChange={handleChangeInputDesc} placeholder="Descrição" />
-
-                                        <div className="gap-div"></div>
-                                        <div className="gap-div"></div>
-
-                                        <input className="normal-input" value={inputCateg} onChange={handleChangeInputCateg} placeholder="Categoria" />
-                                        <input className="normal-input" value={inputAddress} onChange={handleChangeInputAddress} placeholder="Endereço" />
-                                        <input className="normal-input" value={inputHora} onChange={handleChangeInputHora} placeholder="Horario" />
-
-                                        <button onClick={() => savechanges3(index)}>salvar</button>
-                                        <button onClick={() => setCurrEditing(0)}>cancelar</button>
-                                    </>
-
-                                    :
-                                    
-                                    <>
-                                        <div className="itinerary-name-div">
-                                            <p className="itinerary-grid-div-h1">{elemento.Nome}</p>
-
-                                            <button className="edit-button" onClick={() => { setCurrEditing(index + 1); setItineraryInput(index + 1)}}>
-                                                <SquarePenIcon color="#8fa9af"/>
-                                            </button>
-                                        </div>
-
-                                        <div className="gap-div" />
-
-                                        <p className="itinerary-grid-div-p">{elemento.descricao}</p>
-
-                                        <div className="gap-div"></div>
-                                        <div className="gap-div"></div>
-
-                                        <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong1">Categoria:</strong> {elemento.categoria}</p>
-                                        <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong2">Endereço:</strong> {elemento.endereco}</p>
-                                        <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong3">Horario:</strong> {elemento.horario_recomendado_visita}</p>
-                                    </>
-                                }
-                            </div>
-
-                            { index != 2 && <div className="vertical-line" /> }
-                        </React.Fragment>
-                    ))}
-                </div>
+                itineraryScreen[0]
             }
         </>,
     };
