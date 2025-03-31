@@ -356,7 +356,7 @@ const ItineraryPage = () => {
                 lasthandle(0);
             } else if(currItinerary == 2){
                 setItinerario2([]);
-                lasthandle(1);
+                lasthandle2(1);
             } else{
                 setItinerario3([]);
                 lasthandle3(2);
