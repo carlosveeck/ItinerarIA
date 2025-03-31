@@ -193,6 +193,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    align-items: center;
 }
 
 /* Prompt screen */
@@ -291,16 +293,40 @@
 
 .show-itinerary-div
 {
+    max-width: 82vw;
+    height: 55%;
+    max-height: 55%;
+    overflow: visible;
+    
     margin-top: 80px;
     display: flex;
     align-items: start;
     justify-content: center;
 }
 
+.delete-button
+{
+    position: absolute;
+
+    bottom: 10%;
+    right: 7%;
+
+    padding: 10px;
+    border-radius: 9999px;
+
+    transition: 0.3s;
+} .delete-button:hover {
+    background-color: var(--blueish-light-gray);
+}
+
+
 .itinerary-grid-div
 {
     width: 30%;
     height: 100%;
+    max-height: 100%;
+
+    overflow-y: visible;
 
     display: flex;
     flex-direction: column;
@@ -343,6 +369,27 @@
     color: var(--purple);
 }
 
+.itinerary-name-div
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.edit-button
+{
+    position: absolute;
+    right: -6%;
+
+    padding: 10px;
+    border-radius: 9999px;
+
+    transition: 0.3s;
+} .edit-button:hover {
+    background-color: rgba(240, 244, 249, 0.6);
+}
+
 .gap-div
 {
     padding: 24px;
@@ -354,4 +401,225 @@
     width: 1px;
     align-self: center;
     background-color: var(--greenish-blue);
+}
+
+/* for inputs */
+.itinerary-input
+{
+    width: 100%;
+
+    margin: 5px 0;
+    margin-bottom: 10px;
+
+    padding: 5px 10px;
+
+    border: 1px solid var(--gray);
+    border-radius: 7px;
+
+    font-family: figtree;
+}.itinerary-input:focus {
+    outline: none;
+    border: 1px solid var(--blue);
+}
+
+.itinerary-edit-div-label1
+{
+    margin-top: 10px;
+    font-family: figtree-semibold;
+
+    background: linear-gradient(to right, var(--green), var(--blue), var(--purple));
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+} .itinerary-edit-div-label1::selection {
+    color: white;
+    background-color: var(--purple);
+    -webkit-text-fill-color: white;
+}
+.itinerary-edit-div-label2
+{
+    margin-top: 10px;
+    color: var(--black);
+    font-family: figtree-semibold;
+}
+.itinerary-edit-div-label3
+{
+    margin-top: 10px;
+    color: var(--green);
+    font-family: figtree-semibold;
+}
+.itinerary-edit-div-label4
+{
+    margin-top: 10px;
+    color: var(--blue);
+    font-family: figtree-semibold;
+}
+.itinerary-edit-div-label5
+{
+    margin-top: 10px;
+    color: var(--purple);
+    font-family: figtree-semibold;
+}
+
+.desc-input
+{
+    width: 100%;
+    height: 108px;
+
+    margin: 5px 0;
+    padding: 5px 10px;
+
+    border: 1px solid var(--gray);
+    border-radius: 7px;
+}.desc-input:focus {
+    outline: none;
+    border: 1px solid var(--blue);
+}
+
+.itinerary-edit-div-buttons
+{
+    width: 100%;
+    height: fit-content;
+
+    display: flex;
+    flex-direction: row;
+
+    justify-items: start;
+
+    margin-top: 10px;
+}
+.itinerary-edit-div-buttons button
+{
+    height: 30px;
+
+    font-size: 14px;
+
+    padding: 0 10px;
+    margin: 10px 0;
+    margin-right: 10px;
+
+    border-radius: 7px;
+}
+.itinerary-edit-div-buttons-button1
+{
+    background-color: var(--green);
+    border: 1px solid var(--green);
+    color: white;
+    transition: 0.3s;
+} .itinerary-edit-div-buttons-button1:hover {
+    background-color: white;
+    color: var(--green);
+}
+.itinerary-edit-div-buttons-button2
+{
+    border: 1px solid var(--medium-dark-gray);
+    background-color: var(--light-gray);
+    transition: 0.3s;
+} .itinerary-edit-div-buttons-button2:hover {
+    background-color: #d8dfe3;
+    /* background-color: #e3e8e9; */
+    /* background-color: #d3d9db; */
+}
+
+.delete-popup {
+    justify-self: center;
+    align-self: center;
+
+    height: 25%;
+    width: 25%;
+
+    background-color: white;
+    border: 1px solid var(--blueish-medium-gray);
+
+    border-radius: 15px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+    z-index: 2;
+}
+
+.popup-overlay {
+    position: absolute;
+
+    height: 100vh;
+    width: 100vw;
+
+    top: 0;
+    left: -18vw;
+
+    background-color: rgba(0, 0, 0, 0.2);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} .popup-overlay.full {
+    left: 0;
+}
+
+.popup-h1-div
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-h1 
+{
+    font-family: figtree;
+    color: var(--black);
+} .popup-h1 strong {
+    font-family: figtree-semibold;
+    color: var(--red);
+}
+
+.popup-buttons-div
+{
+    display: flex;
+}
+
+.popup-button1
+{
+    padding: 5px 10px;
+    margin: 0 7px;
+
+    background-color: var(--red);
+    color: white;
+
+    border: 1px solid var(--red);
+    border-radius: 10px;
+
+    font-family: figtree;
+
+    transition: 0.3s;
+} .popup-button1:hover {
+
+    background-color: white;
+    color: var(--red);
+
+    border: 1px solid var(--red);
+}
+
+.popup-button2
+{
+    padding: 5px 10px;
+    margin: 0 7px;
+
+    background-color: white;
+    color: var(--black);
+
+    border: 1px solid white;
+    border-radius: 10px;
+
+    font-family: figtree;
+
+    transition: 0.3s;
+} .popup-button2:hover {
+
+    background-color: var(--light-gray);
+    color: var(--black);
+
+    border: 1px solid var(--light-gray);
 }

@@ -81,11 +81,13 @@ with Session() as session:
         else:
             return False
         
-def salvar_ultimo_itinerario(usuario,itinerario):
+def salvar_ultimo_itinerario(usuario,itinerario, num):
         aux = json.dumps(itinerario)
         it = session.query(Itinerarios).join(Usuario).filter(Usuario.nome == usuario).first()
-        lista = deque([it._1itinerario,it._2itinerario,it._3itinerario],maxlen=3)
-        lista.appendleft(aux)
+        # lista = deque([it._1itinerario,it._2itinerario,it._3itinerario],maxlen=3)
+        # lista.appendleft(aux)
+        lista = [it._1itinerario, it._2itinerario, it._3itinerario]
+        lista[num] = aux
         it._1itinerario,it._2itinerario,it._3itinerario = lista[0],lista[1],lista[2]
         session.commit()    
 
@@ -95,3 +97,12 @@ def pegar_ultimo_itinerario(usuario,num):
         return json.loads(it[num])
     else:
         return None
+    
+def delete_itinerario(usuario, num):
+    it = session.query(Itinerarios).join(Usuario).filter(Usuario.nome == usuario).first()
+    # lista = deque([it._1itinerario,it._2itinerario,it._3itinerario],maxlen=3)
+    # lista.appendleft(aux)
+    lista = [it._1itinerario, it._2itinerario, it._3itinerario]
+    lista[num] = None
+    it._1itinerario,it._2itinerario,it._3itinerario = lista[0],lista[1],lista[2]
+    session.commit() 

@@ -11,13 +11,13 @@ def test_init():
     assert response.json() == "OK"
 
 def test_register():
-    send = {"usuario": "teste2", "senha": "Senha123*asdfghjk", "preferencias": "natureza"}
+    send = {"usuario": "teste2", "senha": "Senha123*asdfghjk"}
     response = client.post("/register", json=send)
     assert response.status_code == 200
     assert response.json()["validado"] == "valido"
 
 def test_bad_password():
-    send = {"usuario": "teste4", "senha": "senha123", "preferencias": "natureza"}
+    send = {"usuario": "teste4", "senha": "senha123"}
     response = client.post("/register", json=send)
     assert response.status_code == 400
 
@@ -41,7 +41,7 @@ def auth_token():
 
 def test_save_itinerary(auth_token):
     headers = {"Authorization": f"Bearer {auth_token}"}
-    send = {"itinerario": {"a": "a"}}
+    send = {"itinerario": {"a": "a"},"index" : 0}
     response = client.post("/save_itinerary", json=send, headers=headers)
     assert response.status_code == 200
 

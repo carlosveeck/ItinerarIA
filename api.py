@@ -7,7 +7,7 @@ from jose import jwt, JWTError
 from datetime import datetime, timezone, timedelta
 from schemas import *
 
-from database import login_aux,criar_usuario,atualizar_perfil,pegar_preferencias,salvar_itinerario,pegar_itinerario,pegar_ultimo_itinerario,salvar_ultimo_itinerario,pegar_perfil
+from database import login_aux,criar_usuario,atualizar_perfil,pegar_preferencias,salvar_itinerario,pegar_itinerario,pegar_ultimo_itinerario,salvar_ultimo_itinerario,pegar_perfil,delete_itinerario
 SECRET_KEY = "voce nao esta vendo isso"
 ALGORITHM = "HS256"
 
@@ -99,6 +99,7 @@ def prompt(prompt : PromptRequest,usuario :str = Depends(verificar_jwt)):
             historico.pop() #para as requisicoes antigas nao ficarem no historico
             dict_resposta = json.loads(resposta_ia)
             salvar_itinerario(usuario, dict_resposta)
+            salvar_ultimo_itinerario(usuario, dict_resposta, prompt.index)
             return dict_resposta
         except Exception as e:
             return {"error": str(e)}
@@ -113,8 +114,13 @@ def ultimo_itinerario(entrada : LastItinerary,usuario:str = Depends(verificar_jw
 
 @app.post("/save_itinerary")
 def salvar(it : SaveItinerary,usuario:str = Depends(verificar_jwt)):
-    salvar_ultimo_itinerario(usuario,it.itinerario)
+    salvar_ultimo_itinerario(usuario,it.itinerario, it.index)
     return {"salvo": "salvo"}
+
+@app.post("/delete")
+def salvar(it : LastItinerary,usuario:str = Depends(verificar_jwt)):
+    delete_itinerario(usuario, it.num)
+    return {"del": "removido"}
 
 @app.post("/att_profile")
 def att_perfil(dados : ProfileRequest,usuario:str = Depends(verificar_jwt)):

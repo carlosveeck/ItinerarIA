@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ArrowLeft, ArrowUp, CircleUserIcon, House, Menu, NotepadText, Send, SendHorizonal, SidebarClose, SidebarOpen, UserIcon } from "lucide-react";
+import { ArrowLeft, ArrowUp, CircleUserIcon, House, Menu, NotepadText, Send, SendHorizonal, SidebarClose, SidebarOpen, SquarePenIcon, Trash2, UserIcon } from "lucide-react";
 
 import { useAuth } from "@/context/AuthContext";
 import { useToken } from "../../../context/TokenContext";
@@ -13,7 +13,8 @@ import { LogOut, UserRound, X, User } from "lucide-react";
 import "../UserProfilePage/UserProfilePage.css"
 import "../LandingPage/LandingPage.css"
 
-async function send_msg(msg, token){
+async function send_msg(msg, token) {
+
     const response = await fetch(`http://127.0.0.1:8000/prompt`, {
         method: 'POST',
         headers: {
@@ -26,16 +27,53 @@ async function send_msg(msg, token){
     const reply = await response.text()
     console.log(response)
     console.log(reply)
+
     return reply;
 }
 
-async function get_last(token){
-    const response = await fetch(`http://127.0.0.1:8000/reload`, {
-        method: 'GET',
+async function save(msg, token) {
+    const response = await fetch(`http://127.0.0.1:8000/save_itinerary`, {
+        method: 'POST',
         headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + token,
         },
+        body: JSON.stringify(msg),
+    })
+
+    const reply = await response.text()
+    console.log(response)
+    console.log(reply)
+
+    return reply;
+}
+
+async function del(msg, token) {
+    const response = await fetch(`http://127.0.0.1:8000/delete`, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        },
+        body: JSON.stringify(msg),
+    })
+
+    const reply = await response.text()
+    console.log(response)
+    console.log(reply)
+
+    return reply;
+}
+
+async function get_last(index, token) {
+    console.log(index);
+    const response = await fetch(`http://127.0.0.1:8000/last_itinerary`, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        },
+        body: JSON.stringify(index),
     })
 
     const reply = await response.text();
@@ -146,14 +184,61 @@ const ItineraryPage = () => {
 
     const [showMenu, setShowMenu] = useState(true);
 
-    const [itinerario1, setItinerario1] = useState([]);
+    const [currEditing, setCurrEditing] = useState(0); // 0 para nenhum
 
-    function lasthandle() {
+    // array que guarda o JSON do itinerario
+    const [itinerario1, setItinerario1] = useState([]);
+    const [itinerario2, setItinerario2] = useState([]);
+    const [itinerario3, setItinerario3] = useState([]);
+
+    // para otimizar
+    const itinerariosLista = { 1: itinerario1, 2: itinerario2, 3: itinerario3 };
+
+    // para edição dos itinerários
+    const [inputName, setInputName] = useState("");
+    const [inputDesc, setInputDesc] = useState("");
+    const [inputCateg, setInputCateg] = useState("");
+    const [inputAddress, setInputAddress] = useState("");
+    const [inputHora, setInputHora] = useState("");
+
+    // delete pop-up
+    const [showDeletePopUp, setShowDeletePopUp] = useState(false);
+
+    function handleChangeInputName(e) { setInputName(e.target.value); }
+    function handleChangeInputDesc(e) { setInputDesc(e.target.value); }
+    function handleChangeInputCateg(e) { setInputCateg(e.target.value); }
+    function handleChangeInputAddress(e) { setInputAddress(e.target.value); }
+    function handleChangeInputHora(e) { setInputHora(e.target.value); }
+
+    // para edição dos itinerários
+    function setItineraryInput(currEdit) {
+        if (!isAuthLoaded) return; // Aguarda o carregamento completo antes de tomar ação
+        if (!user) {
+            console.log("Redirecionando para /login...");
+            navigate("/login");
+        }
+
+        console.log(currEdit);
+
+        if (currEdit > 0 && currEdit < 4)
+        {
+            const index = currEdit - 1;
+
+            setInputName(itinerariosLista[currItinerary][index].Nome);
+            setInputDesc(itinerariosLista[currItinerary][index].descricao);
+            setInputCateg(itinerariosLista[currItinerary][index].categoria);
+            setInputAddress(itinerariosLista[currItinerary][index].endereco);
+            setInputHora(itinerariosLista[currItinerary][index].horario_recomendado_visita);
+        }
+    }
+
+    // função que atualiza o itinerario1
+    function lasthandle(index) {
 
         setCurrItinerary(1);
         setItinerario1([]);
 
-        get_last(token).then(function(rep) {
+        get_last({"num": index}, token).then(function(rep) {
 
             let rep2 = JSON.parse(rep);
 
@@ -166,16 +251,12 @@ const ItineraryPage = () => {
 
             console.log("rep2: ", rep2);
 
-            var idop = document.getElementById("op1");
-            let texto = JSON.stringify(rep2[0]);
-            if (idop != null) { idop.innerHTML = rep; }
-
             const formattedItinerario = rep2["itinerario"].map((item) => ({
-                name: item["Nome"],
-                desc: item["descricao"],
-                categ: item["categoria"],
-                ender: item["endereco"],
-                time: item["horario_recomendado_visita"],
+                Nome: item["Nome"],
+                descricao: item["descricao"],
+                categoria: item["categoria"],
+                endereco: item["endereco"],
+                horario_recomendado_visita: item["horario_recomendado_visita"],
             }));
 
             setItinerario1(formattedItinerario);
@@ -184,6 +265,104 @@ const ItineraryPage = () => {
             console.log("it1: ", itinerario1);
         })
     };
+
+    function lasthandle2(index) {
+
+        setCurrItinerary(2);
+        setItinerario2([]);
+
+        get_last({"num": index}, token).then(function(rep) {
+
+            let rep2 = JSON.parse(rep);
+
+            if (!rep2 || rep2.length === 0) {
+                console.log("Nenhum itinerário encontrado.");
+                console.log("it2: ", itinerario2, " / length: ", itinerario2.length);
+                
+                return;
+            }
+
+            console.log("rep2: ", rep2);
+
+            const formattedItinerario = rep2["itinerario"].map((item) => ({
+                Nome: item["Nome"],
+                descricao: item["descricao"],
+                categoria: item["categoria"],
+                endereco: item["endereco"],
+                horario_recomendado_visita: item["horario_recomendado_visita"],
+            }));
+            
+            setItinerario2(formattedItinerario);
+            
+            console.log("formatted it: ", formattedItinerario);
+            console.log("it2: ", itinerario1);
+        })
+    };
+
+    function lasthandle3(index) {
+
+        setCurrItinerary(3);
+        setItinerario3([]);
+
+        get_last({"num": index}, token).then(function(rep) {
+
+            let rep2 = JSON.parse(rep);
+
+            if (!rep2 || rep2.length === 0) {
+                console.log("Nenhum itinerário encontrado.");
+                console.log("it3: ", itinerario3, " / length: ", itinerario3.length);
+                
+                return;
+            }
+
+            console.log("rep2: ", rep2);
+
+            const formattedItinerario = rep2["itinerario"].map((item) => ({
+                Nome: item["Nome"],
+                descricao: item["descricao"],
+                categoria: item["categoria"],
+                endereco: item["endereco"],
+                horario_recomendado_visita: item["horario_recomendado_visita"],
+            }));
+            
+            setItinerario3(formattedItinerario);
+            
+            console.log("formatted it: ", formattedItinerario);
+            console.log("it3: ", itinerario3);
+        })
+    };
+
+    function savechanges(index) {
+
+        itinerariosLista[currItinerary][index].Nome = inputName;
+        itinerariosLista[currItinerary][index].horario_recomendado_visita = inputHora;
+        itinerariosLista[currItinerary][index].descricao = inputDesc;
+        itinerariosLista[currItinerary][index].categoria = inputCateg;
+        itinerariosLista[currItinerary][index].endereco = inputAddress;
+
+        save({"itinerario": {"itinerario": itinerariosLista[currItinerary]}, "index": currItinerary - 1}, token).then(function(rep) {
+
+            if (currItinerary == 1) { lasthandle(currItinerary - 1); }
+            else if (currItinerary == 2) { lasthandle2(currItinerary - 1); }
+            else if (currItinerary == 3) { lasthandle3(currItinerary - 1); }
+            setCurrEditing(0);
+        });
+    };
+
+    function exclusao(){
+        del({num: (currItinerary-1)}, token).then(function(rep){
+            if(currItinerary == 1){
+                setItinerario1([]);
+                lasthandle(0);
+            } else if(currItinerary == 2){
+                setItinerario2([]);
+                lasthandle2(1);
+            } else{
+                setItinerario3([]);
+                lasthandle3(2);
+            }
+        })
+    }
 
     useEffect(() => {
         console.log("ItineraryPage → Auth Loaded:", isAuthLoaded, "User:", user);
@@ -197,7 +376,7 @@ const ItineraryPage = () => {
 
         // para renderizar o itinerario
         // console.log (itinerario1.length)
-        lasthandle();
+        lasthandle(0);
         
     }, [isAuthLoaded, user, navigate]);
 
@@ -227,24 +406,31 @@ const ItineraryPage = () => {
         if (input.trim()) {
 
             console.log("User Input:", input);
-            setResponse("Gerando itinerário...");
+            // setResponse("Gerando itinerário...");
             setInput("");
 
-            send_msg({prompt: input}, token).then(function(reply){
+            send_msg({prompt: input, index: (currItinerary - 1)}, token).then(function(reply) {
 
                 let rep2 = JSON.parse(reply);
 
-                // console.log(rep2);
+                console.log(rep2);
 
                 setResponse("Itinerário:");
 
                 const newResponses = rep2["itinerario"].map((item) => ({
-                    name: item["Nome"],
-                    desc: item["descricao"],
-                    time: item["horario_recomendado_visita"],
+                    Nome: item["Nome"],
+                    descricao: item["descricao"],
+                    horario_recomendado_visita: item["horario_recomendado_visita"],
                 }));
 
-                setAI_responses(newResponses);
+                // setAI_responses(newResponses);
+                if(currItinerary - 1 == 0){
+                    lasthandle(currItinerary - 1);
+                } else if(currItinerary - 1 == 1){
+                    lasthandle2(currItinerary - 1);
+                } else{
+                    lasthandle3(currItinerary - 1);
+                }
             })
         }
     };
@@ -254,7 +440,7 @@ const ItineraryPage = () => {
         // prompt screen
         0: <>
             <p className="prompt-welcome-p">
-                { response || `Olá, ${ user.username }` }
+                Olá, { user.username }
             </p>
 
             <div className="prompt-pop-up">
@@ -269,11 +455,11 @@ const ItineraryPage = () => {
                     placeholder="Digite seu comando aqui..."
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    onKeyPress={(e) => e.key === "Enter" && handleSubmit()}
+                    onKeyPress={ (e) => e.key === "Enter" && handleSubmit() }
                 />
                 <button
                     className={`prompt-input-div-button ${input ? "input" : ""}`}
-                    onClick={handleSubmit}
+                    onClick={ handleSubmit }
                 >
                     <SendHorizonal color="white" size={20} strokeWidth={2.5} />
                     {/* input ? "#2cc86e" : "rgb(156 163 175)" */}
@@ -281,6 +467,94 @@ const ItineraryPage = () => {
 
             </div>
         </>,
+    }
+
+    const deletePopUp = {
+        
+        0: <div className={`popup-overlay ${showMenu ? "" : "full"}`}>
+            <div className="delete-popup">
+                <div className="popup-h1-div">
+                    <h1 className="popup-h1"><strong>Atenção: </strong></h1>
+                    <h1 className="popup-h1">Você está prestes a deletar o seu itinerario {currItinerary}</h1>
+                </div>
+
+                <div className="popup-buttons-div">
+                    <button className="popup-button1" onClick={() => {exclusao(), setShowDeletePopUp(false)}}>Deletar</button>
+                    <button className="popup-button2" onClick={() => setShowDeletePopUp(false)}>Cancelar</button>
+                </div>
+            </div>
+        </div>
+    }
+
+    const itineraryScreen = {
+
+        0: <div className="show-itinerary-div"> { /* grid grid-cols-3 */ }
+            { itinerariosLista[currItinerary].map((elemento, index) => (
+
+                <React.Fragment key={index}> 
+                    <div key={index} className="itinerary-grid-div">
+                        { currEditing == (index + 1) ? 
+
+                            <>
+                                <div className="edit-div">
+                                    <label className="itinerary-edit-div-label1">Nome</label>
+                                    <input className="itinerary-input" value={inputName} onChange={handleChangeInputName} placeholder="Nome" />
+
+                                    <label className="itinerary-edit-div-label2">Descrição</label>
+                                    <textarea className="desc-input" value={inputDesc} onChange={handleChangeInputDesc} placeholder="Descrição" />
+
+                                    <label className="itinerary-edit-div-label3">Categoria</label>
+                                    <input className="itinerary-input" value={inputCateg} onChange={handleChangeInputCateg} placeholder="Categoria" />
+
+                                    <label className="itinerary-edit-div-label4">Endereço</label>
+                                    <input className="itinerary-input" value={inputAddress} onChange={handleChangeInputAddress} placeholder="Endereço" />
+
+                                    <label className="itinerary-edit-div-label5">Horario</label>
+                                    <input className="itinerary-input" value={inputHora} onChange={handleChangeInputHora} placeholder="Horario" />
+
+                                    <div className="itinerary-edit-div-buttons">
+                                        <button className="itinerary-edit-div-buttons-button1" onClick={() => savechanges(index)}>Salvar</button>
+                                        <button className="itinerary-edit-div-buttons-button2" onClick={() => setCurrEditing(0)}>Cancelar</button>
+                                    </div>
+                                </div>
+                            </>
+
+                            :
+                            
+                            <>
+                                <div className="itinerary-name-div">
+                                    <p className="itinerary-grid-div-h1">{elemento.Nome}</p>
+
+                                    <button className="edit-button" onClick={() => { setCurrEditing(index + 1); setItineraryInput(index + 1)}}>
+                                        <SquarePenIcon color="#8fa9af"/>
+                                    </button>
+                                </div>
+
+                                <div className="gap-div" />
+
+                                <p className="itinerary-grid-div-p">{elemento.descricao}</p>
+
+                                <div className="gap-div"></div>
+                                <div className="gap-div"></div>
+
+                                <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong1">Categoria:</strong> {elemento.categoria}</p>
+                                <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong2">Endereço:</strong> {elemento.endereco}</p>
+                                <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong3">Horario:</strong> {elemento.horario_recomendado_visita}</p>
+                            </>
+                        }
+                    </div>
+
+                    { index != 2 && <div className="vertical-line" /> }
+                </React.Fragment>
+            ))}
+
+            <button className="delete-button" onClick={() => setShowDeletePopUp(true)}>
+                <Trash2 color="#ea5681" />
+            </button>
+
+            { showDeletePopUp ? deletePopUp[0] : <></> }
+                    
+        </div>,
     }
     
     const itineraryMap = {
@@ -293,40 +567,26 @@ const ItineraryPage = () => {
             { (itinerario1.length == 0) ? 
                 PromptScreen[0]
             : 
-                <div className="show-itinerary-div"> { /* grid grid-cols-3 */ }
-                    { itinerario1.map((elemento, index) => (
-
-                        <React.Fragment key={index}> 
-                            <div key={index} className="itinerary-grid-div">
-                                <p className="itinerary-grid-div-h1">{elemento.name}</p>
-
-                                <div className="gap-div" />
-
-                                <p className="itinerary-grid-div-p">{elemento.desc}</p>
-
-                                <div className="gap-div"></div>
-                                <div className="gap-div"></div>
-
-                                <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong1">Categoria:</strong> {elemento.categ}</p>
-                                <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong2">Endereço:</strong> {elemento.ender}</p>
-                                <p className="itinerary-grid-div-p"><strong className="itinerary-grid-div-p-strong3">Horario:</strong> {elemento.time}</p>
-                            </div>
-
-                            { index != 2 && <div className="vertical-line" /> }
-                        </React.Fragment>
-                    ))}
-                </div>
+                itineraryScreen[0]
             }
         </>,
 
         // itinerario 2
         2: <>
-            { PromptScreen[0] }
+            { (itinerario2.length == 0) ? 
+                PromptScreen[0]
+            : 
+                itineraryScreen[0]
+            }
         </>,
 
         // itinerario 3
         3: <>
-            { PromptScreen[0] }
+            { (itinerario3.length == 0) ? 
+                PromptScreen[0]
+            : 
+                itineraryScreen[0]
+            }
         </>,
     };
 
@@ -352,19 +612,19 @@ const ItineraryPage = () => {
                 <div className="itinerary-menu-itineraries">
                     <button
                         className={`itinerary-menu-itineraries-buttons ${currItinerary == 1 ? "current" : ""}`}
-                        onClick={() => lasthandle()}> 
+                        onClick={() => {setCurrItinerary(1), lasthandle(0)}}> 
                         <NotepadText strokeWidth={1.5} size={20}/> Itinerário 1
                     </button>
 
                     <button
                         className={`itinerary-menu-itineraries-buttons ${currItinerary == 2 ? "current" : ""}`}
-                        onClick={() => setCurrItinerary(2)}> 
+                        onClick={() => {setCurrItinerary(2), lasthandle2(1)}}> 
                         <NotepadText strokeWidth={1.5} size={20}/> Itinerário 2
                     </button>
 
                     <button
                         className={`itinerary-menu-itineraries-buttons ${currItinerary == 3 ? "current" : ""}`}
-                        onClick={() => setCurrItinerary(3)}> 
+                        onClick={() => {setCurrItinerary(3), lasthandle3(2)}}> 
                         <NotepadText strokeWidth={1.5} size={20}/> Itinerário 3
                     </button>
                 </div>
