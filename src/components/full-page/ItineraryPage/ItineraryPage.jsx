@@ -185,6 +185,9 @@ const ItineraryPage = () => {
     const [inputAddress, setInputAddress] = useState("");
     const [inputHora, setInputHora] = useState("");
 
+    // delete pop-up
+    const [showDeletePopUp, setShowDeletePopUp] = useState(false);
+
     function handleChangeInputName(e) { setInputName(e.target.value); }
     function handleChangeInputDesc(e) { setInputDesc(e.target.value); }
     function handleChangeInputCateg(e) { setInputCateg(e.target.value); }
@@ -447,6 +450,23 @@ const ItineraryPage = () => {
         </>,
     }
 
+    const deletePopUp = {
+        
+        0: <div className={`popup-overlay ${showMenu ? "" : "full"}`}>
+            <div className="delete-popup">
+                <div className="popup-h1-div">
+                    <h1 className="popup-h1"><strong>Atenção: </strong></h1>
+                    <h1 className="popup-h1">Você está prestes a deletar o seu itinerario {currItinerary}</h1>
+                </div>
+
+                <div className="popup-buttons-div">
+                    <button className="popup-button1">Deletar</button>
+                    <button className="popup-button2" onClick={() => setShowDeletePopUp(false)}>Cancelar</button>
+                </div>
+            </div>
+        </div>
+    }
+
     const itineraryScreen = {
 
         0: <div className="show-itinerary-div"> { /* grid grid-cols-3 */ }
@@ -509,9 +529,11 @@ const ItineraryPage = () => {
                 </React.Fragment>
             ))}
 
-            <button className="delete-button">
+            <button className="delete-button" onClick={() => setShowDeletePopUp(true)}>
                 <Trash2 color="#ea5681" />
             </button>
+
+            { showDeletePopUp ? deletePopUp[0] : <></> }
                     
         </div>,
     }
