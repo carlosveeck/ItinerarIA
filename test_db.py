@@ -54,17 +54,16 @@ def test_att_pegar_perfil():
     assert pegar_perfil("teste") == ("Brasil","jogos",datetime(2000,1,1).date())
 
 def test_salvar_pegar_itinerarios_antigos():
-    salvar_ultimo_itinerario("teste",{"a" : "a"})
-    salvar_ultimo_itinerario("teste",{"b" : "b"})
-    salvar_ultimo_itinerario("teste",{"c" : "c"})
+    salvar_ultimo_itinerario("teste",{"a" : "a"},0)
+    salvar_ultimo_itinerario("teste",{"b" : "b"},1)
+    salvar_ultimo_itinerario("teste",{"c" : "c"},2)
 
-    assert pegar_ultimo_itinerario("teste",0) == {"c" : "c"}
+    assert pegar_ultimo_itinerario("teste",0) == {"a" : "a"}
     assert pegar_ultimo_itinerario("teste",1) == {"b" : "b"}
-    assert pegar_ultimo_itinerario("teste",2) == {"a" : "a"}
+    assert pegar_ultimo_itinerario("teste",2) == {"c" : "c"}
 
-    #TESTE APOS SUPERAR O LIMITE(3), MAIS ANTIGO SOME
-    salvar_ultimo_itinerario("teste",{"d" : "d"})
+    salvar_ultimo_itinerario("teste",{"d" : "d"},0)
 
-    assert pegar_ultimo_itinerario("teste",2) == {"b" : "b"}
+    assert pegar_ultimo_itinerario("teste",0) == {"d" : "d"}
 
 
