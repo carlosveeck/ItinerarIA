@@ -13,8 +13,10 @@ import "../LandingPage/LandingPage.css"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+const API_URL = "https://itineraria-no5t.onrender.com"
+
 async function send_msg(token){
-    const response = await fetch(`http://127.0.0.1:8000/profile`, {
+    const response = await fetch(`${API_URL}/profile`, {
         method: 'GET',
         headers: {
         'Content-Type': 'application/json',
@@ -30,7 +32,7 @@ async function send_msg(token){
 
 async function send_profile(msg, token){
     console.log(msg);
-    const response = await fetch(`http://127.0.0.1:8000/att_profile`, {
+    const response = await fetch(`${API_URL}/att_profile`, {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
