@@ -6,9 +6,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from jose import jwt, JWTError
 from datetime import datetime, timezone, timedelta
 from schemas import *
+import os
 
 from database import login_aux,criar_usuario,atualizar_perfil,pegar_preferencias,salvar_itinerario,pegar_itinerario,pegar_ultimo_itinerario,salvar_ultimo_itinerario,pegar_perfil,delete_itinerario
-SECRET_KEY = "voce nao esta vendo isso"
+SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
 
 # Criando o esquema OAuth2
@@ -18,7 +19,9 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 app = FastAPI()
 
 origins = [
-    "http://localhost:5173", 
+    "http://localhost:5173",
+    "https://itineraria-front.onrender.com",
+    "http://itineraria-front.onrender.com"
 ]
 
 app.add_middleware(
@@ -39,7 +42,7 @@ historico = [
     "content": "Ao reportar os dados dos locais turísticos, você deve estruturá-los da seguinte forma: cada local deve ser representado por um objeto com as seguintes chaves: 'Nome', 'descricao', 'categoria', 'endereco' e 'horario_recomendado_visita'"}
 ]
 
-openai.api_key = ""
+openai.api_key = os.getenv("API_KEY")
 
 def criar_jwt(username: str):
     payload = {
