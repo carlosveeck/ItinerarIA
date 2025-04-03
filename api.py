@@ -21,7 +21,7 @@ app = FastAPI()
 origins = [
     "http://localhost:5173",
     "https://itineraria-front.onrender.com",
-    "http://itineraria-front.onrender.com"
+    "http://itineraria-front.onrender.com",
 ]
 
 app.add_middleware(
