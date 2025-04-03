@@ -5,8 +5,11 @@ import NoItineraryBreadcrumb from "../../handmade-UI/noItineraryBreadcrumb";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useToken } from "@/context/TokenContext";
+
+const API_URL = "https://itineraria-no5t.onrender.com"
+
 async function send_msg(msg, token){
-    const response = await fetch(`http://127.0.0.1:8000/prompt`, {
+    const response = await fetch(`${API_URL}/prompt`, {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
