@@ -8,8 +8,10 @@ import { useToken } from "../../../context/TokenContext";
 
 import "./SignUpPage.css"
 
+const API_URL = "https://itineraria-no5t.onrender.com"
+
 async function log_user(msg){
-    const response = await fetch(`http://127.0.0.1:8000/login`, {
+    const response = await fetch(`${API_URL}/login`, {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
@@ -24,7 +26,7 @@ async function log_user(msg){
 }
 
 async function new_user(msg){
-    const response = await fetch(`http://127.0.0.1:8000/register`, {
+    const response = await fetch(`${API_URL}/register`, {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
