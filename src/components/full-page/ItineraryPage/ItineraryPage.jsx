@@ -13,9 +13,11 @@ import { LogOut, UserRound, X, User } from "lucide-react";
 import "../UserProfilePage/UserProfilePage.css"
 import "../LandingPage/LandingPage.css"
 
+const API_URL = "https://itineraria-no5t.onrender.com"
+
 async function send_msg(msg, token) {
 
-    const response = await fetch(`http://127.0.0.1:8000/prompt`, {
+    const response = await fetch(`${API_URL}/prompt`, {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
@@ -32,7 +34,7 @@ async function send_msg(msg, token) {
 }
 
 async function save(msg, token) {
-    const response = await fetch(`http://127.0.0.1:8000/save_itinerary`, {
+    const response = await fetch(`${API_URL}/save_itinerary`, {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
@@ -49,7 +51,7 @@ async function save(msg, token) {
 }
 
 async function del(msg, token) {
-    const response = await fetch(`http://127.0.0.1:8000/delete`, {
+    const response = await fetch(`${API_URL}/delete`, {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
@@ -67,7 +69,7 @@ async function del(msg, token) {
 
 async function get_last(index, token) {
     console.log(index);
-    const response = await fetch(`http://127.0.0.1:8000/last_itinerary`, {
+    const response = await fetch(`${API_URL}/last_itinerary`, {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
