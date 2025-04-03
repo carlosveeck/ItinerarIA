@@ -13,10 +13,6 @@ npm install -D vite
 ```
 - [React/JSX](https://react.dev/reference/react) -> A base do nosso front-end, permitindo melhor integração entre javascript e html
 
-- [TailwindCSS](https://tailwindcss.com/docs/installation) -> Integra o CSS ao jsx, simplificando o código e a leitura
-```
-npm install -D tailwindcss
-```
 - [FastAPI](https://fastapi.tiangolo.com/reference/) -> Permite a criação de nossa API própria
 ```
 pip install "fastapi[standard]"
